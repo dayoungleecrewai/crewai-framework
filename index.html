@@ -1,0 +1,1790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CrewAI Framework · CrewAI 프레임워크</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0e1a;
+  --bg-sub: #0e1322;
+  --surface: #131826;
+  --surface-2: #1a2030;
+  --surface-3: #232a3d;
+  --border: #2a3142;
+  --border-2: #3a4259;
+  --text: #e6e9f0;
+  --text-mute: #8a92a6;
+  --text-dim: #6a7287;
+  --accent: #F5A623;
+  --teal: #4FC3D9;
+  --navy: #5b8def;
+  --berry: #d9486f;
+  --green: #4ade80;
+  --amber: #fbbf24;
+  --kor: "Noto Sans KR", -apple-system, sans-serif;
+  --mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg); color: var(--text); font-family: "Inter", -apple-system, sans-serif; -webkit-font-smoothing: antialiased; line-height: 1.55; }
+.ko { font-family: var(--kor); }
+.mono { font-family: var(--mono); }
+code {
+  font-family: var(--mono); font-size: 0.92em;
+  background: var(--bg-sub); padding: 1px 6px; border-radius: 3px; color: var(--teal);
+}
+
+/* === bilingual helpers === */
+.bi-line .en { display: block; }
+.bi-line .ko {
+  display: block;
+  font-family: var(--kor); color: var(--text-mute);
+  font-weight: 400; font-style: italic;
+  font-size: 0.74em;
+  margin-top: 4px; line-height: 1.5;
+}
+
+/* === TOP NAV === */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10, 14, 26, 0.94); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 40px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand { display: flex; align-items: center; gap: 14px; }
+.nav-brand .mark {
+  width: 32px; height: 32px; border-radius: 7px;
+  background: linear-gradient(135deg, var(--accent), #ff7a45);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-weight: 700; font-size: 16px; color: #000;
+}
+.nav-brand .names .en { font-size: 14px; font-weight: 600; letter-spacing: 0.2px; line-height: 1.2; }
+.nav-brand .names .ko { font-family: var(--kor); font-size: 11px; color: var(--text-mute); font-style: italic; }
+
+.nav-links { display: flex; gap: 2px; }
+.nav-links a {
+  color: var(--text-mute); text-decoration: none; font-size: 13px;
+  padding: 7px 12px; border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.15s;
+  line-height: 1.25;
+}
+.nav-links a:hover { color: var(--text); background: var(--surface); }
+.nav-links a.active { color: var(--accent); background: rgba(245, 166, 35, 0.1); }
+.nav-links a .step {
+  display: inline-block; width: 18px; font-family: var(--mono); font-size: 11px;
+  color: var(--text-dim); margin-right: 4px;
+}
+.nav-links a.active .step { color: var(--accent); }
+.nav-links a .ko {
+  display: block; font-family: var(--kor); font-size: 10.5px; font-style: italic;
+  color: var(--text-dim); margin-top: 1px; margin-left: 22px;
+  font-weight: 400;
+}
+.nav-links a.active .ko { color: var(--accent); opacity: 0.7; }
+
+/* === SCREENS === */
+.screen {
+  display: none;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 72px 40px 80px;
+  min-height: calc(100vh - 75px);
+}
+.screen.active { display: block; animation: fade 0.3s ease; }
+@keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.screen-head { margin-bottom: 48px; }
+.screen-head .step-tag {
+  font-family: var(--mono); font-size: 12px; color: var(--accent);
+  letter-spacing: 1.5px; margin-bottom: 14px;
+  text-transform: uppercase;
+}
+.screen-head .step-tag .ko {
+  font-family: var(--kor); color: var(--text-dim); font-style: italic;
+  margin-left: 8px; font-weight: 400; letter-spacing: 0; text-transform: none;
+  font-size: 11.5px;
+}
+.screen-head h2 {
+  font-size: clamp(32px, 4vw, 44px);
+  font-weight: 700; line-height: 1.1;
+  letter-spacing: -0.5px;
+}
+.screen-head h2 .ko {
+  display: block; font-family: var(--kor);
+  font-size: 0.45em; color: var(--text-mute);
+  font-weight: 500; margin-top: 10px;
+  font-style: italic;
+}
+.screen-head .intro {
+  max-width: 800px; margin-top: 18px;
+}
+.screen-head .intro .en {
+  color: var(--text); font-size: 15px;
+  line-height: 1.7;
+}
+.screen-head .intro .ko {
+  display: block; font-family: var(--kor);
+  color: var(--text-mute); font-size: 13.5px;
+  font-style: italic; margin-top: 8px;
+  line-height: 1.7;
+}
+
+/* === SCREEN 0: OVERVIEW === */
+.overview-hero { padding-top: 40px; }
+.overview-hero h1 {
+  font-size: clamp(48px, 6.5vw, 84px);
+  font-weight: 700; line-height: 1.05;
+  letter-spacing: -1.5px;
+}
+.overview-hero h1 .accent { color: var(--accent); }
+.overview-hero h1 .ko {
+  display: block; font-family: var(--kor);
+  font-size: 0.42em; color: var(--text-mute);
+  font-style: italic; font-weight: 500;
+  margin-top: 18px;
+}
+.overview-hero .one-liner { margin-top: 24px; max-width: 720px; }
+.overview-hero .one-liner .en {
+  font-size: 19px; color: var(--text-mute);
+  line-height: 1.6;
+}
+.overview-hero .one-liner .ko {
+  display: block; font-family: var(--kor);
+  font-size: 15px; color: var(--text-dim);
+  font-style: italic; margin-top: 8px; line-height: 1.65;
+}
+
+.layer-strip {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+  gap: 12px; align-items: stretch;
+  margin-top: 64px;
+}
+.layer-chip {
+  background: var(--surface); border: 1px solid var(--border);
+  padding: 20px 22px; border-radius: 10px;
+  border-top: 3px solid var(--accent);
+}
+.layer-chip.l2 { border-top-color: var(--teal); }
+.layer-chip.l3 { border-top-color: var(--navy); }
+.layer-chip.l4 { border-top-color: var(--berry); }
+.layer-chip .label { font-family: var(--mono); font-size: 14px; font-weight: 600; }
+.layer-chip .sub { font-size: 12px; color: var(--text-mute); margin-top: 8px; font-style: italic; line-height: 1.4; }
+.layer-chip .sub-ko { font-family: var(--kor); font-size: 11.5px; color: var(--text-dim); margin-top: 4px; font-style: italic; line-height: 1.4; }
+.contains { font-family: var(--mono); color: var(--text-dim); font-size: 22px; display: flex; align-items: center; }
+
+.nav-hint {
+  margin-top: 80px; padding-top: 32px;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-hint .left { color: var(--text-mute); font-size: 13px; line-height: 1.5; }
+.nav-hint .left .ko { display: block; font-family: var(--kor); color: var(--text-dim); font-size: 12px; font-style: italic; margin-top: 4px; }
+.nav-hint .next-btn {
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 14px 22px;
+  background: var(--accent); color: #000; border-radius: 8px;
+  text-decoration: none; font-weight: 600; font-size: 14px;
+  text-align: left;
+}
+.nav-hint .next-btn .ko { display: block; font-family: var(--kor); font-size: 11px; font-style: italic; opacity: 0.7; margin-top: 2px; font-weight: 500; }
+.nav-hint .next-btn:hover { filter: brightness(1.06); }
+.nav-hint .next-btn .arrow { font-size: 18px; }
+
+/* === ABSTRACTIONS === */
+.abs-wrap { display: grid; grid-template-columns: 1fr 420px; gap: 32px; align-items: start; }
+.abs-diagram { background: var(--bg-sub); border: 1px solid var(--border); border-radius: 14px; padding: 32px; }
+.abs-svg { width: 100%; height: auto; display: block; }
+.abs-rect { fill: var(--surface); stroke: var(--border-2); stroke-width: 1.5; cursor: pointer; transition: all 0.18s; }
+.abs-rect:hover { stroke-width: 2.5; filter: brightness(1.1); }
+.abs-rect.active { stroke-width: 3; filter: drop-shadow(0 0 14px currentColor); }
+.abs-rect.flow { stroke: var(--accent); }
+.abs-rect.crew { stroke: var(--teal); }
+.abs-rect.agent, .abs-rect.task { stroke: var(--navy); fill: var(--surface-2); }
+.abs-label { font-family: var(--mono); font-weight: 600; pointer-events: none; }
+.abs-sub { font-family: var(--mono); font-size: 10px; fill: var(--text-mute); font-style: italic; pointer-events: none; }
+.abs-sub-ko { font-family: "Noto Sans KR", sans-serif; font-size: 9.5px; fill: var(--text-dim); font-style: italic; pointer-events: none; }
+.abs-field { font-family: var(--mono); font-size: 10.5px; fill: var(--accent); pointer-events: none; }
+.abs-field-ko { font-family: "Noto Sans KR", sans-serif; font-size: 9.5px; fill: var(--text-mute); font-style: italic; pointer-events: none; }
+.abs-chip { fill: var(--bg-sub); stroke: var(--border-2); stroke-width: 0.5; pointer-events: none; }
+.abs-chip-text { font-family: var(--mono); font-size: 9.5px; fill: var(--accent); font-weight: 600; pointer-events: none; text-anchor: middle; }
+
+.detail-panel {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; padding: 28px;
+  position: sticky; top: 90px;
+}
+.detail-panel .empty {
+  color: var(--text-mute); font-size: 14px; text-align: center; padding: 60px 16px;
+}
+.detail-panel .empty .icon { font-size: 36px; margin-bottom: 18px; color: var(--text-dim); }
+.detail-panel .empty .ko { display: block; font-family: var(--kor); font-size: 12.5px; color: var(--text-dim); font-style: italic; margin-top: 6px; }
+.detail-panel h3 {
+  font-family: var(--mono); font-size: 18px;
+  margin-bottom: 6px; display: flex; align-items: center; gap: 10px;
+}
+.detail-panel h3 .dot { display: inline-block; width: 14px; height: 14px; border-radius: 50%; }
+.detail-panel .panel-ko { font-family: var(--kor); font-size: 13px; color: var(--text-mute); font-style: italic; margin-bottom: 16px; }
+.detail-panel .intro-line { margin-bottom: 22px; }
+.detail-panel .intro-line .en { font-size: 13px; color: var(--text); line-height: 1.7; }
+.detail-panel .intro-line .ko { display: block; font-family: var(--kor); font-size: 12px; color: var(--text-mute); font-style: italic; line-height: 1.65; margin-top: 8px; }
+.detail-panel dl { display: grid; gap: 18px; }
+.detail-panel dt { font-family: var(--mono); font-size: 11px; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
+.detail-panel dt .ko { font-family: var(--kor); font-style: italic; margin-left: 6px; font-size: 10.5px; color: var(--text-dim); text-transform: none; letter-spacing: 0; }
+.detail-panel dd { font-size: 13px; line-height: 1.6; }
+.detail-panel dd ul { list-style: none; padding: 0; margin: 0; }
+.detail-panel dd ul li { padding: 9px 0; border-bottom: 1px dashed var(--border); }
+.detail-panel dd ul li:last-child { border-bottom: none; }
+.detail-panel dd ul li .en { font-size: 13px; line-height: 1.55; }
+.detail-panel dd ul li .ko { display: block; font-family: var(--kor); font-size: 11.5px; color: var(--text-mute); font-style: italic; margin-top: 3px; line-height: 1.55; }
+.detail-panel .wraps .en { color: var(--text); font-size: 13px; }
+.detail-panel .wraps .ko { display: block; font-family: var(--kor); font-size: 11.5px; color: var(--text-mute); font-style: italic; margin-top: 4px; }
+.detail-panel pre {
+  background: #060a14; padding: 14px; border-radius: 7px;
+  font-family: var(--mono); font-size: 12px; color: var(--teal);
+  overflow-x: auto; line-height: 1.6;
+  border: 1px solid var(--border);
+}
+.detail-panel pre .kw { color: var(--accent); }
+.detail-panel pre .str { color: var(--green); }
+.detail-panel pre .com { color: var(--text-dim); font-style: italic; }
+
+/* === EXECUTION === */
+.exec-tabs { display: flex; gap: 10px; margin-bottom: 28px; }
+.exec-tabs button {
+  background: var(--surface); border: 1px solid var(--border); color: var(--text-mute);
+  font-family: var(--mono); font-size: 13px; font-weight: 600; letter-spacing: 0.5px;
+  padding: 10px 18px; border-radius: 8px; cursor: pointer;
+  transition: all 0.15s; text-align: left; line-height: 1.2;
+}
+.exec-tabs button:hover { color: var(--text); border-color: var(--border-2); }
+.exec-tabs button.active { background: var(--accent); color: #000; border-color: var(--accent); }
+.exec-tabs button .ko { display: block; font-family: var(--kor); font-size: 10.5px; font-style: italic; font-weight: 500; margin-top: 3px; opacity: 0.75; }
+
+.exec-panel { background: var(--bg-sub); border: 1px solid var(--border); border-radius: 14px; padding: 40px; }
+.exec-panel-content { display: none; }
+.exec-panel-content.active { display: grid; grid-template-columns: 1fr 400px; gap: 40px; align-items: center; }
+.exec-svg { width: 100%; height: auto; max-height: 500px; display: block; }
+.exec-info h3 { font-size: 22px; margin-bottom: 4px; font-weight: 700; }
+.exec-info h3 .ko { font-family: var(--kor); font-size: 14px; color: var(--text-mute); display: block; margin-top: 6px; font-weight: 500; font-style: italic; }
+.exec-info .desc { margin: 18px 0; }
+.exec-info .desc .en { font-size: 14px; color: var(--text-mute); line-height: 1.7; }
+.exec-info .desc .ko { display: block; font-family: var(--kor); font-size: 12.5px; color: var(--text-dim); font-style: italic; margin-top: 8px; line-height: 1.7; }
+.exec-info ul { list-style: none; padding: 0; margin: 0; }
+.exec-info ul li { padding: 10px 0; border-bottom: 1px dashed var(--border); }
+.exec-info ul li:last-child { border-bottom: none; }
+.exec-info ul li .en { font-size: 13px; line-height: 1.5; }
+.exec-info ul li .en::before { content: "·  "; color: var(--accent); font-weight: 700; }
+.exec-info ul li .ko { display: block; font-family: var(--kor); font-size: 11.5px; color: var(--text-mute); font-style: italic; margin-top: 3px; margin-left: 14px; line-height: 1.5; }
+
+.kickoffs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 28px; }
+.kickoff { background: var(--surface); border: 1px solid var(--border); padding: 16px 18px; border-radius: 10px; }
+.kickoff .name { font-family: var(--mono); font-size: 14px; font-weight: 600; color: var(--accent); }
+.kickoff .desc { font-size: 12px; color: var(--text-mute); margin-top: 8px; line-height: 1.5; font-style: italic; }
+.kickoff .desc-ko { font-family: var(--kor); font-size: 11px; color: var(--text-dim); font-style: italic; margin-top: 4px; line-height: 1.5; }
+
+/* === INTEGRATION === */
+.int-wrap { display: grid; grid-template-columns: 1fr 420px; gap: 32px; align-items: start; }
+.int-diagram { background: var(--bg-sub); border: 1px solid var(--border); border-radius: 14px; padding: 28px; }
+.int-svg { width: 100%; height: auto; display: block; }
+.int-spoke { cursor: pointer; transition: all 0.18s; }
+.int-spoke rect, .int-spoke .spoke-rect { fill: var(--surface); stroke-width: 1.5; transition: stroke-width 0.18s; }
+.int-spoke:hover .spoke-rect { stroke-width: 2.5; filter: brightness(1.1); }
+.int-spoke.active .spoke-rect { stroke-width: 3; filter: drop-shadow(0 0 12px currentColor); }
+.int-spoke .label { font-family: var(--mono); font-size: 12px; font-weight: 600; pointer-events: none; }
+.int-spoke .sub { font-family: "Noto Sans KR", sans-serif; font-size: 9.5px; fill: var(--text-mute); font-style: italic; pointer-events: none; }
+.int-line { stroke: var(--border-2); stroke-width: 1; stroke-dasharray: 4 3; pointer-events: none; }
+.int-hub { fill: var(--surface); stroke: var(--accent); stroke-width: 2.5; }
+.int-hub-text { font-family: var(--mono); font-weight: 700; pointer-events: none; }
+
+.spoke-detail .via {
+  display: inline-block; font-family: var(--mono); font-size: 11px;
+  padding: 4px 10px; border-radius: 4px; margin-bottom: 18px;
+}
+.spoke-detail .items { list-style: none; padding: 0; margin: 0; }
+.spoke-detail .items li {
+  padding: 10px 14px; margin-bottom: 8px;
+  background: var(--bg-sub); border-radius: 5px;
+  font-family: var(--mono); font-size: 12.5px;
+  border-left: 3px solid var(--border-2);
+}
+.spoke-detail .note { margin-top: 20px; padding: 16px 18px; background: var(--surface-2); border-radius: 6px; }
+.spoke-detail .note .en { font-size: 13px; color: var(--text-mute); line-height: 1.65; }
+.spoke-detail .note .ko { display: block; font-family: var(--kor); font-size: 12px; color: var(--text-dim); font-style: italic; margin-top: 8px; line-height: 1.65; }
+
+/* === MATRIX === */
+.matrix-filter {
+  display: flex; gap: 8px; margin-bottom: 24px; align-items: center;
+  padding: 14px 18px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+}
+.matrix-filter span.label { color: var(--text-mute); font-size: 12px; margin-right: 10px; }
+.matrix-filter span.label .ko { font-family: var(--kor); font-size: 11px; color: var(--text-dim); margin-left: 4px; font-style: italic; }
+.matrix-filter button {
+  background: var(--bg-sub); border: 1px solid var(--border); color: var(--text-mute);
+  font-family: var(--mono); font-size: 11.5px; font-weight: 600; letter-spacing: 0.5px;
+  padding: 7px 14px; border-radius: 5px; cursor: pointer; line-height: 1.2;
+  text-align: left;
+}
+.matrix-filter button:hover { color: var(--text); border-color: var(--border-2); }
+.matrix-filter button.active { background: var(--accent); color: #000; border-color: var(--accent); }
+.matrix-filter button .ko { display: block; font-family: var(--kor); font-size: 10px; font-style: italic; font-weight: 500; margin-top: 2px; opacity: 0.75; }
+
+.cap-matrix {
+  width: 100%; border-collapse: collapse;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+}
+.cap-matrix thead { background: var(--surface-2); }
+.cap-matrix th {
+  text-align: left; padding: 14px 18px;
+  font-family: var(--mono); font-size: 11.5px;
+  color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.6px;
+  border-bottom: 1px solid var(--border);
+}
+.cap-matrix th.center { text-align: center; }
+.cap-matrix th .ko { font-family: var(--kor); font-size: 10px; font-style: italic; color: var(--text-dim); font-weight: 400; text-transform: none; letter-spacing: 0; display: block; margin-top: 3px; }
+.cap-matrix td { padding: 14px 18px; font-size: 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.cap-matrix tr:last-child td { border-bottom: none; }
+.cap-matrix td.cap .en { font-weight: 500; line-height: 1.4; }
+.cap-matrix td.cap.core .en { font-weight: 600; }
+.cap-matrix td.cap .ko { display: block; font-family: var(--kor); font-size: 11.5px; font-style: italic; color: var(--text-mute); margin-top: 3px; line-height: 1.4; }
+.cap-matrix td.center { text-align: center; font-size: 18px; }
+.cap-matrix td.std { font-family: var(--mono); color: var(--teal); font-size: 12.5px; }
+.cap-matrix td.why .en { color: var(--text-mute); font-size: 13px; font-style: italic; line-height: 1.45; }
+.cap-matrix td.why .ko { display: block; font-family: var(--kor); font-size: 11px; color: var(--text-dim); font-style: italic; margin-top: 3px; line-height: 1.45; }
+.cap-matrix tr.hidden { display: none; }
+.dot-yes { color: var(--green); font-size: 18px; font-weight: 700; }
+.dot-no { color: var(--border-2); font-size: 18px; }
+
+.matrix-foot {
+  margin-top: 18px; padding: 14px 18px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-left: 3px solid var(--accent); border-radius: 8px;
+}
+.matrix-foot .en { font-size: 13px; color: var(--text-mute); line-height: 1.6; }
+.matrix-foot .ko { display: block; font-family: var(--kor); font-size: 12px; color: var(--text-dim); font-style: italic; margin-top: 8px; line-height: 1.6; }
+
+/* === EXAMPLE === */
+.example-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 32px; }
+.example-card h3 { font-size: 22px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
+.example-card .sub { font-family: var(--kor); color: var(--text-mute); font-size: 14px; margin-bottom: 28px; font-style: italic; }
+.example-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 28px; }
+.example-row { background: var(--bg-sub); border: 1px solid var(--border); border-radius: 10px; padding: 18px 22px; }
+.example-row .layer { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--accent); margin-bottom: 10px; letter-spacing: 0.5px; }
+.example-row .used-as .en { font-size: 14px; line-height: 1.55; }
+.example-row .used-as .ko { display: block; font-family: var(--kor); font-size: 12px; color: var(--text-mute); font-style: italic; margin-top: 6px; line-height: 1.55; }
+.example-row .code { font-family: var(--mono); font-size: 11.5px; color: var(--teal); margin-top: 12px; word-break: break-all; }
+.example-cta { display: inline-flex; align-items: center; gap: 12px; padding: 14px 22px; background: var(--accent); color: #000; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; line-height: 1.3; }
+.example-cta .ko { display: block; font-family: var(--kor); font-size: 11.5px; font-style: italic; opacity: 0.75; margin-top: 2px; font-weight: 500; }
+.example-cta:hover { filter: brightness(1.06); }
+
+/* === SCREEN PAGINATION === */
+.screen-pagination { margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.pag-btn {
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 12px 18px;
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text); text-decoration: none; font-size: 14px;
+  border-radius: 8px; transition: all 0.15s;
+}
+.pag-btn:hover { background: var(--surface-2); border-color: var(--border-2); }
+.pag-btn.primary { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
+.pag-btn .arrow { font-size: 18px; opacity: 0.7; }
+.pag-btn.primary .arrow { opacity: 1; }
+.pag-btn .meta { display: flex; flex-direction: column; line-height: 1.2; }
+.pag-btn .meta .step { font-family: var(--mono); font-size: 10px; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.5px; }
+.pag-btn.primary .meta .step { color: rgba(0,0,0,0.5); }
+.pag-btn .meta .label { font-weight: 500; }
+.pag-btn .meta .ko { font-family: var(--kor); font-size: 10.5px; font-style: italic; color: var(--text-dim); margin-top: 1px; font-weight: 400; }
+.pag-btn.primary .meta .ko { color: rgba(0,0,0,0.55); }
+.pag-spacer { flex: 1; }
+
+/* === RESPONSIVE === */
+@media (max-width: 1100px) {
+  .nav { padding: 12px 20px; flex-wrap: wrap; gap: 12px; }
+  .nav-links { flex-wrap: wrap; }
+  .screen { padding: 48px 24px 80px; }
+  .abs-wrap, .int-wrap { grid-template-columns: 1fr; }
+  .detail-panel { position: relative; top: 0; }
+  .exec-panel-content.active { grid-template-columns: 1fr; }
+  .kickoffs, .example-grid { grid-template-columns: repeat(2, 1fr); }
+  .layer-strip { grid-template-columns: 1fr; gap: 6px; }
+  .layer-strip .contains { display: none; }
+  .overview-hero h1 { font-size: 44px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== TOP NAV ===== -->
+<div class="nav">
+  <div class="nav-brand">
+    <div class="mark">C</div>
+    <div class="names">
+      <div class="en">CrewAI Framework</div>
+      <div class="ko">CrewAI 프레임워크</div>
+    </div>
+  </div>
+  <div class="nav-links" id="nav-links">
+    <a href="#overview" data-screen="overview"><span class="step">01</span>Overview<span class="ko">개요</span></a>
+    <a href="#abstractions" data-screen="abstractions"><span class="step">02</span>Abstractions<span class="ko">추상화 계층</span></a>
+    <a href="#execution" data-screen="execution"><span class="step">03</span>Execution<span class="ko">실행 모델</span></a>
+    <a href="#integration" data-screen="integration"><span class="step">04</span>Integration<span class="ko">연동 표면</span></a>
+    <a href="#guardrails" data-screen="guardrails"><span class="step">05</span>Guardrails<span class="ko">가드레일</span></a>
+    <a href="#ocr" data-screen="ocr"><span class="step">06</span>OCR<span class="ko">한국어 OCR</span></a>
+    <a href="#rbac" data-screen="rbac"><span class="step">07</span>Shared Agent + RBAC<span class="ko">공통 Agent + 권한</span></a>
+    <a href="#matrix" data-screen="matrix"><span class="step">08</span>OSS vs Enterprise<span class="ko">오픈소스 vs 엔터프라이즈</span></a>
+    <a href="#example" data-screen="example"><span class="step">09</span>Example<span class="ko">적용 예시</span></a>
+  </div>
+</div>
+
+<!-- ===== SCREEN 01 — OVERVIEW ===== -->
+<div class="screen" id="overview">
+  <div class="overview-hero">
+    <h1>
+      The <span class="accent">CrewAI</span> Framework
+      <span class="ko">CrewAI 프레임워크</span>
+    </h1>
+    <p class="one-liner">
+      <span class="en">A code-first runtime for multi-agent systems. Four nested abstractions, three execution shapes, six integration surfaces.</span>
+      <span class="ko">멀티에이전트 시스템을 위한 코드 우선 런타임. 네 개의 중첩 추상화, 세 가지 실행 형태, 여섯 가지 연동 표면.</span>
+    </p>
+
+    <div class="layer-strip">
+      <div class="layer-chip">
+        <div class="label">FLOW</div>
+        <div class="sub">Orchestration · state machine</div>
+        <div class="sub-ko">오케스트레이션 · 상태 머신</div>
+      </div>
+      <div class="contains">⊃</div>
+      <div class="layer-chip l2">
+        <div class="label">CREW</div>
+        <div class="sub">Multi-agent execution</div>
+        <div class="sub-ko">다중 에이전트 실행</div>
+      </div>
+      <div class="contains">⊃</div>
+      <div class="layer-chip l3">
+        <div class="label">AGENT + TASK</div>
+        <div class="sub">Typed work unit + actor</div>
+        <div class="sub-ko">타입 지정 업무 단위 + 액터</div>
+      </div>
+      <div class="contains">⊃</div>
+      <div class="layer-chip l4">
+        <div class="label">TOOLS · MEMORY · LLM</div>
+        <div class="sub">Integration surface</div>
+        <div class="sub-ko">연동 표면</div>
+      </div>
+    </div>
+
+    <div class="nav-hint">
+      <div class="left">
+        Each section explores one layer of the framework.
+        <span class="ko">각 섹션은 프레임워크의 한 계층을 다룹니다.</span>
+      </div>
+      <a href="#abstractions" class="next-btn" data-screen="abstractions">
+        <span>Start with Abstractions<span class="ko">추상화 계층부터 시작</span></span>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SCREEN 02 — ABSTRACTIONS ===== -->
+<div class="screen" id="abstractions">
+  <div class="screen-head">
+    <div class="step-tag">02 · Abstractions <span class="ko">추상화 계층</span></div>
+    <h2>Nested layers
+      <span class="ko">중첩된 계층 — 외층이 내층을 감싼다</span>
+    </h2>
+    <p class="intro">
+      <span class="en">Outer wraps inner. Each layer adds capabilities without removing the ones below. Click any rectangle to inspect what that layer adds.</span>
+      <span class="ko">바깥 계층이 안쪽 계층을 감쌉니다. 각 계층은 기능을 추가할 뿐, 아래 계층의 기능을 제거하지 않습니다. 사각형을 클릭하면 해당 계층이 무엇을 더하는지 확인할 수 있습니다.</span>
+    </p>
+  </div>
+
+  <div class="abs-wrap">
+    <div class="abs-diagram">
+      <svg class="abs-svg" viewBox="0 0 700 500" preserveAspectRatio="xMidYMid meet">
+        <g data-layer="flow">
+          <rect class="abs-rect flow" x="10" y="10" width="680" height="480" rx="12" />
+          <text class="abs-label" x="28" y="38" fill="#F5A623" font-size="15">FLOW</text>
+          <text class="abs-sub" x="28" y="54">State machine wrapping Crews + non-Crew Python</text>
+          <text class="abs-sub-ko" x="28" y="68">크루 + 일반 Python 코드를 감싸는 상태 머신</text>
+          <g pointer-events="none">
+            <rect class="abs-chip" x="28" y="78" width="78" height="22" rx="3" />
+            <text class="abs-chip-text" x="67" y="93">@start</text>
+            <rect class="abs-chip" x="112" y="78" width="78" height="22" rx="3" />
+            <text class="abs-chip-text" x="151" y="93">@listen</text>
+            <rect class="abs-chip" x="196" y="78" width="78" height="22" rx="3" />
+            <text class="abs-chip-text" x="235" y="93">@router</text>
+            <rect class="abs-chip" x="280" y="78" width="78" height="22" rx="3" />
+            <text class="abs-chip-text" x="319" y="93">@persist</text>
+            <rect class="abs-chip" x="364" y="78" width="78" height="22" rx="3" />
+            <text class="abs-chip-text" x="403" y="93">or_(...)</text>
+            <rect class="abs-chip" x="448" y="78" width="120" height="22" rx="3" />
+            <text class="abs-chip-text" x="508" y="93">kickoff_async()</text>
+          </g>
+        </g>
+
+        <g data-layer="crew">
+          <rect class="abs-rect crew" x="35" y="110" width="630" height="365" rx="10" />
+          <text class="abs-label" x="50" y="135" fill="#4FC3D9" font-size="14">CREW</text>
+          <text class="abs-sub" x="50" y="151">Multi-agent execution unit</text>
+          <text class="abs-sub-ko" x="50" y="165">다중 에이전트 실행 단위</text>
+          <g pointer-events="none">
+            <text class="abs-field" x="50" y="180">PROCESS</text>
+            <rect class="abs-chip" x="50" y="186" width="82" height="20" rx="3" />
+            <text class="abs-chip-text" x="91" y="200" style="fill: #e6e9f0;">sequential</text>
+            <rect class="abs-chip" x="138" y="186" width="92" height="20" rx="3" />
+            <text class="abs-chip-text" x="184" y="200" style="fill: #e6e9f0;">hierarchical</text>
+            <text class="abs-field" x="270" y="180">MEMORY</text>
+            <rect class="abs-chip" x="270" y="186" width="78" height="20" rx="3" />
+            <text class="abs-chip-text" x="309" y="200" style="fill: #e6e9f0;">short-term</text>
+            <rect class="abs-chip" x="354" y="186" width="78" height="20" rx="3" />
+            <text class="abs-chip-text" x="393" y="200" style="fill: #e6e9f0;">long-term</text>
+            <rect class="abs-chip" x="438" y="186" width="60" height="20" rx="3" />
+            <text class="abs-chip-text" x="468" y="200" style="fill: #e6e9f0;">entity</text>
+          </g>
+        </g>
+
+        <g data-layer="agent">
+          <rect class="abs-rect agent" x="60" y="220" width="290" height="240" rx="8" />
+          <text class="abs-label" x="75" y="244" fill="#5b8def" font-size="13">AGENT</text>
+          <text class="abs-sub" x="75" y="259">Single LLM-driven actor</text>
+          <text class="abs-sub-ko" x="75" y="272">단일 LLM 액터</text>
+          <g pointer-events="none">
+            <text class="abs-field" x="75" y="293">role</text><text class="abs-field-ko" x="170" y="293">역할 정의</text>
+            <text class="abs-field" x="75" y="315">goal</text><text class="abs-field-ko" x="170" y="315">달성 목표</text>
+            <text class="abs-field" x="75" y="337">backstory</text><text class="abs-field-ko" x="170" y="337">행동 맥락</text>
+            <text class="abs-field" x="75" y="359">llm</text><text class="abs-field-ko" x="170" y="359">모델 선택</text>
+            <text class="abs-field" x="75" y="381">tools</text><text class="abs-field-ko" x="170" y="381">도구 권한</text>
+            <text class="abs-field" x="75" y="403">memory</text><text class="abs-field-ko" x="170" y="403">메모리 segment</text>
+            <text class="abs-field" x="75" y="425">allow_delegation</text>
+          </g>
+        </g>
+
+        <g data-layer="task">
+          <rect class="abs-rect task" x="365" y="220" width="290" height="240" rx="8" />
+          <text class="abs-label" x="380" y="244" fill="#5b8def" font-size="13">TASK</text>
+          <text class="abs-sub" x="380" y="259">Typed unit of work</text>
+          <text class="abs-sub-ko" x="380" y="272">타입 지정된 업무 단위</text>
+          <g pointer-events="none">
+            <text class="abs-field" x="380" y="293">description</text><text class="abs-field-ko" x="500" y="293">수행 지시</text>
+            <text class="abs-field" x="380" y="315">expected_output</text><text class="abs-field-ko" x="500" y="315">예상 출력</text>
+            <text class="abs-field" x="380" y="337">agent</text><text class="abs-field-ko" x="500" y="337">담당 에이전트</text>
+            <text class="abs-field" x="380" y="359">output_pydantic</text><text class="abs-field-ko" x="500" y="359">Pydantic 스키마</text>
+            <text class="abs-field" x="380" y="381">context</text><text class="abs-field-ko" x="500" y="381">선행 task 체인</text>
+            <text class="abs-field" x="380" y="403">tools</text><text class="abs-field-ko" x="500" y="403">task-scoped 도구</text>
+            <text class="abs-field" x="380" y="425">output_file</text>
+          </g>
+        </g>
+      </svg>
+    </div>
+
+    <div class="detail-panel" id="layer-detail">
+      <div class="empty">
+        <div class="icon">◉</div>
+        <div>Click a layer in the diagram to inspect it.
+          <span class="ko">계층을 클릭해 세부 내용을 확인하세요.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen-pagination">
+    <a href="#overview" class="pag-btn" data-screen="overview">
+      <span class="arrow">←</span>
+      <span class="meta"><span class="step">01</span><span class="label">Overview</span><span class="ko">개요</span></span>
+    </a>
+    <div class="pag-spacer"></div>
+    <a href="#execution" class="pag-btn primary" data-screen="execution">
+      <span class="meta"><span class="step">03 · NEXT</span><span class="label">Execution</span><span class="ko">실행 모델</span></span>
+      <span class="arrow">→</span>
+    </a>
+  </div>
+</div>
+
+<!-- ===== SCREEN 03 — EXECUTION ===== -->
+<div class="screen" id="execution">
+  <div class="screen-head">
+    <div class="step-tag">03 · Execution Model <span class="ko">실행 모델</span></div>
+    <h2>Three shapes
+      <span class="ko">세 가지 실행 형태</span>
+    </h2>
+    <p class="intro">
+      <span class="en">Same agents and tasks; different orchestration. Switch tabs to compare.</span>
+      <span class="ko">같은 에이전트와 태스크지만 오케스트레이션이 다릅니다. 탭을 전환해 비교해보세요.</span>
+    </p>
+  </div>
+
+  <div class="exec-tabs">
+    <button data-mode="sequential" class="active">SEQUENTIAL<span class="ko">순차</span></button>
+    <button data-mode="hierarchical">HIERARCHICAL<span class="ko">위계</span></button>
+    <button data-mode="flow">FLOW<span class="ko">상태 머신</span></button>
+  </div>
+
+  <div class="exec-panel">
+    <div class="exec-panel-content active" data-mode="sequential">
+      <svg class="exec-svg" viewBox="0 0 460 440" preserveAspectRatio="xMidYMid meet">
+        <defs><marker id="arr-t" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4FC3D9"/></marker></defs>
+        <g><rect x="120" y="30" width="220" height="60" rx="8" fill="#1a2030" stroke="#4FC3D9" stroke-width="1.5"/>
+          <text x="230" y="55" text-anchor="middle" font-family="JetBrains Mono" font-size="13" font-weight="600" fill="#e6e9f0">TASK 1</text>
+          <text x="230" y="75" text-anchor="middle" font-family="Inter" font-size="11" fill="#8a92a6" font-style="italic">e.g. intake_task → ApplicantProfile</text></g>
+        <line x1="230" y1="90" x2="230" y2="120" stroke="#4FC3D9" stroke-width="1.5" marker-end="url(#arr-t)"/>
+        <g><rect x="120" y="125" width="220" height="60" rx="8" fill="#1a2030" stroke="#4FC3D9" stroke-width="1.5"/>
+          <text x="230" y="150" text-anchor="middle" font-family="JetBrains Mono" font-size="13" font-weight="600" fill="#e6e9f0">TASK 2</text>
+          <text x="230" y="170" text-anchor="middle" font-family="Inter" font-size="11" fill="#8a92a6" font-style="italic">kyc_task → KYCReport</text></g>
+        <line x1="230" y1="185" x2="230" y2="215" stroke="#4FC3D9" stroke-width="1.5" marker-end="url(#arr-t)"/>
+        <g><rect x="120" y="220" width="220" height="60" rx="8" fill="#1a2030" stroke="#4FC3D9" stroke-width="1.5"/>
+          <text x="230" y="245" text-anchor="middle" font-family="JetBrains Mono" font-size="13" font-weight="600" fill="#e6e9f0">TASK 3</text>
+          <text x="230" y="265" text-anchor="middle" font-family="Inter" font-size="11" fill="#8a92a6" font-style="italic">risk_task → RiskDecision</text></g>
+        <line x1="230" y1="280" x2="230" y2="310" stroke="#4FC3D9" stroke-width="1.5" marker-end="url(#arr-t)"/>
+        <g><rect x="120" y="315" width="220" height="60" rx="8" fill="#1a2030" stroke="#F5A623" stroke-width="1.5"/>
+          <text x="230" y="340" text-anchor="middle" font-family="JetBrains Mono" font-size="13" font-weight="600" fill="#e6e9f0">TASK 4</text>
+          <text x="230" y="360" text-anchor="middle" font-family="Inter" font-size="11" fill="#F5A623" font-style="italic">supervisor_task → final verdict</text></g>
+        <text x="230" y="408" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#6a7287" font-style="italic">output of each task → input of next</text>
+        <text x="230" y="425" text-anchor="middle" font-family="Noto Sans KR" font-size="10" fill="#6a7287" font-style="italic">앞 태스크의 출력이 다음 태스크의 입력</text>
+      </svg>
+      <div class="exec-info">
+        <h3>Sequential <span class="ko">순차 실행</span></h3>
+        <div class="desc">
+          <span class="en">Tasks run in declared order. Each task's <code>output</code> becomes the next task's <code>context</code>. Crew output is the final task's output.</span>
+          <span class="ko">태스크가 선언된 순서대로 실행됩니다. 각 태스크의 <code>output</code> 이 다음 태스크의 <code>context</code> 가 됩니다. 크루의 최종 출력은 마지막 태스크의 출력입니다.</span>
+        </div>
+        <ul>
+          <li><span class="en">Most common shape for pipelines</span><span class="ko">파이프라인에서 가장 자주 쓰이는 형태</span></li>
+          <li><span class="en">Easy to reason about, easy to trace</span><span class="ko">추론하기 쉽고 추적하기 쉬움</span></li>
+          <li><span class="en">Maps cleanly to Pydantic-typed contracts</span><span class="ko">Pydantic 타입 계약과 매끄럽게 연결</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exec-panel-content" data-mode="hierarchical">
+      <svg class="exec-svg" viewBox="0 0 460 440" preserveAspectRatio="xMidYMid meet">
+        <defs><marker id="arr-n" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5b8def"/></marker></defs>
+        <g><rect x="160" y="30" width="140" height="70" rx="8" fill="#1a2030" stroke="#F5A623" stroke-width="1.8"/>
+          <text x="230" y="58" text-anchor="middle" font-family="JetBrains Mono" font-size="13" font-weight="700" fill="#F5A623">MANAGER</text>
+          <text x="230" y="78" text-anchor="middle" font-family="Inter" font-size="10" fill="#8a92a6" font-style="italic">delegates · synthesizes</text></g>
+        <g><rect x="40" y="220" width="120" height="60" rx="8" fill="#1a2030" stroke="#5b8def" stroke-width="1.5"/>
+          <text x="100" y="245" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#e6e9f0">WORKER 1</text>
+          <text x="100" y="263" text-anchor="middle" font-family="Inter" font-size="10" fill="#8a92a6" font-style="italic">specialist</text></g>
+        <g><rect x="170" y="220" width="120" height="60" rx="8" fill="#1a2030" stroke="#5b8def" stroke-width="1.5"/>
+          <text x="230" y="245" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#e6e9f0">WORKER 2</text>
+          <text x="230" y="263" text-anchor="middle" font-family="Inter" font-size="10" fill="#8a92a6" font-style="italic">specialist</text></g>
+        <g><rect x="300" y="220" width="120" height="60" rx="8" fill="#1a2030" stroke="#5b8def" stroke-width="1.5"/>
+          <text x="360" y="245" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#e6e9f0">WORKER 3</text>
+          <text x="360" y="263" text-anchor="middle" font-family="Inter" font-size="10" fill="#8a92a6" font-style="italic">specialist</text></g>
+        <line x1="200" y1="100" x2="120" y2="218" stroke="#5b8def" stroke-width="1.3" marker-end="url(#arr-n)"/>
+        <line x1="230" y1="100" x2="230" y2="218" stroke="#5b8def" stroke-width="1.3" marker-end="url(#arr-n)"/>
+        <line x1="260" y1="100" x2="340" y2="218" stroke="#5b8def" stroke-width="1.3" marker-end="url(#arr-n)"/>
+        <line x1="100" y1="218" x2="180" y2="105" stroke="#5b8def" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.6"/>
+        <line x1="240" y1="218" x2="240" y2="105" stroke="#5b8def" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.6"/>
+        <line x1="360" y1="218" x2="280" y2="105" stroke="#5b8def" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.6"/>
+        <text x="230" y="320" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#6a7287" font-style="italic">solid: delegation · dashed: results returned</text>
+        <text x="230" y="338" text-anchor="middle" font-family="Noto Sans KR" font-size="10" fill="#6a7287" font-style="italic">실선: 위임  ·  점선: 결과 반환</text>
+        <text x="230" y="378" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#6a7287" font-style="italic">manager synthesizes final output</text>
+        <text x="230" y="395" text-anchor="middle" font-family="Noto Sans KR" font-size="10" fill="#6a7287" font-style="italic">매니저가 최종 출력을 종합</text>
+      </svg>
+      <div class="exec-info">
+        <h3>Hierarchical <span class="ko">위계 실행</span></h3>
+        <div class="desc">
+          <span class="en">A manager agent receives the task, decides which workers to call (in what order, with what context), and synthesizes the final answer from their outputs.</span>
+          <span class="ko">매니저 에이전트가 태스크를 받고, 어떤 워커를 어떤 순서로 어떤 컨텍스트로 호출할지 결정한 뒤, 결과를 종합하여 최종 답을 만듭니다.</span>
+        </div>
+        <ul>
+          <li><span class="en">Manager picks workers dynamically per request</span><span class="ko">요청마다 매니저가 워커를 동적으로 선택</span></li>
+          <li><span class="en">Useful when task decomposition isn't known up front</span><span class="ko">태스크 분해를 사전에 결정할 수 없을 때 유리</span></li>
+          <li><span class="en">Workers can themselves be hierarchical (nested)</span><span class="ko">워커 자체가 위계 구조일 수도 있음 (중첩 가능)</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exec-panel-content" data-mode="flow">
+      <svg class="exec-svg" viewBox="0 0 460 440" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <marker id="arr-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3a4259"/></marker>
+          <marker id="arr-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d9486f"/></marker>
+          <marker id="arr-gr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4ade80"/></marker>
+        </defs>
+        <g><rect x="140" y="20" width="180" height="50" rx="8" fill="#1a2030" stroke="#F5A623" stroke-width="1.5"/>
+          <text x="230" y="50" text-anchor="middle" font-family="JetBrains Mono" font-size="13" font-weight="600" fill="#e6e9f0">@start</text></g>
+        <line x1="230" y1="70" x2="230" y2="105" stroke="#3a4259" stroke-width="1.3" marker-end="url(#arr-g)"/>
+        <g><rect x="140" y="110" width="180" height="50" rx="8" fill="#1a2030" stroke="#4FC3D9" stroke-width="1.5"/>
+          <text x="230" y="140" text-anchor="middle" font-family="JetBrains Mono" font-size="13" font-weight="600" fill="#e6e9f0">@listen</text></g>
+        <line x1="230" y1="160" x2="230" y2="195" stroke="#3a4259" stroke-width="1.3" marker-end="url(#arr-g)"/>
+        <g><rect x="140" y="200" width="180" height="50" rx="8" fill="#1a2030" stroke="#5b8def" stroke-width="1.5"/>
+          <text x="230" y="230" text-anchor="middle" font-family="JetBrains Mono" font-size="13" font-weight="600" fill="#e6e9f0">@router</text></g>
+        <line x1="180" y1="250" x2="100" y2="290" stroke="#d9486f" stroke-width="1.3" marker-end="url(#arr-b)"/>
+        <line x1="280" y1="250" x2="360" y2="290" stroke="#4ade80" stroke-width="1.3" marker-end="url(#arr-gr)"/>
+        <g><rect x="20" y="295" width="160" height="50" rx="8" fill="#1a2030" stroke="#d9486f" stroke-width="1.5"/>
+          <text x="100" y="325" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#e6e9f0">branch A</text></g>
+        <g><rect x="280" y="295" width="160" height="50" rx="8" fill="#1a2030" stroke="#4ade80" stroke-width="1.5"/>
+          <text x="360" y="325" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#e6e9f0">branch B</text></g>
+        <line x1="100" y1="345" x2="220" y2="395" stroke="#3a4259" stroke-width="1.3"/>
+        <line x1="360" y1="345" x2="240" y2="395" stroke="#3a4259" stroke-width="1.3"/>
+        <g><rect x="140" y="395" width="180" height="40" rx="6" fill="#1a2030" stroke="#F5A623" stroke-width="1.3"/>
+          <text x="230" y="420" text-anchor="middle" font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#F5A623">@listen(or_(A, B))</text></g>
+      </svg>
+      <div class="exec-info">
+        <h3>Flow <span class="ko">상태 머신</span></h3>
+        <div class="desc">
+          <span class="en">A state machine wrapping Crews and any other Python. <code>@start</code> begins the run, <code>@listen</code> reacts to events, <code>@router</code> picks branches, <code>or_(...)</code> joins paths back together.</span>
+          <span class="ko">크루와 일반 Python 코드를 감싸는 상태 머신입니다. <code>@start</code> 가 실행을 시작하고, <code>@listen</code> 이 이벤트에 반응하며, <code>@router</code> 가 분기를 선택하고, <code>or_(...)</code> 가 경로를 다시 합칩니다.</span>
+        </div>
+        <ul>
+          <li><span class="en">Pre/post-crew Python lives outside the Crew cleanly</span><span class="ko">크루 전후의 Python 로직이 크루 바깥에 깔끔히 위치</span></li>
+          <li><span class="en">Conditional branching without hand-rolling control flow</span><span class="ko">제어 흐름을 직접 작성하지 않고 조건 분기</span></li>
+          <li><span class="en">Pause / resume via <code>@persist</code></span><span class="ko"><code>@persist</code> 로 일시정지 및 재개</span></li>
+          <li><span class="en">Each <code>@listen</code> step gets its own OTel span</span><span class="ko">각 <code>@listen</code> 단계마다 자체 OTel span 생성</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="kickoffs">
+    <div class="kickoff"><div class="name">kickoff()</div><div class="desc">synchronous · returns result</div><div class="desc-ko">동기 실행 · 결과 반환</div></div>
+    <div class="kickoff"><div class="name">kickoff_async()</div><div class="desc">async · awaitable coroutine</div><div class="desc-ko">비동기 · awaitable 코루틴</div></div>
+    <div class="kickoff"><div class="name">kickoff_for_each()</div><div class="desc">batch · run over inputs list</div><div class="desc-ko">배치 · 입력 리스트에 대해 반복 실행</div></div>
+    <div class="kickoff"><div class="name">replay()</div><div class="desc">rerun from a task · debugging</div><div class="desc-ko">특정 태스크부터 재실행 · 디버깅</div></div>
+  </div>
+
+  <div class="screen-pagination">
+    <a href="#abstractions" class="pag-btn" data-screen="abstractions">
+      <span class="arrow">←</span>
+      <span class="meta"><span class="step">02</span><span class="label">Abstractions</span><span class="ko">추상화 계층</span></span>
+    </a>
+    <div class="pag-spacer"></div>
+    <a href="#integration" class="pag-btn primary" data-screen="integration">
+      <span class="meta"><span class="step">04 · NEXT</span><span class="label">Integration</span><span class="ko">연동 표면</span></span>
+      <span class="arrow">→</span>
+    </a>
+  </div>
+</div>
+
+<!-- ===== SCREEN 04 — INTEGRATION ===== -->
+<div class="screen" id="integration">
+  <div class="screen-head">
+    <div class="step-tag">04 · Integration Surface <span class="ko">연동 표면</span></div>
+    <h2>What plugs in
+      <span class="ko">무엇이 연결되는가</span>
+    </h2>
+    <p class="intro">
+      <span class="en">Six surfaces orbit the runtime. The same abstraction layer sits on top of any combination — swap one without touching the others. Click a surface to inspect.</span>
+      <span class="ko">여섯 가지 표면이 런타임을 둘러쌉니다. 동일한 추상화 계층이 어떤 조합 위에서도 동작하며, 하나를 교체해도 나머지에는 영향이 없습니다. 표면을 클릭해 세부 사항을 확인하세요.</span>
+    </p>
+  </div>
+
+  <div class="int-wrap">
+    <div class="int-diagram">
+      <svg class="int-svg" viewBox="0 0 760 540" preserveAspectRatio="xMidYMid meet">
+        <ellipse class="int-hub" cx="380" cy="270" rx="85" ry="85"/>
+        <text class="int-hub-text" x="380" y="262" text-anchor="middle" font-size="18" fill="#F5A623">CrewAI</text>
+        <text class="int-hub-text" x="380" y="285" text-anchor="middle" font-size="13" fill="#e6e9f0" font-weight="400">Runtime</text>
+        <text x="380" y="305" text-anchor="middle" font-family="Noto Sans KR" font-size="11" fill="#8a92a6" font-style="italic">런타임 코어</text>
+
+        <line class="int-line" x1="318" y1="220" x2="200" y2="100"/>
+        <g class="int-spoke" data-spoke="llm">
+          <rect class="spoke-rect" x="50" y="65" width="240" height="80" rx="8" stroke="#4FC3D9"/>
+          <text class="label" x="68" y="92" fill="#4FC3D9">LLM PROVIDERS</text>
+          <text class="sub" x="68" y="110">LLM 공급자 · via LiteLLM gateway</text>
+          <text class="label" x="68" y="132" font-size="10" fill="#e6e9f0" font-weight="400">OpenAI · Anthropic · Google · custom</text>
+        </g>
+
+        <line class="int-line" x1="442" y1="220" x2="560" y2="100"/>
+        <g class="int-spoke" data-spoke="tools">
+          <rect class="spoke-rect" x="470" y="65" width="240" height="80" rx="8" stroke="#5b8def"/>
+          <text class="label" x="488" y="92" fill="#5b8def">TOOLS</text>
+          <text class="sub" x="488" y="110">도구 · built-in · custom · MCP</text>
+          <text class="label" x="488" y="132" font-size="10" fill="#e6e9f0" font-weight="400">@tool · MCP servers · A2A peers</text>
+        </g>
+
+        <line class="int-line" x1="295" y1="270" x2="200" y2="270"/>
+        <g class="int-spoke" data-spoke="memory">
+          <rect class="spoke-rect" x="50" y="230" width="240" height="80" rx="8" stroke="#F5A623"/>
+          <text class="label" x="68" y="257" fill="#F5A623">MEMORY BACKENDS</text>
+          <text class="sub" x="68" y="275">메모리 백엔드 · pluggable</text>
+          <text class="label" x="68" y="297" font-size="10" fill="#e6e9f0" font-weight="400">Redis · Pinecone · Weaviate · KV</text>
+        </g>
+
+        <line class="int-line" x1="465" y1="270" x2="560" y2="270"/>
+        <g class="int-spoke" data-spoke="observability">
+          <rect class="spoke-rect" x="470" y="230" width="240" height="80" rx="8" stroke="#4FC3D9"/>
+          <text class="label" x="488" y="257" fill="#4FC3D9">OBSERVABILITY</text>
+          <text class="sub" x="488" y="275">옵저버빌리티 · OpenTelemetry export</text>
+          <text class="label" x="488" y="297" font-size="10" fill="#e6e9f0" font-weight="400">Datadog · Splunk · Grafana · Jaeger</text>
+        </g>
+
+        <line class="int-line" x1="318" y1="320" x2="200" y2="440"/>
+        <g class="int-spoke" data-spoke="identity">
+          <rect class="spoke-rect" x="50" y="395" width="240" height="80" rx="8" stroke="#d9486f"/>
+          <text class="label" x="68" y="422" fill="#d9486f">IDENTITY</text>
+          <text class="sub" x="68" y="440">신원 / 인증 · Enterprise tier</text>
+          <text class="label" x="68" y="462" font-size="10" fill="#e6e9f0" font-weight="400">SAML 2.0 · OIDC · SCIM 2.0</text>
+        </g>
+
+        <line class="int-line" x1="442" y1="320" x2="560" y2="440"/>
+        <g class="int-spoke" data-spoke="storage">
+          <rect class="spoke-rect" x="470" y="395" width="240" height="80" rx="8" stroke="#4ade80"/>
+          <text class="label" x="488" y="422" fill="#4ade80">STORAGE / RAG</text>
+          <text class="sub" x="488" y="440">스토리지 / RAG · embeddings agnostic</text>
+          <text class="label" x="488" y="462" font-size="10" fill="#e6e9f0" font-weight="400">S3 · GCS · data lake</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="detail-panel spoke-detail" id="spoke-detail">
+      <div class="empty">
+        <div class="icon">◉</div>
+        <div>Click a surface to inspect what plugs in there.
+          <span class="ko">표면을 클릭해 어떤 항목이 연결되는지 확인하세요.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen-pagination">
+    <a href="#execution" class="pag-btn" data-screen="execution">
+      <span class="arrow">←</span>
+      <span class="meta"><span class="step">03</span><span class="label">Execution</span><span class="ko">실행 모델</span></span>
+    </a>
+    <div class="pag-spacer"></div>
+    <a href="#guardrails" class="pag-btn primary" data-screen="guardrails">
+      <span class="meta"><span class="step">05 · NEXT</span><span class="label">Guardrails</span><span class="ko">가드레일</span></span>
+      <span class="arrow">→</span>
+    </a>
+  </div>
+</div>
+
+<!-- ===== SCREEN 05 — GUARDRAILS ===== -->
+<div class="screen" id="guardrails">
+  <div class="screen-head">
+    <div class="step-tag">05 · Guardrails <span class="ko">가드레일</span></div>
+    <h2>4-layer pipeline
+      <span class="ko">4계층 파이프라인 — 한 곳이 아니라 네 곳에서 막는다</span>
+    </h2>
+    <p class="intro">
+      <span class="en">Guardrails are not a single chokepoint — four independent layers, each sufficient on its own. If one is bypassed, the next catches it.</span>
+      <span class="ko">가드레일은 한 곳에서 막는 것이 아닙니다. 네 개의 독립적인 계층이 있고 각자가 독립적으로 충분합니다. 한 계층이 뚫려도 다음 계층이 잡습니다.</span>
+    </p>
+  </div>
+
+  <div class="abs-wrap">
+    <div class="abs-diagram">
+      <svg class="abs-svg" viewBox="0 0 700 540" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <marker id="g-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#3a4259"/>
+          </marker>
+        </defs>
+
+        <!-- Top: incoming raw request -->
+        <g>
+          <rect x="270" y="15" width="160" height="44" rx="6" fill="#0e1322" stroke="#3a4259" stroke-width="1.2"/>
+          <text x="350" y="40" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#e6e9f0">incoming request</text>
+          <text x="350" y="54" text-anchor="middle" font-family="Noto Sans KR" font-size="10" fill="#8a92a6" font-style="italic">사용자 입력 / 신청서</text>
+        </g>
+        <line x1="350" y1="59" x2="350" y2="82" stroke="#3a4259" stroke-width="1.3" marker-end="url(#g-arr)"/>
+
+        <!-- LAYER 1: INPUT -->
+        <g data-glayer="input">
+          <rect class="abs-rect" x="40" y="85" width="620" height="78" rx="10" stroke="#F5A623" stroke-width="1.8"/>
+          <text x="60" y="112" font-family="JetBrains Mono" font-size="12" font-weight="700" fill="#F5A623">LAYER 1 · INPUT</text>
+          <text x="60" y="128" font-family="Noto Sans KR" font-size="10" fill="#8a92a6" font-style="italic">입력 단계 가드레일 · LLM 호출 전</text>
+          <text x="60" y="148" font-family="Inter" font-size="11" fill="#e6e9f0">PII detection · schema · length · encoding · jailbreak signatures</text>
+          <text x="500" y="115" font-family="JetBrains Mono" font-size="10" fill="#d9486f" font-weight="600">🛑 BLOCK</text>
+          <text x="500" y="130" font-family="Noto Sans KR" font-size="9" fill="#8a92a6" font-style="italic">차단 → 모델 호출 없음</text>
+        </g>
+        <line x1="350" y1="163" x2="350" y2="190" stroke="#3a4259" stroke-width="1.3" marker-end="url(#g-arr)"/>
+
+        <!-- middle: LLM reasoning -->
+        <g>
+          <rect x="240" y="190" width="220" height="40" rx="6" fill="#1a2030" stroke="#5b8def" stroke-width="1.2"/>
+          <text x="350" y="215" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#e6e9f0">LLM reasoning + tool calls</text>
+        </g>
+        <line x1="350" y1="230" x2="350" y2="252" stroke="#3a4259" stroke-width="1.3" marker-end="url(#g-arr)"/>
+
+        <!-- LAYER 2: TOOL_CALL -->
+        <g data-glayer="tool">
+          <rect class="abs-rect" x="40" y="255" width="620" height="78" rx="10" stroke="#4FC3D9" stroke-width="1.8"/>
+          <text x="60" y="282" font-family="JetBrains Mono" font-size="12" font-weight="700" fill="#4FC3D9">LAYER 2 · TOOL_CALL</text>
+          <text x="60" y="298" font-family="Noto Sans KR" font-size="10" fill="#8a92a6" font-style="italic">도구 호출 가드레일 · 도구 실행 전</text>
+          <text x="60" y="318" font-family="Inter" font-size="11" fill="#e6e9f0">allow-list · parameter sanitization · rate limit · scope check</text>
+          <text x="500" y="285" font-family="JetBrains Mono" font-size="10" fill="#d9486f" font-weight="600">🛑 BLOCK</text>
+          <text x="500" y="300" font-family="Noto Sans KR" font-size="9" fill="#8a92a6" font-style="italic">차단 → 도구 실행 거부</text>
+        </g>
+        <line x1="350" y1="333" x2="350" y2="358" stroke="#3a4259" stroke-width="1.3" marker-end="url(#g-arr)"/>
+
+        <!-- LAYER 3: HALLUCINATION -->
+        <g data-glayer="hallu">
+          <rect class="abs-rect" x="40" y="358" width="620" height="78" rx="10" stroke="#fbbf24" stroke-width="1.8"/>
+          <text x="60" y="385" font-family="JetBrains Mono" font-size="12" font-weight="700" fill="#fbbf24">LAYER 3 · HALLUCINATION</text>
+          <text x="60" y="401" font-family="Noto Sans KR" font-size="10" fill="#8a92a6" font-style="italic">환각 검증 · RAG 인용과 대조</text>
+          <text x="60" y="421" font-family="Inter" font-size="11" fill="#e6e9f0">cross-check reasoning vs RAG citations · marks confidence per claim</text>
+          <text x="500" y="388" font-family="JetBrains Mono" font-size="10" fill="#fbbf24" font-weight="600">⚠ REVIEW</text>
+          <text x="500" y="403" font-family="Noto Sans KR" font-size="9" fill="#8a92a6" font-style="italic">차단 X · 표시 후 HITL</text>
+        </g>
+        <line x1="350" y1="436" x2="350" y2="460" stroke="#3a4259" stroke-width="1.3" marker-end="url(#g-arr)"/>
+
+        <!-- LAYER 4: OUTPUT -->
+        <g data-glayer="output">
+          <rect class="abs-rect" x="40" y="460" width="620" height="78" rx="10" stroke="#4ade80" stroke-width="1.8"/>
+          <text x="60" y="487" font-family="JetBrains Mono" font-size="12" font-weight="700" fill="#4ade80">LAYER 4 · OUTPUT</text>
+          <text x="60" y="503" font-family="Noto Sans KR" font-size="10" fill="#8a92a6" font-style="italic">출력 단계 가드레일 · 최종 응답 전</text>
+          <text x="60" y="523" font-family="Inter" font-size="11" fill="#e6e9f0">PII redaction · schema consistency · prohibited terms · format</text>
+          <text x="500" y="490" font-family="JetBrains Mono" font-size="10" fill="#d9486f" font-weight="600">🛑 BLOCK</text>
+          <text x="500" y="505" font-family="Noto Sans KR" font-size="9" fill="#8a92a6" font-style="italic">차단 → 응답 없음</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="detail-panel" id="guardrail-detail">
+      <h3 style="color: #F5A623;">Policy as code <span class="ko" style="color: var(--text-mute); font-family: var(--kor); font-size: 13px; font-style: italic; margin-left: 6px;">코드로서의 정책</span></h3>
+      <p class="intro-line">
+        <span class="en">Each layer is a decorator + YAML policy pair. Diff-reviewable in Git, unit-testable, and immutable in audit logs once applied.</span>
+        <span class="ko">각 계층은 데코레이터 + YAML 정책 쌍입니다. Git 에서 리뷰 가능하고, 단위 테스트가 가능하며, 적용 후에는 감사 로그에 변조 불가 형태로 기록됩니다.</span>
+      </p>
+      <dl>
+        <div>
+          <dt>Decorators <span class="ko">데코레이터</span></dt>
+          <dd><pre><span class="kw">@before_guardrail</span>(policy=<span class="str">"pii.yaml"</span>)
+<span class="kw">@tool_guardrail</span>(policy=<span class="str">"tools.yaml"</span>)
+<span class="kw">@after_guardrail</span>(policy=<span class="str">"output.yaml"</span>)
+<span class="kw">def</span> handle_request(state):
+    <span class="com"># layers wrap the call automatically</span>
+    <span class="kw">return</span> run_crew(state)</pre></dd>
+        </div>
+        <div>
+          <dt>Block reasons logged <span class="ko">차단 사유 기록</span></dt>
+          <dd>
+            <span class="en">Every block records: layer, rule violated, run_id, trace ID, decision timestamp.</span>
+            <span class="ko" style="display: block; font-family: var(--kor); font-size: 12px; color: var(--text-mute); font-style: italic; margin-top: 6px;">모든 차단 기록: 계층, 위반 규칙, run_id, trace ID, 결정 시각.</span>
+          </dd>
+        </div>
+        <div>
+          <dt>Defense in depth <span class="ko">심층 방어</span></dt>
+          <dd>
+            <span class="en">No single layer is the chokepoint. PII spike that slips Layer 1 still gets caught at Layer 4. Tool misuse caught at Layer 2 even if input was clean.</span>
+            <span class="ko" style="display: block; font-family: var(--kor); font-size: 12px; color: var(--text-mute); font-style: italic; margin-top: 6px;">단일 chokepoint 없음. Layer 1 을 통과한 PII 도 Layer 4 에서 잡히고, 입력이 깨끗해도 Layer 2 에서 도구 오용이 차단됩니다.</span>
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="screen-pagination">
+    <a href="#integration" class="pag-btn" data-screen="integration">
+      <span class="arrow">←</span>
+      <span class="meta"><span class="step">04</span><span class="label">Integration</span><span class="ko">연동 표면</span></span>
+    </a>
+    <div class="pag-spacer"></div>
+    <a href="#ocr" class="pag-btn primary" data-screen="ocr">
+      <span class="meta"><span class="step">06 · NEXT</span><span class="label">OCR</span><span class="ko">한국어 OCR</span></span>
+      <span class="arrow">→</span>
+    </a>
+  </div>
+</div>
+
+<!-- ===== SCREEN 06 — OCR ===== -->
+<div class="screen" id="ocr">
+  <div class="screen-head">
+    <div class="step-tag">06 · Korean OCR <span class="ko">한국어 OCR</span></div>
+    <h2>Field-level confidence
+      <span class="ko">필드 단위 신뢰도 — 라우팅 변수로 사용</span>
+    </h2>
+    <p class="intro">
+      <span class="en">Korean OCR itself is solved. The hard part is attaching field-level confidence and using it to route only the uncertain fields to a human — not the whole document.</span>
+      <span class="ko">한국어 OCR 자체는 풀린 문제입니다. 어려운 부분은 필드 단위 신뢰도를 부여하고, 불확실한 필드만 사람에게 보내는 것입니다 — 문서 전체가 아닙니다.</span>
+    </p>
+  </div>
+
+  <div class="abs-wrap">
+    <div class="abs-diagram">
+      <svg class="abs-svg" viewBox="0 0 700 580" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <marker id="o-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#3a4259"/>
+          </marker>
+          <marker id="o-arr-y" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/>
+          </marker>
+          <marker id="o-arr-gr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#4ade80"/>
+          </marker>
+        </defs>
+
+        <!-- Top: file inputs -->
+        <text x="50" y="35" font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#4FC3D9">INPUT FORMATS</text>
+        <text x="50" y="50" font-family="Noto Sans KR" font-size="10" fill="#8a92a6" font-style="italic">입력 포맷 (혼합)</text>
+        <g>
+          <rect x="30" y="60" width="90" height="40" rx="5" fill="#1a2030" stroke="#3a4259"/>
+          <text x="75" y="78" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#e6e9f0">PDF</text>
+          <text x="75" y="92" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#8a92a6" font-style="italic">신청서</text>
+        </g>
+        <g>
+          <rect x="130" y="60" width="90" height="40" rx="5" fill="#1a2030" stroke="#3a4259"/>
+          <text x="175" y="78" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#e6e9f0">HWP</text>
+          <text x="175" y="92" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#8a92a6" font-style="italic">한컴문서 (OLE)</text>
+        </g>
+        <g>
+          <rect x="230" y="60" width="90" height="40" rx="5" fill="#1a2030" stroke="#3a4259"/>
+          <text x="275" y="78" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#e6e9f0">PNG</text>
+          <text x="275" y="92" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#8a92a6" font-style="italic">스캔 이미지</text>
+        </g>
+        <g>
+          <rect x="330" y="60" width="90" height="40" rx="5" fill="#1a2030" stroke="#3a4259"/>
+          <text x="375" y="78" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#e6e9f0">DOCX</text>
+          <text x="375" y="92" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#8a92a6" font-style="italic">파트너 채널</text>
+        </g>
+
+        <!-- arrows down to dispatcher -->
+        <line x1="75" y1="100" x2="225" y2="135" stroke="#3a4259" stroke-width="1" marker-end="url(#o-arr)"/>
+        <line x1="175" y1="100" x2="225" y2="135" stroke="#3a4259" stroke-width="1" marker-end="url(#o-arr)"/>
+        <line x1="275" y1="100" x2="225" y2="135" stroke="#3a4259" stroke-width="1" marker-end="url(#o-arr)"/>
+        <line x1="375" y1="100" x2="225" y2="135" stroke="#3a4259" stroke-width="1" marker-end="url(#o-arr)"/>
+
+        <!-- Format dispatcher -->
+        <g>
+          <rect x="60" y="140" width="330" height="50" rx="8" fill="#1a2030" stroke="#5b8def" stroke-width="1.5"/>
+          <text x="225" y="162" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#e6e9f0">FORMAT DISPATCHER</text>
+          <text x="225" y="180" text-anchor="middle" font-family="Noto Sans KR" font-size="10" fill="#8a92a6" font-style="italic">포맷 분기 · OLE 감지 · HWP 본문 추출</text>
+        </g>
+        <line x1="225" y1="190" x2="225" y2="215" stroke="#3a4259" stroke-width="1.3" marker-end="url(#o-arr)"/>
+
+        <!-- OCR engine (swappable) -->
+        <g>
+          <rect x="60" y="218" width="330" height="60" rx="8" fill="#1a2030" stroke="#4FC3D9" stroke-width="1.5"/>
+          <text x="225" y="240" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#e6e9f0">OCR ENGINE (swappable)</text>
+          <text x="225" y="258" text-anchor="middle" font-family="Inter" font-size="10" fill="#8a92a6" font-style="italic">Tesseract 'kor' · Naver Cloud OCR · SDS Brity OCR · Azure Form</text>
+          <text x="225" y="272" text-anchor="middle" font-family="Noto Sans KR" font-size="10" fill="#8a92a6" font-style="italic">동일 OCRTool() 인터페이스 — 엔진 교체 가능</text>
+        </g>
+        <line x1="225" y1="278" x2="225" y2="305" stroke="#3a4259" stroke-width="1.3" marker-end="url(#o-arr)"/>
+
+        <!-- JSON output panel (key visual) -->
+        <g>
+          <rect x="30" y="308" width="390" height="170" rx="8" fill="#060a14" stroke="#2a3142" stroke-width="1"/>
+          <text x="50" y="330" font-family="JetBrains Mono" font-size="10" fill="#8a92a6">// JSON output · 필드별 신뢰도</text>
+          <text x="50" y="350" font-family="Consolas" font-size="11" fill="#b8e0d2">{</text>
+          <text x="65" y="365" font-family="Consolas" font-size="11" fill="#b8e0d2">"applicant_name": { </text>
+          <text x="215" y="365" font-family="Consolas" font-size="11" fill="#4ade80">"value": "김민수", </text>
+          <text x="65" y="378" font-family="Consolas" font-size="11" fill="#b8e0d2">                    </text>
+          <text x="155" y="378" font-family="Consolas" font-size="11" fill="#4ade80">"confidence": 0.97 </text>
+          <text x="295" y="378" font-family="Consolas" font-size="11" fill="#b8e0d2">},</text>
+          <text x="65" y="394" font-family="Consolas" font-size="11" fill="#b8e0d2">"business_reg_no": { </text>
+          <text x="220" y="394" font-family="Consolas" font-size="11" fill="#4ade80">"confidence": 0.99 </text>
+          <text x="358" y="394" font-family="Consolas" font-size="11" fill="#b8e0d2">},</text>
+          <text x="65" y="410" font-family="Consolas" font-size="11" fill="#fbbf24">"annual_revenue_krw": { </text>
+          <text x="240" y="410" font-family="Consolas" font-size="11" fill="#fbbf24">"confidence": 0.62, </text>
+          <text x="65" y="424" font-family="Consolas" font-size="11" fill="#fbbf24">  "flag": "REVIEW" </text>
+          <text x="195" y="424" font-family="Consolas" font-size="11" fill="#fbbf24">},</text>
+          <text x="65" y="440" font-family="Consolas" font-size="11" fill="#b8e0d2">"collateral_address": { </text>
+          <text x="240" y="440" font-family="Consolas" font-size="11" fill="#4ade80">"confidence": 0.91 </text>
+          <text x="378" y="440" font-family="Consolas" font-size="11" fill="#b8e0d2">}</text>
+          <text x="50" y="456" font-family="Consolas" font-size="11" fill="#b8e0d2">}</text>
+        </g>
+
+        <!-- Routing decision arrows -->
+        <line x1="425" y1="395" x2="500" y2="395" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#o-arr-y)"/>
+        <line x1="425" y1="365" x2="500" y2="345" stroke="#4ade80" stroke-width="1.5" marker-end="url(#o-arr-gr)"/>
+        <line x1="425" y1="440" x2="500" y2="445" stroke="#4ade80" stroke-width="1.5" marker-end="url(#o-arr-gr)"/>
+
+        <!-- Routing destinations -->
+        <g>
+          <rect x="505" y="325" width="170" height="40" rx="6" fill="#1a2030" stroke="#4ade80" stroke-width="1.3"/>
+          <text x="590" y="345" text-anchor="middle" font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#4ade80">continue (auto)</text>
+          <text x="590" y="358" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#8a92a6" font-style="italic">자동 진행 (conf ≥ 0.6)</text>
+        </g>
+        <g>
+          <rect x="505" y="378" width="170" height="40" rx="6" fill="#1a2030" stroke="#fbbf24" stroke-width="1.3"/>
+          <text x="590" y="398" text-anchor="middle" font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#fbbf24">field → HITL</text>
+          <text x="590" y="411" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#8a92a6" font-style="italic">필드만 사람 검토 (conf &lt; 0.6)</text>
+        </g>
+        <g>
+          <rect x="505" y="430" width="170" height="40" rx="6" fill="#1a2030" stroke="#4ade80" stroke-width="1.3"/>
+          <text x="590" y="450" text-anchor="middle" font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#4ade80">continue (auto)</text>
+        </g>
+
+        <!-- Key insight -->
+        <text x="350" y="510" text-anchor="middle" font-family="Inter" font-size="11" fill="#F5A623" font-weight="600">Only the uncertain field goes to HITL — rest of the document continues</text>
+        <text x="350" y="528" text-anchor="middle" font-family="Noto Sans KR" font-size="10.5" fill="#F5A623" font-style="italic">불확실한 필드만 HITL — 나머지는 자동으로 진행</text>
+        <text x="350" y="555" text-anchor="middle" font-family="Inter" font-size="10" fill="#6a7287" font-style="italic">confidence = OCR engine score × verifier cross-check (conservative combine)</text>
+        <text x="350" y="570" text-anchor="middle" font-family="Noto Sans KR" font-size="9.5" fill="#6a7287" font-style="italic">신뢰도 = OCR 엔진 점수 × 검증기 cross-check (보수적 결합)</text>
+      </svg>
+    </div>
+
+    <div class="detail-panel">
+      <h3 style="color: #4FC3D9;">Engine + abstraction <span class="ko" style="color: var(--text-mute); font-family: var(--kor); font-size: 13px; font-style: italic; margin-left: 6px;">엔진 + 추상화</span></h3>
+      <p class="intro-line">
+        <span class="en">The OCR engine itself is swappable behind a single <code>OCRTool()</code> interface. The framework's value is in field-level confidence flowing into routing — not in the OCR engine choice.</span>
+        <span class="ko">OCR 엔진은 단일 <code>OCRTool()</code> 인터페이스 뒤에서 교체 가능합니다. 프레임워크의 가치는 필드 단위 신뢰도가 라우팅에 흐른다는 점입니다 — 엔진 선택이 아닙니다.</span>
+      </p>
+      <dl>
+        <div>
+          <dt>Format support <span class="ko">포맷 지원</span></dt>
+          <dd>
+            <span class="en">PDF · HWP (OLE detection via olefile) · scanned PNG/JPG · DOCX · TIFF · HWP-X (addable).</span>
+            <span class="ko" style="display: block; font-family: var(--kor); font-size: 12px; color: var(--text-mute); font-style: italic; margin-top: 6px;">PDF · HWP (olefile 로 OLE 감지) · 스캔 PNG/JPG · DOCX · TIFF · HWP-X (추가 가능).</span>
+          </dd>
+        </div>
+        <div>
+          <dt>Confidence sources <span class="ko">신뢰도 채널</span></dt>
+          <dd>
+            <span class="en">(1) OCR engine per-character confidence aggregated to field boundary, (2) lightweight verifier cross-checking field against schema. Conservative weighted combine.</span>
+            <span class="ko" style="display: block; font-family: var(--kor); font-size: 12px; color: var(--text-mute); font-style: italic; margin-top: 6px;">(1) OCR 엔진의 글자별 confidence 를 필드 boundary 별 집계, (2) 가벼운 검증기가 schema 와 cross-check. 보수적 가중 평균.</span>
+          </dd>
+        </div>
+        <div>
+          <dt>Korean handwriting <span class="ko">한국어 손글씨</span></dt>
+          <dd>
+            <span class="en">Formed handwriting 70-85% · free handwriting 50-70%. Threshold-based field flagging means rough fields are isolated automatically.</span>
+            <span class="ko" style="display: block; font-family: var(--kor); font-size: 12px; color: var(--text-mute); font-style: italic; margin-top: 6px;">정자 손글씨 70-85% · 자유 손글씨 50-70%. 임계값 기반 필드 플래그로 거친 필드만 자동 분리됩니다.</span>
+          </dd>
+        </div>
+        <div>
+          <dt>Latency <span class="ko">지연 시간</span></dt>
+          <dd>
+            <span class="en">Async — first stage responds, downstream stages on callback. Avg &lt; 30s per page.</span>
+            <span class="ko" style="display: block; font-family: var(--kor); font-size: 12px; color: var(--text-mute); font-style: italic; margin-top: 6px;">비동기 처리 — 첫 단계 응답 후 후속 단계는 callback. 평균 30초 내 1 페이지.</span>
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="screen-pagination">
+    <a href="#guardrails" class="pag-btn" data-screen="guardrails">
+      <span class="arrow">←</span>
+      <span class="meta"><span class="step">05</span><span class="label">Guardrails</span><span class="ko">가드레일</span></span>
+    </a>
+    <div class="pag-spacer"></div>
+    <a href="#rbac" class="pag-btn primary" data-screen="rbac">
+      <span class="meta"><span class="step">07 · NEXT</span><span class="label">Shared Agent + RBAC</span><span class="ko">공통 Agent + 권한</span></span>
+      <span class="arrow">→</span>
+    </a>
+  </div>
+</div>
+
+<!-- ===== SCREEN 07 — SHARED AGENT + RBAC ===== -->
+<div class="screen" id="rbac">
+  <div class="screen-head">
+    <div class="step-tag">07 · Shared Agent + RBAC <span class="ko">공통 Agent · 다중 사용자 권한</span></div>
+    <h2>One definition, isolated contexts
+      <span class="ko">정의는 하나, 실행 컨텍스트는 사용자별로 격리</span>
+    </h2>
+    <p class="intro">
+      <span class="en">The same agent definition runs under different operator identities. Memory, tool access, and data visibility are all isolated per execution context — without re-instantiating the agent for each user.</span>
+      <span class="ko">동일한 에이전트 정의가 운영자 신원별로 다르게 실행됩니다. 메모리, 도구 접근, 데이터 가시성이 실행 컨텍스트별로 격리되며, 사용자마다 에이전트를 새로 인스턴스화하지 않습니다.</span>
+    </p>
+  </div>
+
+  <div class="abs-wrap">
+    <div class="abs-diagram">
+      <svg class="abs-svg" viewBox="0 0 720 560" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <marker id="r-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#3a4259"/>
+          </marker>
+        </defs>
+
+        <!-- Top zone: IdP -->
+        <g>
+          <rect x="250" y="15" width="220" height="58" rx="8" fill="#1a2030" stroke="#F5A623" stroke-width="1.5"/>
+          <text x="360" y="36" text-anchor="middle" font-family="JetBrains Mono" font-size="11" font-weight="700" fill="#F5A623">IDENTITY PROVIDER</text>
+          <text x="360" y="52" text-anchor="middle" font-family="Inter" font-size="10" fill="#8a92a6" font-style="italic">SAML 2.0 / OIDC + SCIM 2.0 sync</text>
+          <text x="360" y="66" text-anchor="middle" font-family="Noto Sans KR" font-size="9.5" fill="#8a92a6" font-style="italic">Okta · Azure AD · OneLogin</text>
+        </g>
+
+        <!-- Three users with their tokens -->
+        <text x="50" y="105" font-family="JetBrains Mono" font-size="10" font-weight="600" fill="#4FC3D9">USERS · 사용자</text>
+        <g>
+          <rect x="30" y="115" width="170" height="60" rx="7" fill="#1a2030" stroke="#4FC3D9" stroke-width="1.3"/>
+          <text x="45" y="135" font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#e6e9f0">loan_officer</text>
+          <text x="45" y="150" font-family="Noto Sans KR" font-size="9.5" fill="#8a92a6" font-style="italic">대출 담당</text>
+          <text x="45" y="167" font-family="JetBrains Mono" font-size="9" fill="#4FC3D9">jwt · group=tellers</text>
+        </g>
+        <g>
+          <rect x="30" y="185" width="170" height="60" rx="7" fill="#1a2030" stroke="#5b8def" stroke-width="1.3"/>
+          <text x="45" y="205" font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#e6e9f0">compliance_officer</text>
+          <text x="45" y="220" font-family="Noto Sans KR" font-size="9.5" fill="#8a92a6" font-style="italic">컴플라이언스</text>
+          <text x="45" y="237" font-family="JetBrains Mono" font-size="9" fill="#5b8def">jwt · group=compliance</text>
+        </g>
+        <g>
+          <rect x="30" y="255" width="170" height="60" rx="7" fill="#1a2030" stroke="#d9486f" stroke-width="1.3"/>
+          <text x="45" y="275" font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#e6e9f0">auditor</text>
+          <text x="45" y="290" font-family="Noto Sans KR" font-size="9.5" fill="#8a92a6" font-style="italic">감사</text>
+          <text x="45" y="307" font-family="JetBrains Mono" font-size="9" fill="#d9486f">jwt · group=audit</text>
+        </g>
+
+        <!-- IdP feeds tokens into users -->
+        <line x1="250" y1="65" x2="200" y2="145" stroke="#F5A623" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.5"/>
+        <line x1="250" y1="65" x2="200" y2="215" stroke="#F5A623" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.5"/>
+        <line x1="250" y1="65" x2="200" y2="285" stroke="#F5A623" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.5"/>
+
+        <!-- Arrows from users to shared agent -->
+        <line x1="200" y1="145" x2="295" y2="200" stroke="#3a4259" stroke-width="1.2" marker-end="url(#r-arr)"/>
+        <line x1="200" y1="215" x2="295" y2="215" stroke="#3a4259" stroke-width="1.2" marker-end="url(#r-arr)"/>
+        <line x1="200" y1="285" x2="295" y2="230" stroke="#3a4259" stroke-width="1.2" marker-end="url(#r-arr)"/>
+
+        <!-- Shared agent (ONE definition) -->
+        <g>
+          <rect x="300" y="170" width="140" height="100" rx="10" fill="#232a3d" stroke="#F5A623" stroke-width="2.5"/>
+          <text x="370" y="195" text-anchor="middle" font-family="JetBrains Mono" font-size="11" font-weight="700" fill="#F5A623">ONE AGENT</text>
+          <text x="370" y="211" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#e6e9f0">definition</text>
+          <text x="370" y="226" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#8a92a6" font-style="italic">정의는 하나</text>
+          <text x="370" y="248" text-anchor="middle" font-family="Inter" font-size="9" fill="#8a92a6" font-style="italic">tools = [ocr, kyc,</text>
+          <text x="370" y="260" text-anchor="middle" font-family="Inter" font-size="9" fill="#8a92a6" font-style="italic">credit_score, sanctions]</text>
+        </g>
+
+        <!-- Arrows from shared agent to execution contexts -->
+        <line x1="440" y1="200" x2="510" y2="155" stroke="#4FC3D9" stroke-width="1.5" marker-end="url(#r-arr)"/>
+        <line x1="440" y1="220" x2="510" y2="225" stroke="#5b8def" stroke-width="1.5" marker-end="url(#r-arr)"/>
+        <line x1="440" y1="245" x2="510" y2="295" stroke="#d9486f" stroke-width="1.5" marker-end="url(#r-arr)"/>
+
+        <!-- Three execution contexts (right side) -->
+        <text x="555" y="105" font-family="JetBrains Mono" font-size="10" font-weight="600" fill="#4FC3D9">EXECUTION CONTEXTS · 실행 컨텍스트</text>
+        <g>
+          <rect x="510" y="118" width="195" height="80" rx="7" fill="#1a2030" stroke="#4FC3D9" stroke-width="1.3"/>
+          <text x="525" y="138" font-family="JetBrains Mono" font-size="10" font-weight="700" fill="#4FC3D9">context A · loan_officer</text>
+          <text x="525" y="155" font-family="JetBrains Mono" font-size="9" fill="#e6e9f0">tools: ocr, credit_score</text>
+          <text x="525" y="169" font-family="JetBrains Mono" font-size="9" fill="#e6e9f0">PII: masked</text>
+          <text x="525" y="183" font-family="JetBrains Mono" font-size="9" fill="#e6e9f0">scores: grade only</text>
+        </g>
+        <g>
+          <rect x="510" y="208" width="195" height="80" rx="7" fill="#1a2030" stroke="#5b8def" stroke-width="1.3"/>
+          <text x="525" y="228" font-family="JetBrains Mono" font-size="10" font-weight="700" fill="#5b8def">context B · compliance</text>
+          <text x="525" y="245" font-family="JetBrains Mono" font-size="9" fill="#e6e9f0">tools: kyc, sanctions, ocr</text>
+          <text x="525" y="259" font-family="JetBrains Mono" font-size="9" fill="#e6e9f0">PII: full</text>
+          <text x="525" y="273" font-family="JetBrains Mono" font-size="9" fill="#e6e9f0">scores: grade only</text>
+        </g>
+        <g>
+          <rect x="510" y="298" width="195" height="80" rx="7" fill="#1a2030" stroke="#d9486f" stroke-width="1.3"/>
+          <text x="525" y="318" font-family="JetBrains Mono" font-size="10" font-weight="700" fill="#d9486f">context C · auditor</text>
+          <text x="525" y="335" font-family="JetBrains Mono" font-size="9" fill="#e6e9f0">tools: (read-only, none)</text>
+          <text x="525" y="349" font-family="JetBrains Mono" font-size="9" fill="#e6e9f0">all fields: read-only</text>
+          <text x="525" y="363" font-family="JetBrains Mono" font-size="9" fill="#e6e9f0">+ separate audit log</text>
+        </g>
+
+        <!-- Permission matrix (bottom) -->
+        <text x="50" y="412" font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#F5A623">PERMISSION MATRIX · Feature × Entity</text>
+        <text x="50" y="427" font-family="Noto Sans KR" font-size="10" fill="#8a92a6" font-style="italic">권한 매트릭스 — 기능 × 데이터 행</text>
+
+        <g>
+          <rect x="30" y="438" width="660" height="110" rx="6" fill="#060a14" stroke="#2a3142"/>
+          <!-- header row -->
+          <text x="50" y="458" font-family="JetBrains Mono" font-size="9.5" fill="#8a92a6">role</text>
+          <text x="170" y="458" font-family="JetBrains Mono" font-size="9.5" fill="#8a92a6">ocr</text>
+          <text x="230" y="458" font-family="JetBrains Mono" font-size="9.5" fill="#8a92a6">kyc_lookup</text>
+          <text x="320" y="458" font-family="JetBrains Mono" font-size="9.5" fill="#8a92a6">credit_score</text>
+          <text x="420" y="458" font-family="JetBrains Mono" font-size="9.5" fill="#8a92a6">sanctions</text>
+          <text x="510" y="458" font-family="JetBrains Mono" font-size="9.5" fill="#8a92a6">PII view</text>
+          <text x="585" y="458" font-family="JetBrains Mono" font-size="9.5" fill="#8a92a6">audit log</text>
+          <line x1="30" y1="463" x2="690" y2="463" stroke="#2a3142"/>
+
+          <!-- row 1: loan_officer -->
+          <text x="50" y="483" font-family="JetBrains Mono" font-size="10" fill="#4FC3D9">loan_officer</text>
+          <text x="170" y="483" font-family="JetBrains Mono" font-size="12" fill="#4ade80">●</text>
+          <text x="230" y="483" font-family="JetBrains Mono" font-size="12" fill="#3a4259">○</text>
+          <text x="320" y="483" font-family="JetBrains Mono" font-size="11" fill="#fbbf24">grade</text>
+          <text x="420" y="483" font-family="JetBrains Mono" font-size="12" fill="#3a4259">○</text>
+          <text x="510" y="483" font-family="JetBrains Mono" font-size="11" fill="#fbbf24">masked</text>
+          <text x="585" y="483" font-family="JetBrains Mono" font-size="10" fill="#8a92a6">standard</text>
+
+          <!-- row 2: compliance -->
+          <text x="50" y="503" font-family="JetBrains Mono" font-size="10" fill="#5b8def">compliance</text>
+          <text x="170" y="503" font-family="JetBrains Mono" font-size="12" fill="#4ade80">●</text>
+          <text x="230" y="503" font-family="JetBrains Mono" font-size="12" fill="#4ade80">●</text>
+          <text x="320" y="503" font-family="JetBrains Mono" font-size="11" fill="#fbbf24">grade</text>
+          <text x="420" y="503" font-family="JetBrains Mono" font-size="12" fill="#4ade80">●</text>
+          <text x="510" y="503" font-family="JetBrains Mono" font-size="11" fill="#4ade80">full</text>
+          <text x="585" y="503" font-family="JetBrains Mono" font-size="10" fill="#8a92a6">+ KYC events</text>
+
+          <!-- row 3: auditor -->
+          <text x="50" y="523" font-family="JetBrains Mono" font-size="10" fill="#d9486f">auditor</text>
+          <text x="170" y="523" font-family="JetBrains Mono" font-size="11" fill="#d9486f">read</text>
+          <text x="230" y="523" font-family="JetBrains Mono" font-size="11" fill="#d9486f">read</text>
+          <text x="320" y="523" font-family="JetBrains Mono" font-size="11" fill="#d9486f">read</text>
+          <text x="420" y="523" font-family="JetBrains Mono" font-size="11" fill="#d9486f">read</text>
+          <text x="510" y="523" font-family="JetBrains Mono" font-size="11" fill="#d9486f">read-only</text>
+          <text x="585" y="523" font-family="JetBrains Mono" font-size="10" fill="#d9486f">+ audit-read</text>
+
+          <text x="350" y="540" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#6a7287" font-style="italic">● 사용 가능  ·  ○ 사용 불가  ·  grade/masked/read = 제한된 가시성</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="detail-panel">
+      <h3 style="color: #F5A623;">Why this matters <span class="ko" style="color: var(--text-mute); font-family: var(--kor); font-size: 13px; font-style: italic; margin-left: 6px;">왜 중요한가</span></h3>
+      <p class="intro-line">
+        <span class="en">Multi-tenant agent deployment without operational cost explosion. Same code, different permissions, isolated audit trails per operator.</span>
+        <span class="ko">운영비 폭증 없이 멀티-테넌트 에이전트 배포가 가능합니다. 코드는 하나, 권한은 사용자별, 감사 추적은 운영자 단위로 격리됩니다.</span>
+      </p>
+      <dl>
+        <div>
+          <dt>One definition, N contexts <span class="ko">하나의 정의, N개의 컨텍스트</span></dt>
+          <dd>
+            <span class="en">No per-user agent re-instantiation. Model-call cache + code-maintenance cost do not scale with user count.</span>
+            <span class="ko" style="display: block; font-family: var(--kor); font-size: 12px; color: var(--text-mute); font-style: italic; margin-top: 6px;">사용자별로 에이전트를 새로 만들지 않습니다. 모델 호출 캐시 + 코드 유지비가 사용자 수에 비례하지 않습니다.</span>
+          </dd>
+        </div>
+        <div>
+          <dt>Two permission axes <span class="ko">두 축의 권한</span></dt>
+          <dd>
+            <span class="en">Feature (which tool can be invoked?) × Entity (which data rows are visible?). Both axes explicit in the matrix.</span>
+            <span class="ko" style="display: block; font-family: var(--kor); font-size: 12px; color: var(--text-mute); font-style: italic; margin-top: 6px;">Feature (어떤 도구를 호출 가능?) × Entity (어떤 데이터 행이 보이는가?). 매트릭스에 두 축 모두 명시.</span>
+          </dd>
+        </div>
+        <div>
+          <dt>SCIM auto-sync <span class="ko">SCIM 자동 동기화</span></dt>
+          <dd>
+            <span class="en">User/group changes in the IdP propagate to permissions automatically — typical &lt; 5 min. Emergency revoke is instant via token invalidate.</span>
+            <span class="ko" style="display: block; font-family: var(--kor); font-size: 12px; color: var(--text-mute); font-style: italic; margin-top: 6px;">IdP 에서의 사용자/그룹 변경이 권한에 자동 반영 — 평균 5분 이내. 긴급 revoke 는 토큰 invalidate 로 즉시.</span>
+          </dd>
+        </div>
+        <div>
+          <dt>Audit isolation <span class="ko">감사 격리</span></dt>
+          <dd>
+            <span class="en">Every action carries operator identity + persona + context. Auditor reads themselves go to a separate audit-read log so reads vs writes are distinguishable.</span>
+            <span class="ko" style="display: block; font-family: var(--kor); font-size: 12px; color: var(--text-mute); font-style: italic; margin-top: 6px;">모든 행위에 운영자 신원 + 페르소나 + 컨텍스트가 함께 기록. 감사자의 조회 자체는 별도 audit-read 로그로 — 읽기와 쓰기가 구분 가능.</span>
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="screen-pagination">
+    <a href="#ocr" class="pag-btn" data-screen="ocr">
+      <span class="arrow">←</span>
+      <span class="meta"><span class="step">06</span><span class="label">OCR</span><span class="ko">한국어 OCR</span></span>
+    </a>
+    <div class="pag-spacer"></div>
+    <a href="#matrix" class="pag-btn primary" data-screen="matrix">
+      <span class="meta"><span class="step">08 · NEXT</span><span class="label">OSS vs Enterprise</span><span class="ko">오픈소스 vs 엔터프라이즈</span></span>
+      <span class="arrow">→</span>
+    </a>
+  </div>
+</div>
+
+<!-- ===== SCREEN 08 — MATRIX ===== -->
+<div class="screen" id="matrix">
+  <div class="screen-head">
+    <div class="step-tag">05 · Capability Matrix <span class="ko">기능 매트릭스</span></div>
+    <h2>OSS vs Enterprise
+      <span class="ko">오픈소스 vs 엔터프라이즈</span>
+    </h2>
+    <p class="intro">
+      <span class="en">Same framework on both tiers. Enterprise adds an operational layer — managed deployment, SSO, audit retention, support. Filter to see only one tier.</span>
+      <span class="ko">두 단계 모두 같은 프레임워크입니다. 엔터프라이즈는 운영 계층 — 매니지드 배포, SSO, 감사 로그 보관, 지원 — 을 더한 것입니다. 필터를 사용해 한 단계만 볼 수 있습니다.</span>
+    </p>
+  </div>
+
+  <div class="matrix-filter">
+    <span class="label">FILTER<span class="ko">필터</span></span>
+    <button data-filter="all" class="active">ALL<span class="ko">전체</span></button>
+    <button data-filter="oss">OSS ONLY<span class="ko">OSS 만</span></button>
+    <button data-filter="enterprise">ENTERPRISE ONLY<span class="ko">엔터프라이즈 만</span></button>
+  </div>
+
+  <table class="cap-matrix" id="cap-matrix">
+    <thead>
+      <tr>
+        <th>Capability<span class="ko">기능</span></th>
+        <th class="center" style="width: 70px;">OSS</th>
+        <th class="center" style="width: 100px;">Enterprise<span class="ko">엔터프라이즈</span></th>
+        <th style="width: 220px;">Standard / API<span class="ko">표준 / API</span></th>
+        <th>Why it matters<span class="ko">의미</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-oss="1" data-ent="1"><td class="cap core"><span class="en">Agent · Task · Crew</span><span class="ko">에이전트 · 태스크 · 크루</span></td><td class="center"><span class="dot-yes">●</span></td><td class="center"><span class="dot-yes">●</span></td><td class="std">crewai (PyPI)</td><td class="why"><span class="en">Core abstractions</span><span class="ko">핵심 추상화</span></td></tr>
+      <tr data-oss="1" data-ent="1"><td class="cap core"><span class="en">Process: sequential / hierarchical</span><span class="ko">프로세스: 순차 / 위계</span></td><td class="center"><span class="dot-yes">●</span></td><td class="center"><span class="dot-yes">●</span></td><td class="std">crewai core</td><td class="why"><span class="en">Multi-agent orchestration</span><span class="ko">다중 에이전트 오케스트레이션</span></td></tr>
+      <tr data-oss="1" data-ent="1"><td class="cap core"><span class="en">Flow · @start / @listen / @router</span><span class="ko">Flow · 상태 머신 데코레이터</span></td><td class="center"><span class="dot-yes">●</span></td><td class="center"><span class="dot-yes">●</span></td><td class="std">crewai-flow</td><td class="why"><span class="en">Stateful + branching</span><span class="ko">상태 보유 + 분기</span></td></tr>
+      <tr data-oss="1" data-ent="1"><td class="cap core"><span class="en">Multi-LLM routing</span><span class="ko">멀티-LLM 라우팅</span></td><td class="center"><span class="dot-yes">●</span></td><td class="center"><span class="dot-yes">●</span></td><td class="std">LiteLLM gateway</td><td class="why"><span class="en">Model-agnostic, swap any time</span><span class="ko">모델 독립 · 언제든 교체 가능</span></td></tr>
+      <tr data-oss="1" data-ent="1"><td class="cap core"><span class="en">Pydantic-typed output</span><span class="ko">Pydantic 타입 출력</span></td><td class="center"><span class="dot-yes">●</span></td><td class="center"><span class="dot-yes">●</span></td><td class="std">pydantic</td><td class="why"><span class="en">Compile-time contracts</span><span class="ko">컴파일 시점 계약</span></td></tr>
+      <tr data-oss="1" data-ent="1"><td class="cap core"><span class="en">Memory (short / long / entity)</span><span class="ko">메모리 (단기 / 장기 / 엔티티)</span></td><td class="center"><span class="dot-yes">●</span></td><td class="center"><span class="dot-yes">●</span></td><td class="std">crewai-memory</td><td class="why"><span class="en">Pluggable backends</span><span class="ko">백엔드 교체 가능</span></td></tr>
+      <tr data-oss="1" data-ent="1"><td class="cap core"><span class="en">MCP / A2A interop</span><span class="ko">MCP / A2A 상호운용</span></td><td class="center"><span class="dot-yes">●</span></td><td class="center"><span class="dot-yes">●</span></td><td class="std">open standard</td><td class="why"><span class="en">Co-exists with other agent systems</span><span class="ko">타 에이전트 시스템과 공존</span></td></tr>
+      <tr data-oss="1" data-ent="1"><td class="cap core"><span class="en">OpenTelemetry traces</span><span class="ko">OpenTelemetry 트레이스</span></td><td class="center"><span class="dot-yes">●</span></td><td class="center"><span class="dot-yes">●</span></td><td class="std">OTel</td><td class="why"><span class="en">Your backend, your retention</span><span class="ko">자체 백엔드 · 자체 보관 정책</span></td></tr>
+      <tr data-oss="1" data-ent="1"><td class="cap core"><span class="en">Tool decorator + custom tools</span><span class="ko">도구 데코레이터 + 커스텀 도구</span></td><td class="center"><span class="dot-yes">●</span></td><td class="center"><span class="dot-yes">●</span></td><td class="std">@tool</td><td class="why"><span class="en">Extend without forking</span><span class="ko">포크 없이 확장 가능</span></td></tr>
+      <tr data-oss="0" data-ent="1"><td class="cap"><span class="en">Managed deployment / runtime</span><span class="ko">매니지드 배포 / 런타임</span></td><td class="center"><span class="dot-no">○</span></td><td class="center"><span class="dot-yes">●</span></td><td class="std">AMP</td><td class="why"><span class="en">No infra to operate</span><span class="ko">인프라 운영 불필요</span></td></tr>
+      <tr data-oss="0" data-ent="1"><td class="cap"><span class="en">SSO (SAML 2.0 / OIDC)</span><span class="ko">SSO (SAML 2.0 / OIDC)</span></td><td class="center"><span class="dot-no">○</span></td><td class="center"><span class="dot-yes">●</span></td><td class="std">enterprise IdP</td><td class="why"><span class="en">Org-level identity</span><span class="ko">조직 단위 신원 관리</span></td></tr>
+      <tr data-oss="0" data-ent="1"><td class="cap"><span class="en">SCIM auto-provisioning</span><span class="ko">SCIM 자동 프로비저닝</span></td><td class="center"><span class="dot-no">○</span></td><td class="center"><span class="dot-yes">●</span></td><td class="std">SCIM 2.0</td><td class="why"><span class="en">User lifecycle automation</span><span class="ko">사용자 라이프사이클 자동화</span></td></tr>
+      <tr data-oss="0" data-ent="1"><td class="cap"><span class="en">Audit-log retention + immutability</span><span class="ko">감사 로그 보관 + 변조 방지</span></td><td class="center"><span class="dot-no">○</span></td><td class="center"><span class="dot-yes">●</span></td><td class="std">compliance</td><td class="why"><span class="en">Regulated industries</span><span class="ko">규제 산업 대응</span></td></tr>
+      <tr data-oss="0" data-ent="1"><td class="cap"><span class="en">Customer-managed encryption keys</span><span class="ko">고객 관리형 암호화 키</span></td><td class="center"><span class="dot-no">○</span></td><td class="center"><span class="dot-yes">●</span></td><td class="std">KMS</td><td class="why"><span class="en">Data-residency / control</span><span class="ko">데이터 거주성 · 통제</span></td></tr>
+      <tr data-oss="0" data-ent="1"><td class="cap"><span class="en">Dedicated support + SLAs</span><span class="ko">전담 지원 + SLA</span></td><td class="center"><span class="dot-no">○</span></td><td class="center"><span class="dot-yes">●</span></td><td class="std">contractual</td><td class="why"><span class="en">Production safety net</span><span class="ko">운영 안전망</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="matrix-foot">
+    <span class="en"><strong>● included  ·  ○ not in this tier.</strong> Enterprise tier (AMP) = OSS framework + operational layer; never a different framework.</span>
+    <span class="ko"><strong>● 포함  ·  ○ 이 단계에는 없음.</strong> 엔터프라이즈 (AMP) = OSS 프레임워크 + 운영 계층. 별도의 다른 프레임워크가 아닙니다.</span>
+  </div>
+
+  <div class="screen-pagination">
+    <a href="#rbac" class="pag-btn" data-screen="rbac">
+      <span class="arrow">←</span>
+      <span class="meta"><span class="step">07</span><span class="label">Shared Agent + RBAC</span><span class="ko">공통 Agent + 권한</span></span>
+    </a>
+    <div class="pag-spacer"></div>
+    <a href="#example" class="pag-btn primary" data-screen="example">
+      <span class="meta"><span class="step">09 · NEXT</span><span class="label">Example</span><span class="ko">적용 예시</span></span>
+      <span class="arrow">→</span>
+    </a>
+  </div>
+</div>
+
+<!-- ===== SCREEN 09 — EXAMPLE ===== -->
+<div class="screen" id="example">
+  <div class="screen-head">
+    <div class="step-tag">06 · Worked Example <span class="ko">적용 예시</span></div>
+    <h2>One instantiation
+      <span class="ko">실제 적용 한 가지</span>
+    </h2>
+    <p class="intro">
+      <span class="en">How the framework's layers map onto a concrete project.</span>
+      <span class="ko">프레임워크의 각 계층이 실제 프로젝트에 어떻게 적용되는가.</span>
+    </p>
+  </div>
+
+  <div class="example-card">
+    <h3><code>loan_application_triage</code></h3>
+    <div class="sub">대출 신청 분류 — 4-에이전트 크루 × Flow 오케스트레이션 × HITL</div>
+
+    <div class="example-grid">
+      <div class="example-row">
+        <div class="layer">FLOW</div>
+        <div class="used-as">
+          <span class="en">7 stages with <code>@start</code> / <code>@listen</code> / <code>@router</code> / <code>or_</code></span>
+          <span class="ko">7 단계 — <code>@start</code> / <code>@listen</code> / <code>@router</code> / <code>or_</code> 사용</span>
+        </div>
+        <div class="code">src/loan_application_triage/main.py:121</div>
+      </div>
+      <div class="example-row">
+        <div class="layer">CREW</div>
+        <div class="used-as">
+          <span class="en">Sequential process · 4 typed-output tasks · shared crew memory</span>
+          <span class="ko">순차 프로세스 · 타입 지정 출력 태스크 4개 · 크루 공유 메모리</span>
+        </div>
+        <div class="code">crews/triage_crew/</div>
+      </div>
+      <div class="example-row">
+        <div class="layer">AGENT × 4</div>
+        <div class="used-as">
+          <span class="en">intake (gpt-4o) · kyc (claude-sonnet-4.5) · risk (routed) · supervisor (gpt-4o)</span>
+          <span class="ko">인테이크 · KYC · 위험 · 슈퍼바이저 — 에이전트별 LLM 분배</span>
+        </div>
+        <div class="code">config/agents.yaml</div>
+      </div>
+      <div class="example-row">
+        <div class="layer">TASK × 4</div>
+        <div class="used-as">
+          <span class="en">intake_task → ApplicantProfile · kyc_task → KYCReport · risk_task → RiskDecision · supervisor → 결재 의견</span>
+          <span class="ko">각 태스크의 출력이 Pydantic 모델로 타이핑됨</span>
+        </div>
+        <div class="code">config/tasks.yaml</div>
+      </div>
+      <div class="example-row">
+        <div class="layer">LLM</div>
+        <div class="used-as">
+          <span class="en">3 providers via LiteLLM · eval-driven routing for risk_task</span>
+          <span class="ko">LiteLLM 으로 3개 공급자 연동 · risk_task 는 평가 기반 라우팅</span>
+        </div>
+        <div class="code">llm_routing.get_risk_llm()</div>
+      </div>
+      <div class="example-row">
+        <div class="layer">TOOLS</div>
+        <div class="used-as">
+          <span class="en">OCR · KYC lookup · sanctions check</span>
+          <span class="ko">OCR · KYC 조회 · 제재 리스트 체크</span>
+        </div>
+        <div class="code">tools/ocr_tool.py · tools/kyc_lookup.py</div>
+      </div>
+      <div class="example-row">
+        <div class="layer">OBSERVABILITY</div>
+        <div class="used-as">
+          <span class="en">OTel spans per <code>@listen</code> stage · agent / tool / LLM / guardrail events</span>
+          <span class="ko">각 <code>@listen</code> 단계마다 OTel span · 에이전트 / 도구 / LLM / 가드레일 이벤트 기록</span>
+        </div>
+        <div class="code">observability/otel_setup.py</div>
+      </div>
+      <div class="example-row">
+        <div class="layer">IDENTITY</div>
+        <div class="used-as">
+          <span class="en">RBAC matrix (loan_officer / compliance_officer / auditor)</span>
+          <span class="ko">RBAC 매트릭스 — 대출 담당 / 컴플라이언스 / 감사 3 페르소나</span>
+        </div>
+        <div class="code">governance/rbac.py</div>
+      </div>
+    </div>
+
+    <a class="example-cta" href="loan_triage_architecture.html">
+      <span>Explore the example as an interactive viz<span class="ko">이 예시를 인터랙티브 시각화로 탐색</span></span>
+      <span style="font-size: 18px;">→</span>
+    </a>
+  </div>
+
+  <div class="screen-pagination">
+    <a href="#matrix" class="pag-btn" data-screen="matrix">
+      <span class="arrow">←</span>
+      <span class="meta"><span class="step">08</span><span class="label">OSS vs Enterprise</span><span class="ko">오픈소스 vs 엔터프라이즈</span></span>
+    </a>
+    <div class="pag-spacer"></div>
+    <a href="#overview" class="pag-btn" data-screen="overview">
+      <span class="meta"><span class="step">START OVER</span><span class="label">Back to Overview</span><span class="ko">개요로 돌아가기</span></span>
+      <span class="arrow">↺</span>
+    </a>
+  </div>
+</div>
+
+<script>
+function showScreen(id) {
+  const target = document.getElementById(id);
+  if (!target) return;
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  target.classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.toggle('active', a.dataset.screen === id));
+  window.scrollTo({ top: 0, behavior: 'auto' });
+  if (window.location.hash !== '#' + id) history.pushState(null, '', '#' + id);
+}
+document.querySelectorAll('[data-screen]').forEach(el => {
+  el.addEventListener('click', (e) => { e.preventDefault(); showScreen(el.dataset.screen); });
+});
+window.addEventListener('popstate', () => {
+  const id = (window.location.hash || '#overview').slice(1);
+  showScreen(id);
+});
+showScreen((window.location.hash || '#overview').slice(1));
+
+const LAYER_DATA = {
+  flow: {
+    name: "Flow", ko: "오케스트레이션 / 상태 머신", color: "#F5A623",
+    intro_en: "State machine wrapping Crews and any non-Crew Python. Adds branching, persistence, and pre/post-crew steps that don't belong inside an agent.",
+    intro_ko: "크루와 일반 Python 코드를 감싸는 상태 머신입니다. 분기, 지속성, 그리고 에이전트 내부에 두기 어려운 전/후처리 단계를 추가합니다.",
+    provides: [
+      ["Stateful orchestration with typed state across stages", "단계 간 타입 지정된 상태를 유지하는 오케스트레이션"],
+      ["Branching via @router (conditional logic without hand-rolling)", "@router 를 통한 분기 (제어 흐름을 직접 작성하지 않음)"],
+      ["Pause / resume / replay (via @persist for cross-process)", "@persist 로 일시정지 / 재개 / 재실행 (프로세스 간 가능)"],
+      ["Pre/post-crew Python — SSO/JWT, OTel init, PII scan, eval-driven routing", "크루 전후 Python — SSO/JWT, OTel 초기화, PII 스캔, 평가 기반 라우팅"],
+      ["Each @listen step gets its own OTel span automatically", "각 @listen 단계마다 자동으로 OTel span 생성"],
+    ],
+    wraps_en: "Crew(s) + arbitrary Python",
+    wraps_ko: "크루 + 임의의 Python 코드",
+    code: `<span class="kw">from</span> crewai.flow <span class="kw">import</span> Flow, start, listen, router, or_
+
+<span class="kw">class</span> LoanTriageFlow(Flow):
+    <span class="kw">@start</span>()
+    <span class="kw">def</span> begin(self):
+        self.state.run_id = <span class="str">"R-2026-001"</span>
+        <span class="kw">return</span> self.state
+
+    <span class="kw">@listen</span>(begin)
+    <span class="kw">def</span> select_risk_llm(self, state):
+        <span class="kw">return</span> route_for(state)  <span class="com"># eval-driven</span>
+
+    <span class="kw">@router</span>(run_triage_crew)
+    <span class="kw">def</span> hitl_gate(self, crew_out):
+        <span class="kw">return</span> <span class="str">"needs_hitl"</span> <span class="kw">if</span> crew_out.risk > 0.7 <span class="kw">else</span> <span class="str">"auto"</span>`
+  },
+  crew: {
+    name: "Crew", ko: "다중 에이전트 실행 단위", color: "#4FC3D9",
+    intro_en: "Multi-agent execution unit. Bundles agents + tasks + a process choice + shared memory. The unit that gets kicked off.",
+    intro_ko: "다중 에이전트 실행 단위. 에이전트 + 태스크 + 프로세스 선택 + 공유 메모리를 묶습니다. kickoff 대상이 되는 단위입니다.",
+    provides: [
+      ["Process choice: sequential (declared order) or hierarchical (manager delegates)", "프로세스 선택: 순차 (선언 순서) 또는 위계 (매니저가 위임)"],
+      ["Shared memory across agents (short-term, long-term, entity)", "에이전트 간 공유 메모리 (단기 · 장기 · 엔티티)"],
+      ["Process-level retries and verbose tracing", "프로세스 단위 재시도 및 상세 추적"],
+      ["Final crew output (typed if last task uses output_pydantic)", "크루의 최종 출력 (마지막 태스크가 output_pydantic 사용 시 타입 지정)"],
+      ["Single-call .kickoff() or .kickoff_async() for the whole unit", "전체 단위를 단일 .kickoff() 또는 .kickoff_async() 호출로 실행"],
+    ],
+    wraps_en: "Agents + Tasks + Process + Memory",
+    wraps_ko: "에이전트 + 태스크 + 프로세스 + 메모리",
+    code: `<span class="kw">from</span> crewai <span class="kw">import</span> Crew, Process
+
+triage_crew = Crew(
+    agents=[intake, kyc, risk, supervisor],
+    tasks=[intake_task, kyc_task, risk_task, supervisor_task],
+    process=Process.sequential,
+    memory=<span class="kw">True</span>,
+    verbose=<span class="kw">True</span>,
+)
+result = triage_crew.kickoff(inputs={<span class="str">"application_id"</span>: app_id})`
+  },
+  agent: {
+    name: "Agent", ko: "단일 LLM 액터", color: "#5b8def",
+    intro_en: "One LLM-driven actor with a role, goal, scoped tools, and its own memory segment. The unit that reasons and calls tools.",
+    intro_ko: "역할, 목표, 권한이 부여된 도구, 자체 메모리 segment 를 가진 단일 LLM 액터. 추론하고 도구를 호출하는 단위입니다.",
+    provides: [
+      ["Per-actor LLM choice (model-agnostic via LiteLLM)", "액터별 LLM 선택 (LiteLLM 으로 모델 독립)"],
+      ["Scoped tool access (an agent sees only the tools you give it)", "도구 접근 권한 분리 (부여한 도구만 사용 가능)"],
+      ["Reasoning + delegation (if allow_delegation=True)", "추론 + 위임 (allow_delegation=True 인 경우)"],
+      ["Per-agent memory segment, isolated from other agents", "에이전트별 메모리 segment — 다른 에이전트와 격리"],
+      ["Korean / English / multilingual via backstory + role definitions", "backstory + role 정의로 한국어 / 영어 / 다국어 지원"],
+    ],
+    wraps_en: "LLM + Tools + Memory + Role definition",
+    wraps_ko: "LLM + 도구 + 메모리 + 역할 정의",
+    code: `<span class="kw">from</span> crewai <span class="kw">import</span> Agent
+
+kyc_verifier = Agent(
+    role=<span class="str">"KYC 검증 분석가"</span>,
+    goal=<span class="str">"Verify identity, run sanctions and PEP checks"</span>,
+    backstory=<span class="str">"Senior compliance analyst trained on Korean AML law."</span>,
+    llm=<span class="str">"anthropic/claude-sonnet-4-5"</span>,
+    tools=[kyc_lookup_tool, sanctions_check_tool],
+    memory=<span class="kw">True</span>,
+    allow_delegation=<span class="kw">False</span>,
+)`
+  },
+  task: {
+    name: "Task", ko: "타입 지정된 업무 단위", color: "#5b8def",
+    intro_en: "A typed unit of work for an agent. Has a description, an expected output (Pydantic-typed), the agent assigned, and an optional context chain.",
+    intro_ko: "에이전트에 할당된 타입 지정 업무 단위. 설명, 예상 출력 (Pydantic 타입), 담당 에이전트, 그리고 선택적인 컨텍스트 체인을 가집니다.",
+    provides: [
+      ["Pydantic-typed output (compile-time contract on what comes back)", "Pydantic 타입 출력 (반환값에 대한 컴파일 시점 계약)"],
+      ["Context chain — explicitly declare which prior task outputs feed in", "컨텍스트 체인 — 어느 선행 태스크 출력을 입력으로 받을지 명시"],
+      ["Task-scoped tools (narrow tool access per task, not just per agent)", "태스크 단위 도구 권한 (에이전트뿐 아니라 태스크별로도 제한)"],
+      ["Agent assignment + optional async or human-in-loop modes", "에이전트 할당 + 비동기 또는 HITL 모드 선택"],
+      ["Auto-validated against schema before downstream tasks see it", "다음 태스크로 전달되기 전 스키마 자동 검증"],
+    ],
+    wraps_en: "description + expected_output + agent + Pydantic schema",
+    wraps_ko: "설명 + 예상 출력 + 에이전트 + Pydantic 스키마",
+    code: `<span class="kw">from</span> crewai <span class="kw">import</span> Task
+<span class="kw">from</span> .models <span class="kw">import</span> RiskDecision
+
+risk_task = Task(
+    description=<span class="str">"Score credit risk on a 0.0-1.0 scale ..."</span>,
+    expected_output=<span class="str">"RiskDecision with rationale_ko"</span>,
+    agent=risk_classifier,
+    output_pydantic=RiskDecision,
+    context=[intake_task, kyc_task],
+)`
+  },
+};
+
+function renderLayer(layerId) {
+  document.querySelectorAll('.abs-rect').forEach(r => r.classList.remove('active'));
+  const panel = document.getElementById('layer-detail');
+  if (!layerId) {
+    panel.innerHTML = `<div class="empty"><div class="icon">◉</div><div>Click a layer in the diagram to inspect it.<span class="ko">계층을 클릭해 세부 내용을 확인하세요.</span></div></div>`;
+    return;
+  }
+  document.querySelector(`[data-layer="${layerId}"] .abs-rect`).classList.add('active');
+  const d = LAYER_DATA[layerId];
+  panel.innerHTML = `
+    <h3><span class="dot" style="background:${d.color}"></span>${d.name}</h3>
+    <div class="panel-ko">${d.ko}</div>
+    <p class="intro-line">
+      <span class="en">${d.intro_en}</span>
+      <span class="ko">${d.intro_ko}</span>
+    </p>
+    <dl>
+      <div><dt>What it adds <span class="ko">추가되는 기능</span></dt><dd><ul>${d.provides.map(p => `<li><span class="en">${p[0]}</span><span class="ko">${p[1]}</span></li>`).join('')}</ul></dd></div>
+      <div><dt>Wraps <span class="ko">감싸는 대상</span></dt><dd class="wraps"><span class="en">${d.wraps_en}</span><span class="ko">${d.wraps_ko}</span></dd></div>
+      <div><dt>Code shape <span class="ko">코드 형태</span></dt><dd><pre>${d.code}</pre></dd></div>
+    </dl>
+  `;
+}
+
+document.querySelectorAll('[data-layer]').forEach(g => {
+  g.style.cursor = 'pointer';
+  g.addEventListener('click', () => renderLayer(g.dataset.layer));
+});
+
+document.querySelectorAll('.exec-tabs button').forEach(b => {
+  b.addEventListener('click', () => {
+    const mode = b.dataset.mode;
+    document.querySelectorAll('.exec-tabs button').forEach(x => x.classList.toggle('active', x === b));
+    document.querySelectorAll('.exec-panel-content').forEach(c => c.classList.toggle('active', c.dataset.mode === mode));
+  });
+});
+
+const SPOKE_DATA = {
+  llm: {
+    name: "LLM PROVIDERS", ko: "LLM 공급자", color: "#4FC3D9",
+    via: "via LiteLLM gateway",
+    items: ["OpenAI (gpt-4o, gpt-4-turbo, gpt-5-*)", "Anthropic (claude-sonnet-4-5, opus, haiku)", "Google (gemini-2.5-pro, flash)", "Azure OpenAI", "AWS Bedrock", "Self-hosted (vLLM, ollama, custom OpenAI-compatible endpoint)"],
+    note_en: "Single OpenAI-compatible interface for everything. Swap providers per agent, per task, or per run via the routing layer.",
+    note_ko: "모든 공급자에 대해 OpenAI 호환 인터페이스 하나. 라우팅 계층을 통해 에이전트별, 태스크별, 실행별로 공급자를 교체 가능."
+  },
+  tools: {
+    name: "TOOLS", ko: "도구", color: "#5b8def",
+    via: "built-in · custom Python · MCP · A2A",
+    items: ["@tool decorator (Python functions become tools)", "Built-in toolset (PythonREPL, WebSearch, File I/O, ScrapeWebsite)", "Pydantic-typed tool args + return values", "MCP (Model Context Protocol) — call external MCP servers as tools", "A2A (Agent-to-Agent) — peer agents as tools", "Tool-scoped permissions per agent and per task"],
+    note_en: "MCP and A2A are open standards — CrewAI agents can call any MCP-exposed tool natively, and vice versa, with no adapter shim.",
+    note_ko: "MCP 와 A2A 는 공개 표준입니다. CrewAI 에이전트가 MCP 로 노출된 도구를 별도 어댑터 없이 직접 호출 가능하며, 그 반대도 마찬가지입니다."
+  },
+  memory: {
+    name: "MEMORY BACKENDS", ko: "메모리 백엔드", color: "#F5A623",
+    via: "pluggable per tier",
+    items: ["Short-term (in-process, per-run)", "Long-term (persistent across runs)", "Entity (per-entity facts and history)", "Redis (default for long-term)", "Pinecone, Weaviate, Chroma (vector backends)", "Your own KV store (SQL, DynamoDB, etc.)"],
+    note_en: "Three memory tiers, each independently configured. Switch backends per tier without touching agent definitions.",
+    note_ko: "세 가지 메모리 계층이 각각 독립적으로 설정됩니다. 에이전트 정의를 건드리지 않고 계층별로 백엔드를 교체 가능합니다."
+  },
+  observability: {
+    name: "OBSERVABILITY", ko: "옵저버빌리티", color: "#4FC3D9",
+    via: "OpenTelemetry export",
+    items: ["Spans for agent.invoke, tool.call, llm.completion, guardrail.check, rbac.check", "Trace context propagates automatically across @listen stages", "Datadog APM (via OTel collector)", "Splunk Observability Cloud", "Grafana / Tempo / Loki stack", "Jaeger (self-hosted / dev)", "Your own Kafka pipeline"],
+    note_en: "OTel is the only protocol on the wire. Any OTel-compatible backend works — no vendor lock to the observability platform.",
+    note_ko: "와이어 위에서 사용하는 프로토콜은 OTel 하나뿐입니다. 어떤 OTel 호환 백엔드든 동작하며, 옵저버빌리티 플랫폼 종속이 없습니다."
+  },
+  identity: {
+    name: "IDENTITY", ko: "신원 / 인증", color: "#d9486f",
+    via: "Enterprise tier",
+    items: ["SAML 2.0 SSO (Okta, Azure AD, OneLogin, custom IdP)", "OIDC SSO (Auth0, Cognito, custom)", "SCIM 2.0 auto-provisioning (sync users/groups from IdP)", "Per-user execution context (RBAC matrix loaded at call time)", "Token revoke for emergency permission removal", "Audit log of every identity decision"],
+    note_en: "Same agent definition runs under different operator identities — memory, tool access, and data visibility all isolated per execution context.",
+    note_ko: "동일한 에이전트 정의가 운영자 신원별로 다르게 실행됩니다. 메모리, 도구 접근, 데이터 가시성 모두 실행 컨텍스트별로 격리됩니다."
+  },
+  storage: {
+    name: "STORAGE / RAG", ko: "스토리지 / RAG", color: "#4ade80",
+    via: "embeddings agnostic",
+    items: ["S3, GCS, Azure Blob — object storage for document corpora", "Local filesystem — for dev and air-gapped environments", "Existing data lake / lakehouse (parquet, Delta, Iceberg)", "Embedding-model agnostic (use any embedder)", "Vector indices (Pinecone, Weaviate, Chroma, pgvector)", "Bring-your-own RAG pipeline"],
+    note_en: "CrewAI does not lock into a specific RAG implementation. The Agent and Task layers see retrieval results, not the retrieval pipeline itself.",
+    note_ko: "CrewAI 는 특정 RAG 구현에 종속되지 않습니다. 에이전트와 태스크 계층은 검색 결과만 보며, 검색 파이프라인 자체는 다루지 않습니다."
+  },
+};
+
+function renderSpoke(spokeId) {
+  document.querySelectorAll('.int-spoke').forEach(s => s.classList.remove('active'));
+  const panel = document.getElementById('spoke-detail');
+  if (!spokeId) {
+    panel.innerHTML = `<div class="empty"><div class="icon">◉</div><div>Click a surface to inspect what plugs in there.<span class="ko">표면을 클릭해 어떤 항목이 연결되는지 확인하세요.</span></div></div>`;
+    return;
+  }
+  document.querySelector(`[data-spoke="${spokeId}"]`).classList.add('active');
+  const d = SPOKE_DATA[spokeId];
+  panel.innerHTML = `
+    <h3 style="color: ${d.color}; font-family: var(--mono); font-size: 16px; margin-bottom: 6px;">${d.name}</h3>
+    <div class="panel-ko">${d.ko}</div>
+    <span class="via" style="color: ${d.color}; border: 1px solid ${d.color}55; background: ${d.color}1a;">${d.via}</span>
+    <ul class="items">
+      ${d.items.map(it => `<li style="border-left-color: ${d.color};">${it}</li>`).join('')}
+    </ul>
+    <div class="note">
+      <span class="en">${d.note_en}</span>
+      <span class="ko">${d.note_ko}</span>
+    </div>
+  `;
+}
+
+document.querySelectorAll('.int-spoke').forEach(g => {
+  g.addEventListener('click', () => renderSpoke(g.dataset.spoke));
+});
+
+document.querySelectorAll('.matrix-filter button').forEach(b => {
+  b.addEventListener('click', () => {
+    const filter = b.dataset.filter;
+    document.querySelectorAll('.matrix-filter button').forEach(x => x.classList.toggle('active', x === b));
+    document.querySelectorAll('#cap-matrix tbody tr').forEach(tr => {
+      const oss = tr.dataset.oss === "1";
+      const ent = tr.dataset.ent === "1";
+      let show = true;
+      if (filter === "oss") show = oss;
+      if (filter === "enterprise") show = ent;
+      tr.classList.toggle('hidden', !show);
+    });
+  });
+});
+</script>
+
+</body>
+</html>
