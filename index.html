@@ -942,26 +942,61 @@ code {
     </div>
 
     <div class="detail-panel" id="guardrail-detail">
-      <h3 style="color: #F5A623;">Policy as code <span class="ko" style="color: var(--text-mute); font-family: var(--kor); font-size: 13px; font-style: italic; margin-left: 6px;">코드로서의 정책</span></h3>
+      <h3 style="color: #F5A623;">CrewAI APIs for each layer <span class="ko" style="color: var(--text-mute); font-family: var(--kor); font-size: 13px; font-style: italic; margin-left: 6px;">각 계층별 CrewAI API</span></h3>
       <p class="intro-line">
-        <span class="en">Each layer is a decorator + YAML policy pair. Diff-reviewable in Git, unit-testable, and immutable in audit logs once applied.</span>
-        <span class="ko">각 계층은 데코레이터 + YAML 정책 쌍입니다. Git 에서 리뷰 가능하고, 단위 테스트가 가능하며, 적용 후에는 감사 로그에 변조 불가 형태로 기록됩니다.</span>
+        <span class="en">Three CrewAI APIs cover the four layers — a <code>Task(guardrail=...)</code> parameter for task-output checks, and hook decorators from <code>crewai.hooks</code> for tool calls and LLM calls. Each gate auto-retries on <code>False</code> (task-output) or blocks (hooks).</span>
+        <span class="ko">세 가지 CrewAI API 가 네 계층을 모두 커버합니다 — task 출력 검사용 <code>Task(guardrail=...)</code> 파라미터, 그리고 도구 호출 및 LLM 호출용 <code>crewai.hooks</code> 의 훅 데코레이터. task 출력 가드레일은 False 반환 시 자동 재시도되며, 훅은 차단합니다.</span>
       </p>
       <dl>
         <div>
-          <dt>Decorators <span class="ko">데코레이터</span></dt>
-          <dd><pre><span class="kw">@before_guardrail</span>(policy=<span class="str">"pii.yaml"</span>)
-<span class="kw">@tool_guardrail</span>(policy=<span class="str">"tools.yaml"</span>)
-<span class="kw">@after_guardrail</span>(policy=<span class="str">"output.yaml"</span>)
-<span class="kw">def</span> handle_request(state):
-    <span class="com"># layers wrap the call automatically</span>
-    <span class="kw">return</span> run_crew(state)</pre></dd>
+          <dt>Task-output guardrail <span class="ko">Task 출력 가드레일</span></dt>
+          <dd><pre><span class="kw">from</span> crewai <span class="kw">import</span> Task
+
+<span class="kw">def</span> policy_guardrail(output):  <span class="com"># (TaskOutput) → (bool, value_or_error)</span>
+    <span class="kw">if</span> contains_unmasked_pii(output.raw):
+        <span class="kw">return</span> (<span class="kw">False</span>, <span class="str">"unmasked PII; regenerate"</span>)
+    <span class="kw">return</span> (<span class="kw">True</span>, output)
+
+task = Task(
+    description=<span class="str">"..."</span>,
+    expected_output=<span class="str">"..."</span>,
+    agent=supervisor,
+    guardrail=policy_guardrail,
+    guardrail_max_retries=<span class="str">3</span>,  <span class="com"># CrewAI auto-retries</span>
+)</pre></dd>
+        </div>
+        <div>
+          <dt>Tool-call guardrail <span class="ko">도구 호출 가드레일</span></dt>
+          <dd><pre><span class="kw">from</span> crewai.hooks <span class="kw">import</span> before_tool_call, after_tool_call
+
+<span class="kw">@before_tool_call</span>
+<span class="kw">def</span> rbac_check(ctx):  <span class="com"># ctx: ToolCallHookContext</span>
+    <span class="kw">if</span> ctx.tool_name <span class="kw">not in</span> allowed_for(ctx.persona):
+        <span class="kw">return</span> <span class="kw">False</span>  <span class="com"># blocks the call</span>
+
+<span class="kw">@after_tool_call</span>
+<span class="kw">def</span> sanitize(ctx):
+    <span class="kw">return</span> redact(ctx.result)  <span class="com"># str|None</span></pre></dd>
+        </div>
+        <div>
+          <dt>LLM-call guardrail <span class="ko">LLM 호출 가드레일</span></dt>
+          <dd><pre><span class="kw">from</span> crewai.hooks <span class="kw">import</span> before_llm_call, after_llm_call
+
+<span class="kw">@before_llm_call</span>
+<span class="kw">def</span> pii_scan(ctx):  <span class="com"># scan ctx.messages before send</span>
+    <span class="kw">if</span> has_unmasked_pii(ctx.messages):
+        <span class="kw">return</span> <span class="kw">False</span>
+    mask_in_place(ctx.messages)
+
+<span class="kw">@after_llm_call</span>
+<span class="kw">def</span> verify_grounded(ctx):
+    <span class="kw">return</span> cross_check(ctx.response, ctx.rag_citations)</pre></dd>
         </div>
         <div>
           <dt>Block reasons logged <span class="ko">차단 사유 기록</span></dt>
           <dd>
-            <span class="en">Every block records: layer, rule violated, run_id, trace ID, decision timestamp.</span>
-            <span class="ko" style="display: block; font-family: var(--kor); font-size: 12px; color: var(--text-mute); font-style: italic; margin-top: 6px;">모든 차단 기록: 계층, 위반 규칙, run_id, trace ID, 결정 시각.</span>
+            <span class="en">Every block records: layer, rule violated, run_id, trace ID, decision timestamp. Hooks emit OTel events automatically.</span>
+            <span class="ko" style="display: block; font-family: var(--kor); font-size: 12px; color: var(--text-mute); font-style: italic; margin-top: 6px;">모든 차단 기록: 계층, 위반 규칙, run_id, trace ID, 결정 시각. 훅은 OTel 이벤트를 자동 발생시킵니다.</span>
           </dd>
         </div>
         <div>
