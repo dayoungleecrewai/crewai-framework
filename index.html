@@ -1053,26 +1053,26 @@ task = Task(
 
         <!-- Top: file inputs -->
         <text x="50" y="35" font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#4FC3D9">INPUT FORMATS</text>
-        <text x="50" y="50" font-family="Noto Sans KR" font-size="10" fill="#8a92a6" font-style="italic">입력 포맷 (혼합)</text>
-        <g>
-          <rect x="30" y="60" width="90" height="40" rx="5" fill="#1a2030" stroke="#3a4259"/>
-          <text x="75" y="78" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#e6e9f0">PDF</text>
-          <text x="75" y="92" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#8a92a6" font-style="italic">신청서</text>
+        <text x="50" y="50" font-family="Noto Sans KR" font-size="10" fill="#8a92a6" font-style="italic">입력 포맷 (혼합 — 클릭)</text>
+        <g data-ocr-target="format-pdf">
+          <rect class="abs-rect" x="30" y="60" width="90" height="40" rx="5" fill="#1a2030" stroke="#3a4259"/>
+          <text x="75" y="78" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#e6e9f0" pointer-events="none">PDF</text>
+          <text x="75" y="92" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#8a92a6" font-style="italic" pointer-events="none">신청서</text>
         </g>
-        <g>
-          <rect x="130" y="60" width="90" height="40" rx="5" fill="#1a2030" stroke="#3a4259"/>
-          <text x="175" y="78" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#e6e9f0">HWP</text>
-          <text x="175" y="92" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#8a92a6" font-style="italic">한컴문서 (OLE)</text>
+        <g data-ocr-target="format-hwp">
+          <rect class="abs-rect" x="130" y="60" width="90" height="40" rx="5" fill="#1a2030" stroke="#3a4259"/>
+          <text x="175" y="78" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#e6e9f0" pointer-events="none">HWP</text>
+          <text x="175" y="92" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#8a92a6" font-style="italic" pointer-events="none">한컴문서 (OLE)</text>
         </g>
-        <g>
-          <rect x="230" y="60" width="90" height="40" rx="5" fill="#1a2030" stroke="#3a4259"/>
-          <text x="275" y="78" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#e6e9f0">PNG</text>
-          <text x="275" y="92" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#8a92a6" font-style="italic">스캔 이미지</text>
+        <g data-ocr-target="format-png">
+          <rect class="abs-rect" x="230" y="60" width="90" height="40" rx="5" fill="#1a2030" stroke="#3a4259"/>
+          <text x="275" y="78" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#e6e9f0" pointer-events="none">PNG</text>
+          <text x="275" y="92" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#8a92a6" font-style="italic" pointer-events="none">스캔 이미지</text>
         </g>
-        <g>
-          <rect x="330" y="60" width="90" height="40" rx="5" fill="#1a2030" stroke="#3a4259"/>
-          <text x="375" y="78" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#e6e9f0">DOCX</text>
-          <text x="375" y="92" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#8a92a6" font-style="italic">파트너 채널</text>
+        <g data-ocr-target="format-docx">
+          <rect class="abs-rect" x="330" y="60" width="90" height="40" rx="5" fill="#1a2030" stroke="#3a4259"/>
+          <text x="375" y="78" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#e6e9f0" pointer-events="none">DOCX</text>
+          <text x="375" y="92" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#8a92a6" font-style="italic" pointer-events="none">파트너 채널</text>
         </g>
 
         <!-- arrows down to dispatcher -->
@@ -1090,11 +1090,11 @@ task = Task(
         <line x1="225" y1="190" x2="225" y2="215" stroke="#3a4259" stroke-width="1.3" marker-end="url(#o-arr)"/>
 
         <!-- OCR engine (swappable) -->
-        <g>
-          <rect x="60" y="218" width="330" height="60" rx="8" fill="#1a2030" stroke="#4FC3D9" stroke-width="1.5"/>
-          <text x="225" y="240" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#e6e9f0">OCR ENGINE (swappable)</text>
-          <text x="225" y="258" text-anchor="middle" font-family="Inter" font-size="10" fill="#8a92a6" font-style="italic">Tesseract 'kor' · Naver Cloud OCR · SDS Brity OCR · Azure Form</text>
-          <text x="225" y="272" text-anchor="middle" font-family="Noto Sans KR" font-size="10" fill="#8a92a6" font-style="italic">동일 OCRTool() 인터페이스 — 엔진 교체 가능</text>
+        <g data-ocr-target="engine">
+          <rect class="abs-rect" x="60" y="218" width="330" height="60" rx="8" fill="#1a2030" stroke="#4FC3D9" stroke-width="1.5"/>
+          <text x="225" y="240" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#e6e9f0" pointer-events="none">OCR ENGINE (swappable)</text>
+          <text x="225" y="258" text-anchor="middle" font-family="Inter" font-size="10" fill="#8a92a6" font-style="italic" pointer-events="none">Tesseract 'kor' · Naver Cloud OCR · SDS Brity OCR · Azure Form</text>
+          <text x="225" y="272" text-anchor="middle" font-family="Noto Sans KR" font-size="10" fill="#8a92a6" font-style="italic" pointer-events="none">동일 OCRTool() 인터페이스 — 엔진 교체 가능 (클릭)</text>
         </g>
         <line x1="225" y1="278" x2="225" y2="305" stroke="#3a4259" stroke-width="1.3" marker-end="url(#o-arr)"/>
 
@@ -1150,42 +1150,8 @@ task = Task(
       </svg>
     </div>
 
-    <div class="detail-panel">
-      <h3 style="color: #4FC3D9;">Engine + abstraction <span class="ko" style="color: var(--text-mute); font-family: var(--kor); font-size: 13px; font-style: italic; margin-left: 6px;">엔진 + 추상화</span></h3>
-      <p class="intro-line">
-        <span class="en">The OCR engine itself is swappable behind a single <code>OCRTool()</code> interface. The framework's value is in field-level confidence flowing into routing — not in the OCR engine choice.</span>
-        <span class="ko">OCR 엔진은 단일 <code>OCRTool()</code> 인터페이스 뒤에서 교체 가능합니다. 프레임워크의 가치는 필드 단위 신뢰도가 라우팅에 흐른다는 점입니다 — 엔진 선택이 아닙니다.</span>
-      </p>
-      <dl>
-        <div>
-          <dt>Format support <span class="ko">포맷 지원</span></dt>
-          <dd>
-            <span class="en">PDF · HWP (OLE detection via olefile) · scanned PNG/JPG · DOCX · TIFF · HWP-X (addable).</span>
-            <span class="ko" style="display: block; font-family: var(--kor); font-size: 12px; color: var(--text-mute); font-style: italic; margin-top: 6px;">PDF · HWP (olefile 로 OLE 감지) · 스캔 PNG/JPG · DOCX · TIFF · HWP-X (추가 가능).</span>
-          </dd>
-        </div>
-        <div>
-          <dt>Confidence sources <span class="ko">신뢰도 채널</span></dt>
-          <dd>
-            <span class="en">(1) OCR engine per-character confidence aggregated to field boundary, (2) lightweight verifier cross-checking field against schema. Conservative weighted combine.</span>
-            <span class="ko" style="display: block; font-family: var(--kor); font-size: 12px; color: var(--text-mute); font-style: italic; margin-top: 6px;">(1) OCR 엔진의 글자별 confidence 를 필드 boundary 별 집계, (2) 가벼운 검증기가 schema 와 cross-check. 보수적 가중 평균.</span>
-          </dd>
-        </div>
-        <div>
-          <dt>Korean handwriting <span class="ko">한국어 손글씨</span></dt>
-          <dd>
-            <span class="en">Formed handwriting 70-85% · free handwriting 50-70%. Threshold-based field flagging means rough fields are isolated automatically.</span>
-            <span class="ko" style="display: block; font-family: var(--kor); font-size: 12px; color: var(--text-mute); font-style: italic; margin-top: 6px;">정자 손글씨 70-85% · 자유 손글씨 50-70%. 임계값 기반 필드 플래그로 거친 필드만 자동 분리됩니다.</span>
-          </dd>
-        </div>
-        <div>
-          <dt>Latency <span class="ko">지연 시간</span></dt>
-          <dd>
-            <span class="en">Async — first stage responds, downstream stages on callback. Avg &lt; 30s per page.</span>
-            <span class="ko" style="display: block; font-family: var(--kor); font-size: 12px; color: var(--text-mute); font-style: italic; margin-top: 6px;">비동기 처리 — 첫 단계 응답 후 후속 단계는 callback. 평균 30초 내 1 페이지.</span>
-          </dd>
-        </div>
-      </dl>
+    <div class="detail-panel" id="ocr-detail">
+      <!-- content rendered by renderOcr() — defaults to the engine + abstraction overview -->
     </div>
   </div>
 
@@ -1553,7 +1519,7 @@ task = Task(
       </div>
     </div>
 
-    <a class="example-cta" href="https://dayoungleecrewai.github.io/loan-triage-architecture/">
+    <a class="example-cta" href="loan_triage_architecture.html">
       <span>Explore the example as an interactive viz<span class="ko">이 예시를 인터랙티브 시각화로 탐색</span></span>
       <span style="font-size: 18px;">→</span>
     </a>
@@ -1804,6 +1770,291 @@ function renderSpoke(spokeId) {
 document.querySelectorAll('.int-spoke').forEach(g => {
   g.addEventListener('click', () => renderSpoke(g.dataset.spoke));
 });
+
+// ===== GUARDRAIL LAYER DETAILS =====
+const GUARDRAIL_DATA = {
+  input: {
+    name: "LAYER 1 · INPUT", ko: "입력 단계 가드레일", color: "#F5A623",
+    behavior_en: "Blocks before any LLM call. Scans the incoming context — masks or rejects PII, jailbreak signatures, oversized payloads, and encoding tricks. No model call happens on a failed scan.",
+    behavior_ko: "어떤 LLM 호출도 일어나기 전에 차단. 입력 컨텍스트를 스캔하여 PII, jailbreak 시그니처, 과도한 페이로드, 인코딩 트릭을 마스킹하거나 거부. 차단 시 모델 호출 자체가 발생하지 않음.",
+    crewai_api_en: "@before_llm_call from crewai.hooks",
+    crewai_api_ko: "crewai.hooks 의 @before_llm_call",
+    code: `<span class="kw">from</span> crewai.hooks <span class="kw">import</span> before_llm_call
+
+<span class="kw">@before_llm_call</span>
+<span class="kw">def</span> pii_scan(ctx):  <span class="com"># ctx.messages mutable in place</span>
+    <span class="kw">if</span> has_unmasked_pii(ctx.messages):
+        <span class="kw">return</span> <span class="kw">False</span>   <span class="com"># blocks the call</span>
+    mask_in_place(ctx.messages)
+    <span class="com"># falls through → LLM sees masked context</span>`,
+    otel: "guardrail.l1_input_pii.*",
+    examples_en: ["PII detection (RRN, phone, account, card, email)", "Length / token-count cap", "Encoding validation (UTF-8, no smuggled control chars)", "Jailbreak signature matching"],
+    examples_ko: ["PII 검출 (주민번호 · 전화 · 계좌 · 카드 · 이메일)", "길이 / 토큰 수 제한", "인코딩 검증", "Jailbreak 시그니처 매칭"],
+  },
+  tool: {
+    name: "LAYER 2 · TOOL_CALL", ko: "도구 호출 가드레일", color: "#4FC3D9",
+    behavior_en: "Blocks before any tool's _run executes. Checks the active persona's allow-list, parameter sanitization, rate limits, and scope. Returns a structured error JSON to the LLM rather than raising — preventing the LLM from hallucinating fake results.",
+    behavior_ko: "도구의 _run 실행 전에 차단. 활성 페르소나의 화이트리스트, 파라미터 sanitization, rate limit, 범위를 검사. 예외를 던지지 않고 구조화된 오류 JSON 을 LLM 에 반환 — LLM 이 가짜 결과를 환각하는 것을 방지.",
+    crewai_api_en: "@before_tool_call + @after_tool_call from crewai.hooks",
+    crewai_api_ko: "crewai.hooks 의 @before_tool_call + @after_tool_call",
+    code: `<span class="kw">from</span> crewai.hooks <span class="kw">import</span> before_tool_call, after_tool_call
+
+<span class="kw">@before_tool_call</span>
+<span class="kw">def</span> rbac_check(ctx):
+    <span class="kw">if</span> ctx.tool_name <span class="kw">not in</span> allowed_for(ctx.persona):
+        <span class="kw">return</span> <span class="kw">False</span>   <span class="com"># blocks the tool call</span>
+
+<span class="kw">@after_tool_call</span>
+<span class="kw">def</span> sanitize(ctx):
+    <span class="kw">return</span> redact(ctx.result)  <span class="com"># str|None replaces result</span>`,
+    otel: "guardrail.l2_tool_rbac.*",
+    examples_en: ["Persona × tool allow-list (RBAC)", "Parameter sanitization (path traversal, SQL injection)", "Rate limit per tool per persona", "Output redaction"],
+    examples_ko: ["페르소나 × 도구 화이트리스트 (RBAC)", "파라미터 sanitization (path traversal, SQL injection)", "페르소나별 도구별 rate limit", "출력 redaction"],
+  },
+  hallu: {
+    name: "LAYER 3 · HALLUCINATION", ko: "환각 검증", color: "#fbbf24",
+    behavior_en: "Marks for review — does not block by default. Cross-checks the model's reasoning against the RAG citations it claimed to use. Fires ⚠ REVIEW on the trace if cross-check fails; downstream code (or HITL queue) decides whether to halt or proceed.",
+    behavior_ko: "기본적으로 차단하지 않고 검토 마킹. 모델 추론을 모델이 사용했다고 주장한 RAG 인용과 교차 검증. cross-check 실패 시 trace 에 ⚠ REVIEW 발화 — 후속 코드 (또는 HITL 큐) 가 정지 또는 진행을 결정.",
+    crewai_api_en: "@after_llm_call from crewai.hooks (or Task(guardrail=fn) for verify-after-output)",
+    crewai_api_ko: "crewai.hooks 의 @after_llm_call (또는 출력 후 검증용 Task(guardrail=fn))",
+    code: `<span class="kw">from</span> crewai.hooks <span class="kw">import</span> after_llm_call
+
+<span class="kw">@after_llm_call</span>
+<span class="kw">def</span> verify_grounded(ctx):
+    <span class="com"># cross-check claims vs RAG citations</span>
+    score = ground_score(ctx.response, ctx.rag_citations)
+    <span class="kw">if</span> score &gt; HALLUCINATION_THRESHOLD:
+        emit_review(ctx, score)
+        <span class="kw">return</span> ctx.response  <span class="com"># marked, not blocked</span>
+    <span class="kw">return</span> ctx.response`,
+    otel: "guardrail.l3_hallucination.*",
+    examples_en: ["RAG citation cross-check", "Claim-by-claim grounding score", "Confidence-weighted ⚠ REVIEW marking", "Optional HITL escalation on score breach"],
+    examples_ko: ["RAG 인용 교차 검증", "주장별 grounding 점수", "신뢰도 가중 ⚠ REVIEW 마킹", "점수 초과 시 HITL escalation (선택)"],
+  },
+  output: {
+    name: "LAYER 4 · OUTPUT", ko: "출력 단계 가드레일", color: "#4ade80",
+    behavior_en: "The canonical CrewAI API — runs after a Task produces output. Returns (True, output) to pass or (False, error_msg) to block. On False, CrewAI auto-retries the task up to guardrail_max_retries with the error fed back to the agent.",
+    behavior_ko: "정식 CrewAI API — Task 출력 생성 후 실행. 통과 시 (True, output), 차단 시 (False, error_msg) 반환. False 시 CrewAI 가 guardrail_max_retries 까지 자동 재시도하며, 오류 메시지가 에이전트에게 피드백됨.",
+    crewai_api_en: "Task(guardrail=fn, guardrail_max_retries=3) — parameter, no decorator",
+    crewai_api_ko: "Task(guardrail=fn, guardrail_max_retries=3) — 파라미터, 데코레이터 아님",
+    code: `<span class="kw">from</span> crewai <span class="kw">import</span> Task
+
+<span class="kw">def</span> policy_guardrail(output):  <span class="com"># TaskOutput</span>
+    <span class="kw">if</span> contains_unmasked_pii(output.raw):
+        <span class="kw">return</span> (<span class="kw">False</span>, <span class="str">"PII leak — re-emit with mask"</span>)
+    <span class="kw">return</span> (<span class="kw">True</span>, output)
+
+task = Task(
+    description=<span class="str">"..."</span>,
+    expected_output=<span class="str">"..."</span>,
+    agent=supervisor,
+    guardrail=policy_guardrail,
+    guardrail_max_retries=<span class="str">3</span>,  <span class="com"># auto-retry on False</span>
+)`,
+    otel: "guardrail.l4_output_policy.*",
+    examples_en: ["PII redaction check on final output", "Schema consistency (Pydantic + regex)", "Prohibited terms / non-target language", "Currency / unit policy (e.g., KRW-only)"],
+    examples_ko: ["최종 출력의 PII redaction 검증", "스키마 일관성 (Pydantic + regex)", "금지어 / 비대상 언어", "통화 / 단위 정책 (예: KRW only)"],
+  },
+};
+
+function renderGuardrail(layerId) {
+  // remove active state from all layer rects
+  document.querySelectorAll('[data-glayer] .abs-rect').forEach(r => r.classList.remove('active'));
+  const panel = document.getElementById('guardrail-detail');
+  if (!layerId) {
+    panel.innerHTML = `<div class="empty"><div class="icon">◉</div><div>Click a layer in the diagram to inspect its CrewAI API.<span class="ko">계층을 클릭해 해당 CrewAI API 를 확인하세요.</span></div></div>`;
+    return;
+  }
+  document.querySelector(`[data-glayer="${layerId}"] .abs-rect`).classList.add('active');
+  const d = GUARDRAIL_DATA[layerId];
+  panel.innerHTML = `
+    <h3 style="color: ${d.color};">${d.name}</h3>
+    <div class="panel-ko">${d.ko}</div>
+    <p class="intro-line">
+      <span class="en">${d.behavior_en}</span>
+      <span class="ko">${d.behavior_ko}</span>
+    </p>
+    <dl>
+      <div>
+        <dt>CrewAI API <span class="ko">CrewAI API</span></dt>
+        <dd>
+          <span class="en"><code>${d.crewai_api_en}</code></span>
+          <span class="ko" style="display: block; font-family: var(--kor); font-size: 12px; color: var(--text-mute); font-style: italic; margin-top: 4px;">${d.crewai_api_ko}</span>
+        </dd>
+      </div>
+      <div>
+        <dt>Code shape <span class="ko">코드 형태</span></dt>
+        <dd><pre>${d.code}</pre></dd>
+      </div>
+      <div>
+        <dt>Typical checks <span class="ko">대표 검사 항목</span></dt>
+        <dd>
+          <ul>${d.examples_en.map((e, i) => `<li><span class="en">${e}</span><span class="ko">${d.examples_ko[i]}</span></li>`).join('')}</ul>
+        </dd>
+      </div>
+      <div>
+        <dt>OTel event <span class="ko">OTel 이벤트</span></dt>
+        <dd><code style="color: ${d.color};">${d.otel}</code></dd>
+      </div>
+    </dl>
+  `;
+}
+
+document.querySelectorAll('[data-glayer]').forEach(g => {
+  g.style.cursor = 'pointer';
+  g.addEventListener('click', () => renderGuardrail(g.dataset.glayer));
+});
+
+// initialize guardrail panel to empty/prompt state
+renderGuardrail(null);
+
+// ===== OCR TARGET DETAILS =====
+const OCR_DATA = {
+  "format-pdf": {
+    name: "PDF", ko: "신청서 — 가장 흔한 포맷", color: "#4FC3D9",
+    intro_en: "Two paths inside one extension. Native PDFs (text layer present) are parsed directly with pypdf. Scanned PDFs (image-only) fall back to Vision OCR when pypdf returns empty text — this is the Sample 5 scenario in the loan triage demo.",
+    intro_ko: "한 확장자 안의 두 가지 경로. 텍스트 레이어가 있는 native PDF 는 pypdf 로 직접 파싱. 스캔 PDF (이미지만) 는 pypdf 가 빈 텍스트를 반환하면 Vision OCR 로 폴백 — loan_triage 데모의 Sample 5 시나리오.",
+    fields: [
+      ["Extraction path", "pypdf (native) → Vision OCR (fallback)", "추출 경로"],
+      ["Detection signal", "len(extracted_text) == 0 after pypdf", "감지 신호"],
+      ["Typical confidence", "Native: 0.97-0.99 · Scanned: 0.7-0.9", "일반 신뢰도"],
+      ["Failure mode", "Mixed PDF (text + image regions) — handled by retry pipeline", "실패 모드"],
+    ],
+    sample_en: "Sample 1 (한라테크) — native PDF, all fields ≥ 0.95. Sample 5 — scanned PDF, pypdf fails → Vision OCR triggers, some fields drop to 0.6-0.8.",
+    sample_ko: "Sample 1 (한라테크) — native PDF, 모든 필드 ≥ 0.95. Sample 5 — 스캔 PDF, pypdf 실패 → Vision OCR 발동, 일부 필드 0.6-0.8 로 하락.",
+  },
+  "format-hwp": {
+    name: "HWP", ko: "한컴오피스 문서 — 한국 전용", color: "#4FC3D9",
+    intro_en: "Korean-only office format banks must handle. Detected via OLE2 stream signature using olefile, body extracted with pyhwp/hwp5. SDS Brity OCR also handles HWP natively as a direct alternative.",
+    intro_ko: "한국 은행이 반드시 처리해야 하는 한국 전용 오피스 포맷. olefile 로 OLE2 스트림 시그니처 감지, pyhwp/hwp5 로 본문 추출. SDS Brity OCR 도 HWP 를 네이티브로 지원하는 직접 대안.",
+    fields: [
+      ["Detection", "olefile OLE2 magic bytes", "감지"],
+      ["Extraction", "pyhwp / hwp5 (body) · SDS Brity OCR (native)", "추출"],
+      ["Edge cases", "Embedded images / tables → fallback to image OCR per region", "예외 케이스"],
+      ["Typical confidence", "Body text: 0.92-0.98 · Embedded scans: 0.6-0.85", "일반 신뢰도"],
+    ],
+    sample_en: "Sample 2 (동백제조) — HWP with structured table, fields parse cleanly. Common in financial / public-sector documents that don't translate to PDF without loss.",
+    sample_ko: "Sample 2 (동백제조) — 구조화된 테이블을 가진 HWP, 필드가 깨끗하게 파싱. PDF 로 변환 시 손실이 있어 금융·공공 부문에서 흔히 사용.",
+  },
+  "format-png": {
+    name: "PNG (Scanned Image)", ko: "스캔 이미지 — 휴대폰 촬영도 포함", color: "#4FC3D9",
+    intro_en: "Pure image input — no text layer. Tesseract 'kor' model by default, swappable to Naver Cloud OCR or SDS Brity OCR for production-grade Korean accuracy. Image quality dominates confidence: 300 DPI clean scan ≈ 0.95; handheld phone photo ≈ 0.7-0.85.",
+    intro_ko: "순수 이미지 입력 — 텍스트 레이어 없음. 기본 Tesseract 'kor' 모델, 프로덕션급 한국어 정확도 위해 Naver Cloud OCR 또는 SDS Brity OCR 로 교체 가능. 이미지 품질이 신뢰도를 좌우 — 300 DPI 깨끗한 스캔 ≈ 0.95, 손폰 촬영 ≈ 0.7-0.85.",
+    fields: [
+      ["Default engine", "Tesseract 'kor' (offline, free, baseline)", "기본 엔진"],
+      ["Production swap", "Naver Cloud OCR · SDS Brity OCR · Azure Form Recognizer", "프로덕션 교체"],
+      ["Preprocessing", "Auto-rotate · deskew · contrast normalization", "전처리"],
+      ["Handwriting", "Formed: 70-85% · Free-form: 50-70%", "손글씨"],
+    ],
+    sample_en: "Sample 3 (개인 신용대출, 540점) — scanned PNG. Free-form handwritten amount field drops to ~0.6 → triggers field-level HITL routing while clean printed fields continue.",
+    sample_ko: "Sample 3 (개인 신용대출, 540점) — 스캔 PNG. 자유 손글씨 금액 필드가 ~0.6 으로 하락 → 필드 단위 HITL 라우팅 발동, 깨끗한 인쇄 필드는 자동 진행.",
+  },
+  "format-docx": {
+    name: "DOCX", ko: "Word — 파트너 채널 양식", color: "#4FC3D9",
+    intro_en: "Common for partner-channel submissions where the partner generated the application from a template. Direct XML parsing — no OCR needed unless the partner embedded images. Highest baseline confidence of any format since structure is explicit.",
+    intro_ko: "파트너 채널 제출에서 흔함 — 파트너가 템플릿에서 신청서를 생성. 직접 XML 파싱 — 이미지 임베드가 없는 한 OCR 불필요. 구조가 명시적이라 모든 포맷 중 가장 높은 기본 신뢰도.",
+    fields: [
+      ["Extraction", "python-docx (XML structure)", "추출"],
+      ["Typical confidence", "0.96-0.99 across all fields (structure is explicit)", "일반 신뢰도"],
+      ["Edge cases", "Embedded images / OLE objects → per-element OCR fallback", "예외 케이스"],
+      ["Channel signal", "Partner-channel applications often arrive in DOCX", "채널 신호"],
+    ],
+    sample_en: "Sample 4 (동백제조, partner channel) — same applicant as Sample 2 but submitted via partner DOCX template. Structured fields parse with high confidence.",
+    sample_ko: "Sample 4 (동백제조, 파트너 채널) — Sample 2 와 동일 신청자, 파트너 DOCX 템플릿으로 제출. 구조화 필드가 높은 신뢰도로 파싱.",
+  },
+  "engine": {
+    name: "OCR ENGINE", ko: "엔진 (교체 가능)", color: "#4FC3D9",
+    intro_en: "The engine itself is swappable behind a single OCRTool() interface. The framework's value is in field-level confidence flowing into routing — not in which engine you picked. Engine choice optimizes for cost, language accuracy, deployment posture (cloud vs on-prem), and existing vendor relationship.",
+    intro_ko: "엔진은 단일 OCRTool() 인터페이스 뒤에서 교체 가능. 프레임워크의 가치는 필드 단위 신뢰도가 라우팅에 흐른다는 점 — 어느 엔진을 선택하느냐가 아님. 엔진 선택은 비용, 언어 정확도, 배포 형태 (클라우드 vs 온프레미스), 기존 벤더 관계에 따라 최적화.",
+    fields: [
+      ["Tesseract 'kor'", "Open-source · offline · free · baseline Korean accuracy", "오픈소스 · 오프라인 · 무료 · 기본 한국어 정확도"],
+      ["Naver Cloud OCR", "Korean-tuned · pay-per-page · highest Korean handwriting accuracy", "한국어 튜닝 · 페이지당 과금 · 최고 한국어 손글씨 정확도"],
+      ["SDS Brity OCR", "SDS-native · HWP native support · enterprise integration", "SDS 네이티브 · HWP 네이티브 지원 · 엔터프라이즈 통합"],
+      ["Azure Form Recognizer", "Multi-cloud · prebuilt receipt/invoice models · form-aware", "멀티 클라우드 · 사전 빌드 모델 · 양식 인식"],
+    ],
+    sample_en: "Demo runs Tesseract 'kor' by default. For an SDS engagement, the natural swap is SDS Brity OCR — same OCRTool() interface, zero code changes in the agents or Flow.",
+    sample_ko: "데모는 기본 Tesseract 'kor' 사용. SDS 와의 협업에서는 자연스러운 교체는 SDS Brity OCR — 동일 OCRTool() 인터페이스, 에이전트나 Flow 의 코드 변경 0.",
+  },
+};
+
+function renderOcr(targetId) {
+  document.querySelectorAll('[data-ocr-target] .abs-rect').forEach(r => r.classList.remove('active'));
+  const panel = document.getElementById('ocr-detail');
+  if (!targetId) {
+    // default — the static "Engine + abstraction" overview
+    panel.innerHTML = `
+      <h3 style="color: #4FC3D9;">Engine + abstraction <span class="ko" style="color: var(--text-mute); font-family: var(--kor); font-size: 13px; font-style: italic; margin-left: 6px;">엔진 + 추상화</span></h3>
+      <p class="intro-line">
+        <span class="en">The OCR engine itself is swappable behind a single <code>OCRTool()</code> interface. The framework's value is in field-level confidence flowing into routing — not in the OCR engine choice. Click any input format or the engine box to inspect details.</span>
+        <span class="ko">OCR 엔진은 단일 <code>OCRTool()</code> 인터페이스 뒤에서 교체 가능합니다. 프레임워크의 가치는 필드 단위 신뢰도가 라우팅에 흐른다는 점입니다 — 엔진 선택이 아닙니다. 입력 포맷 또는 엔진 박스를 클릭해 상세 정보를 확인하세요.</span>
+      </p>
+      <dl>
+        <div>
+          <dt>Format support <span class="ko">포맷 지원</span></dt>
+          <dd>
+            <span class="en">PDF (native + scanned) · HWP (OLE detection via olefile) · scanned PNG/JPG · DOCX · TIFF · HWP-X (addable).</span>
+            <span class="ko" style="display: block; font-family: var(--kor); font-size: 12px; color: var(--text-mute); font-style: italic; margin-top: 6px;">PDF (네이티브 + 스캔) · HWP (olefile 로 OLE 감지) · 스캔 PNG/JPG · DOCX · TIFF · HWP-X (추가 가능).</span>
+          </dd>
+        </div>
+        <div>
+          <dt>Confidence sources <span class="ko">신뢰도 채널</span></dt>
+          <dd>
+            <span class="en">(1) OCR engine per-character confidence aggregated to field boundary, (2) lightweight verifier cross-checking field against schema. Conservative weighted combine.</span>
+            <span class="ko" style="display: block; font-family: var(--kor); font-size: 12px; color: var(--text-mute); font-style: italic; margin-top: 6px;">(1) OCR 엔진의 글자별 confidence 를 필드 boundary 별 집계, (2) 가벼운 검증기가 schema 와 cross-check. 보수적 가중 평균.</span>
+          </dd>
+        </div>
+        <div>
+          <dt>Korean handwriting <span class="ko">한국어 손글씨</span></dt>
+          <dd>
+            <span class="en">Formed handwriting 70-85% · free handwriting 50-70%. Threshold-based field flagging means rough fields are isolated automatically.</span>
+            <span class="ko" style="display: block; font-family: var(--kor); font-size: 12px; color: var(--text-mute); font-style: italic; margin-top: 6px;">정자 손글씨 70-85% · 자유 손글씨 50-70%. 임계값 기반 필드 플래그로 거친 필드만 자동 분리됩니다.</span>
+          </dd>
+        </div>
+        <div>
+          <dt>Latency <span class="ko">지연 시간</span></dt>
+          <dd>
+            <span class="en">Async — first stage responds, downstream stages on callback. Avg &lt; 30s per page.</span>
+            <span class="ko" style="display: block; font-family: var(--kor); font-size: 12px; color: var(--text-mute); font-style: italic; margin-top: 6px;">비동기 처리 — 첫 단계 응답 후 후속 단계는 callback. 평균 30초 내 1 페이지.</span>
+          </dd>
+        </div>
+      </dl>
+    `;
+    return;
+  }
+  document.querySelector(`[data-ocr-target="${targetId}"] .abs-rect`).classList.add('active');
+  const d = OCR_DATA[targetId];
+  panel.innerHTML = `
+    <h3 style="color: ${d.color};">${d.name}</h3>
+    <div class="panel-ko">${d.ko}</div>
+    <p class="intro-line">
+      <span class="en">${d.intro_en}</span>
+      <span class="ko">${d.intro_ko}</span>
+    </p>
+    <dl>
+      ${d.fields.map(f => `
+        <div>
+          <dt>${f[0]} <span class="ko">${f[2]}</span></dt>
+          <dd><span class="en">${f[1]}</span></dd>
+        </div>
+      `).join('')}
+      <div>
+        <dt>From the demo <span class="ko">데모 상의 사례</span></dt>
+        <dd>
+          <span class="en">${d.sample_en}</span>
+          <span class="ko" style="display: block; font-family: var(--kor); font-size: 12px; color: var(--text-mute); font-style: italic; margin-top: 6px;">${d.sample_ko}</span>
+        </dd>
+      </div>
+    </dl>
+  `;
+}
+
+document.querySelectorAll('[data-ocr-target]').forEach(g => {
+  g.style.cursor = 'pointer';
+  g.addEventListener('click', () => renderOcr(g.dataset.ocrTarget));
+});
+
+// initialize OCR panel to default overview
+renderOcr(null);
 
 document.querySelectorAll('.matrix-filter button').forEach(b => {
   b.addEventListener('click', () => {
