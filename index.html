@@ -450,29 +450,29 @@ code {
       <span class="ko">CrewAI 프레임워크</span>
     </h1>
     <p class="one-liner">
-      <span class="en">A code-first runtime for multi-agent systems. Four nested abstractions, three execution shapes, six integration surfaces.</span>
-      <span class="ko">멀티에이전트 시스템을 위한 코드 우선 런타임. 네 개의 중첩 추상화, 세 가지 실행 형태, 여섯 가지 연동 표면.</span>
+      <span class="en">A code-first runtime for multi-agent systems. Composable primitives (Agent · Task · Crew · Flow), three execution shapes, six integration surfaces. Crew and Flow are independent — either can run on its own.</span>
+      <span class="ko">멀티에이전트 시스템을 위한 코드 우선 런타임. 조합 가능한 기본 단위 (Agent · Task · Crew · Flow), 세 가지 실행 형태, 여섯 가지 연동 표면. Crew 와 Flow 는 독립적 — 각각 단독으로 실행 가능.</span>
     </p>
 
     <div class="layer-strip">
-      <div class="layer-chip">
-        <div class="label">FLOW</div>
-        <div class="sub">Orchestration · state machine</div>
-        <div class="sub-ko">오케스트레이션 · 상태 머신</div>
-      </div>
-      <div class="contains">⊃</div>
-      <div class="layer-chip l2">
-        <div class="label">CREW</div>
-        <div class="sub">Multi-agent execution</div>
-        <div class="sub-ko">다중 에이전트 실행</div>
-      </div>
-      <div class="contains">⊃</div>
       <div class="layer-chip l3">
         <div class="label">AGENT + TASK</div>
-        <div class="sub">Typed work unit + actor</div>
-        <div class="sub-ko">타입 지정 업무 단위 + 액터</div>
+        <div class="sub">Primitives — actor + typed work unit</div>
+        <div class="sub-ko">기본 단위 — 액터 + 타입 지정 업무 단위</div>
       </div>
-      <div class="contains">⊃</div>
+      <div class="contains" style="font-size: 16px; color: var(--text-mute);">·</div>
+      <div class="layer-chip">
+        <div class="label">CREW</div>
+        <div class="sub">Execution unit — .kickoff() runs standalone</div>
+        <div class="sub-ko">실행 단위 — .kickoff() 으로 단독 실행</div>
+      </div>
+      <div class="contains" style="font-size: 13px; color: var(--text-dim); font-family: var(--mono); letter-spacing: 1px;">or / 또는</div>
+      <div class="layer-chip l2">
+        <div class="label">FLOW</div>
+        <div class="sub">Optional orchestrator — state machine</div>
+        <div class="sub-ko">선택적 오케스트레이터 — 상태 머신</div>
+      </div>
+      <div class="contains" style="font-size: 16px; color: var(--text-mute);">·</div>
       <div class="layer-chip l4">
         <div class="label">TOOLS · MEMORY · LLM</div>
         <div class="sub">Integration surface</div>
@@ -501,87 +501,124 @@ code {
       <span class="ko">중첩된 계층 — 외층이 내층을 감싼다</span>
     </h2>
     <p class="intro">
-      <span class="en">Outer wraps inner. Each layer adds capabilities without removing the ones below. Click any rectangle to inspect what that layer adds.</span>
-      <span class="ko">바깥 계층이 안쪽 계층을 감쌉니다. 각 계층은 기능을 추가할 뿐, 아래 계층의 기능을 제거하지 않습니다. 사각형을 클릭하면 해당 계층이 무엇을 더하는지 확인할 수 있습니다.</span>
+      <span class="en">Agent → Task → Crew is the agent execution path; a Crew runs standalone via <code>.kickoff()</code>. Flow is a separate orchestration primitive — it can wrap a Crew, multiple Crews, or just plain Python. The diagram below shows one common composition (Flow wrapping a Crew), but the layers are independent — Crew or Flow can run on its own. Click any rectangle to inspect.</span>
+      <span class="ko">Agent → Task → Crew 는 에이전트 실행 경로 — Crew 는 <code>.kickoff()</code> 으로 단독 실행됩니다. Flow 는 별개의 오케스트레이션 기본 단위 — Crew 한 개, 여러 개, 또는 일반 Python 만 감쌀 수도 있습니다. 아래 다이어그램은 가장 흔한 조합 (Flow 가 Crew 를 감싸는 형태) 이지만, 각 계층은 독립적 — Crew 나 Flow 모두 단독 실행 가능. 사각형을 클릭해 확인하세요.</span>
     </p>
   </div>
 
   <div class="abs-wrap">
     <div class="abs-diagram">
-      <svg class="abs-svg" viewBox="0 0 700 500" preserveAspectRatio="xMidYMid meet">
-        <g data-layer="flow">
-          <rect class="abs-rect flow" x="10" y="10" width="680" height="480" rx="12" />
-          <text class="abs-label" x="28" y="38" fill="#F5A623" font-size="15">FLOW</text>
-          <text class="abs-sub" x="28" y="54">State machine wrapping Crews + non-Crew Python</text>
-          <text class="abs-sub-ko" x="28" y="68">크루 + 일반 Python 코드를 감싸는 상태 머신</text>
-          <g pointer-events="none">
-            <rect class="abs-chip" x="28" y="78" width="78" height="22" rx="3" />
-            <text class="abs-chip-text" x="67" y="93">@start</text>
-            <rect class="abs-chip" x="112" y="78" width="78" height="22" rx="3" />
-            <text class="abs-chip-text" x="151" y="93">@listen</text>
-            <rect class="abs-chip" x="196" y="78" width="78" height="22" rx="3" />
-            <text class="abs-chip-text" x="235" y="93">@router</text>
-            <rect class="abs-chip" x="280" y="78" width="78" height="22" rx="3" />
-            <text class="abs-chip-text" x="319" y="93">@persist</text>
-            <rect class="abs-chip" x="364" y="78" width="78" height="22" rx="3" />
-            <text class="abs-chip-text" x="403" y="93">or_(...)</text>
-            <rect class="abs-chip" x="448" y="78" width="120" height="22" rx="3" />
-            <text class="abs-chip-text" x="508" y="93">kickoff_async()</text>
-          </g>
-        </g>
+      <svg class="abs-svg" viewBox="0 0 700 560" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <marker id="abs-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#3a4259"/>
+          </marker>
+          <marker id="abs-arr-dash" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#5b8def"/>
+          </marker>
+        </defs>
 
+        <!-- Top row: CREW (left) | FLOW (right) — PEERS, NOT NESTED -->
+        <text x="350" y="20" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#8a92a6" font-style="italic">two independent execution primitives — pick one or both</text>
+        <text x="350" y="34" text-anchor="middle" font-family="Noto Sans KR" font-size="9.5" fill="#8a92a6" font-style="italic">두 가지 독립 실행 기본 단위 — 하나 또는 둘 다 사용</text>
+
+        <!-- CREW (left, teal) -->
         <g data-layer="crew">
-          <rect class="abs-rect crew" x="35" y="110" width="630" height="365" rx="10" />
-          <text class="abs-label" x="50" y="135" fill="#4FC3D9" font-size="14">CREW</text>
-          <text class="abs-sub" x="50" y="151">Multi-agent execution unit</text>
-          <text class="abs-sub-ko" x="50" y="165">다중 에이전트 실행 단위</text>
+          <rect class="abs-rect crew" x="20" y="48" width="320" height="135" rx="10" />
+          <text class="abs-label" x="36" y="74" fill="#4FC3D9" font-size="14">CREW</text>
+          <text class="abs-sub" x="36" y="90">Multi-agent execution unit · .kickoff()</text>
+          <text class="abs-sub-ko" x="36" y="103">다중 에이전트 실행 단위 — 단독 실행</text>
           <g pointer-events="none">
-            <text class="abs-field" x="50" y="180">PROCESS</text>
-            <rect class="abs-chip" x="50" y="186" width="82" height="20" rx="3" />
-            <text class="abs-chip-text" x="91" y="200" style="fill: #e6e9f0;">sequential</text>
-            <rect class="abs-chip" x="138" y="186" width="92" height="20" rx="3" />
-            <text class="abs-chip-text" x="184" y="200" style="fill: #e6e9f0;">hierarchical</text>
-            <text class="abs-field" x="270" y="180">MEMORY</text>
-            <rect class="abs-chip" x="270" y="186" width="78" height="20" rx="3" />
-            <text class="abs-chip-text" x="309" y="200" style="fill: #e6e9f0;">short-term</text>
-            <rect class="abs-chip" x="354" y="186" width="78" height="20" rx="3" />
-            <text class="abs-chip-text" x="393" y="200" style="fill: #e6e9f0;">long-term</text>
-            <rect class="abs-chip" x="438" y="186" width="60" height="20" rx="3" />
-            <text class="abs-chip-text" x="468" y="200" style="fill: #e6e9f0;">entity</text>
+            <text class="abs-field" x="36" y="121">PROCESS</text>
+            <rect class="abs-chip" x="36" y="127" width="82" height="20" rx="3" />
+            <text class="abs-chip-text" x="77" y="141" style="fill: #e6e9f0;">sequential</text>
+            <rect class="abs-chip" x="124" y="127" width="92" height="20" rx="3" />
+            <text class="abs-chip-text" x="170" y="141" style="fill: #e6e9f0;">hierarchical</text>
+            <text class="abs-field" x="36" y="161">MEMORY</text>
+            <rect class="abs-chip" x="36" y="167" width="68" height="14" rx="3" />
+            <text class="abs-chip-text" x="70" y="178" style="fill: #e6e9f0; font-size: 8.5px;">short-term</text>
+            <rect class="abs-chip" x="110" y="167" width="62" height="14" rx="3" />
+            <text class="abs-chip-text" x="141" y="178" style="fill: #e6e9f0; font-size: 8.5px;">long-term</text>
+            <rect class="abs-chip" x="178" y="167" width="48" height="14" rx="3" />
+            <text class="abs-chip-text" x="202" y="178" style="fill: #e6e9f0; font-size: 8.5px;">entity</text>
           </g>
         </g>
 
-        <g data-layer="agent">
-          <rect class="abs-rect agent" x="60" y="220" width="290" height="240" rx="8" />
-          <text class="abs-label" x="75" y="244" fill="#5b8def" font-size="13">AGENT</text>
-          <text class="abs-sub" x="75" y="259">Single LLM-driven actor</text>
-          <text class="abs-sub-ko" x="75" y="272">단일 LLM 액터</text>
+        <!-- OR divider in the middle -->
+        <text x="350" y="110" text-anchor="middle" font-family="JetBrains Mono" font-size="14" font-weight="700" fill="#8a92a6">OR</text>
+        <text x="350" y="128" text-anchor="middle" font-family="Noto Sans KR" font-size="11" fill="#8a92a6" font-style="italic">또는</text>
+        <line x1="350" y1="60" x2="350" y2="95" stroke="#3a4259" stroke-width="0.8" stroke-dasharray="3 3"/>
+        <line x1="350" y1="140" x2="350" y2="175" stroke="#3a4259" stroke-width="0.8" stroke-dasharray="3 3"/>
+
+        <!-- FLOW (right, orange) -->
+        <g data-layer="flow">
+          <rect class="abs-rect flow" x="360" y="48" width="320" height="135" rx="10" />
+          <text class="abs-label" x="376" y="74" fill="#F5A623" font-size="14">FLOW</text>
+          <text class="abs-sub" x="376" y="90">Optional state-machine orchestrator</text>
+          <text class="abs-sub-ko" x="376" y="103">선택적 상태 머신 오케스트레이터</text>
           <g pointer-events="none">
-            <text class="abs-field" x="75" y="293">role</text><text class="abs-field-ko" x="170" y="293">역할 정의</text>
-            <text class="abs-field" x="75" y="315">goal</text><text class="abs-field-ko" x="170" y="315">달성 목표</text>
-            <text class="abs-field" x="75" y="337">backstory</text><text class="abs-field-ko" x="170" y="337">행동 맥락</text>
-            <text class="abs-field" x="75" y="359">llm</text><text class="abs-field-ko" x="170" y="359">모델 선택</text>
-            <text class="abs-field" x="75" y="381">tools</text><text class="abs-field-ko" x="170" y="381">도구 권한</text>
-            <text class="abs-field" x="75" y="403">memory</text><text class="abs-field-ko" x="170" y="403">메모리 segment</text>
-            <text class="abs-field" x="75" y="425">allow_delegation</text>
+            <rect class="abs-chip" x="376" y="118" width="64" height="20" rx="3" />
+            <text class="abs-chip-text" x="408" y="132">@start</text>
+            <rect class="abs-chip" x="446" y="118" width="68" height="20" rx="3" />
+            <text class="abs-chip-text" x="480" y="132">@listen</text>
+            <rect class="abs-chip" x="520" y="118" width="68" height="20" rx="3" />
+            <text class="abs-chip-text" x="554" y="132">@router</text>
+            <rect class="abs-chip" x="594" y="118" width="68" height="20" rx="3" />
+            <text class="abs-chip-text" x="628" y="132">@persist</text>
+            <rect class="abs-chip" x="376" y="144" width="64" height="20" rx="3" />
+            <text class="abs-chip-text" x="408" y="158">or_(...)</text>
+            <rect class="abs-chip" x="446" y="144" width="118" height="20" rx="3" />
+            <text class="abs-chip-text" x="505" y="158">kickoff_async()</text>
+          </g>
+        </g>
+
+        <!-- Optional connection: Flow CAN call a Crew (dashed arrow from FLOW to CREW) -->
+        <path d="M 460 195 Q 460 215 380 215 Q 200 215 200 195" fill="none" stroke="#5b8def" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#abs-arr-dash)"/>
+        <text x="350" y="232" text-anchor="middle" font-family="Inter" font-size="10" fill="#5b8def" font-style="italic">optional — Flow can call zero, one, or many Crews</text>
+        <text x="350" y="246" text-anchor="middle" font-family="Noto Sans KR" font-size="9.5" fill="#5b8def" font-style="italic">선택 사항 — Flow 가 Crew 0개, 1개, 여러 개 호출 가능</text>
+
+        <!-- Divider line -->
+        <line x1="40" y1="266" x2="660" y2="266" stroke="#2a3142" stroke-width="1" stroke-dasharray="2 4"/>
+        <text x="350" y="282" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#8a92a6" font-style="italic">— building blocks both shapes use —</text>
+        <text x="350" y="296" text-anchor="middle" font-family="Noto Sans KR" font-size="9.5" fill="#8a92a6" font-style="italic">두 형태 모두가 사용하는 기본 단위</text>
+
+        <!-- Bottom: AGENT + TASK as shared primitives -->
+        <g data-layer="agent">
+          <rect class="abs-rect agent" x="20" y="310" width="320" height="240" rx="8" />
+          <text class="abs-label" x="36" y="334" fill="#5b8def" font-size="13">AGENT</text>
+          <text class="abs-sub" x="36" y="349">Single LLM-driven actor</text>
+          <text class="abs-sub-ko" x="36" y="362">단일 LLM 액터</text>
+          <g pointer-events="none">
+            <text class="abs-field" x="36" y="383">role</text><text class="abs-field-ko" x="130" y="383">역할 정의</text>
+            <text class="abs-field" x="36" y="405">goal</text><text class="abs-field-ko" x="130" y="405">달성 목표</text>
+            <text class="abs-field" x="36" y="427">backstory</text><text class="abs-field-ko" x="130" y="427">행동 맥락</text>
+            <text class="abs-field" x="36" y="449">llm</text><text class="abs-field-ko" x="130" y="449">모델 선택</text>
+            <text class="abs-field" x="36" y="471">tools</text><text class="abs-field-ko" x="130" y="471">도구 권한</text>
+            <text class="abs-field" x="36" y="493">memory</text><text class="abs-field-ko" x="130" y="493">메모리 segment</text>
+            <text class="abs-field" x="36" y="515">allow_delegation</text>
           </g>
         </g>
 
         <g data-layer="task">
-          <rect class="abs-rect task" x="365" y="220" width="290" height="240" rx="8" />
-          <text class="abs-label" x="380" y="244" fill="#5b8def" font-size="13">TASK</text>
-          <text class="abs-sub" x="380" y="259">Typed unit of work</text>
-          <text class="abs-sub-ko" x="380" y="272">타입 지정된 업무 단위</text>
+          <rect class="abs-rect task" x="360" y="310" width="320" height="240" rx="8" />
+          <text class="abs-label" x="376" y="334" fill="#5b8def" font-size="13">TASK</text>
+          <text class="abs-sub" x="376" y="349">Typed unit of work</text>
+          <text class="abs-sub-ko" x="376" y="362">타입 지정된 업무 단위</text>
           <g pointer-events="none">
-            <text class="abs-field" x="380" y="293">description</text><text class="abs-field-ko" x="500" y="293">수행 지시</text>
-            <text class="abs-field" x="380" y="315">expected_output</text><text class="abs-field-ko" x="500" y="315">예상 출력</text>
-            <text class="abs-field" x="380" y="337">agent</text><text class="abs-field-ko" x="500" y="337">담당 에이전트</text>
-            <text class="abs-field" x="380" y="359">output_pydantic</text><text class="abs-field-ko" x="500" y="359">Pydantic 스키마</text>
-            <text class="abs-field" x="380" y="381">context</text><text class="abs-field-ko" x="500" y="381">선행 task 체인</text>
-            <text class="abs-field" x="380" y="403">tools</text><text class="abs-field-ko" x="500" y="403">task-scoped 도구</text>
-            <text class="abs-field" x="380" y="425">output_file</text>
+            <text class="abs-field" x="376" y="383">description</text><text class="abs-field-ko" x="500" y="383">수행 지시</text>
+            <text class="abs-field" x="376" y="405">expected_output</text><text class="abs-field-ko" x="500" y="405">예상 출력</text>
+            <text class="abs-field" x="376" y="427">agent</text><text class="abs-field-ko" x="500" y="427">담당 에이전트</text>
+            <text class="abs-field" x="376" y="449">output_pydantic</text><text class="abs-field-ko" x="500" y="449">Pydantic 스키마</text>
+            <text class="abs-field" x="376" y="471">context</text><text class="abs-field-ko" x="500" y="471">선행 task 체인</text>
+            <text class="abs-field" x="376" y="493">tools</text><text class="abs-field-ko" x="500" y="493">task-scoped 도구</text>
+            <text class="abs-field" x="376" y="515">output_file</text>
           </g>
         </g>
+
+        <!-- Light arrows from primitives up to Crew (Crew uses Agents+Tasks) -->
+        <line x1="180" y1="305" x2="180" y2="190" stroke="#4FC3D9" stroke-width="0.8" stroke-dasharray="2 3" opacity="0.5"/>
+        <line x1="180" y1="305" x2="100" y2="190" stroke="#4FC3D9" stroke-width="0.8" stroke-dasharray="2 3" opacity="0.5"/>
+        <line x1="520" y1="305" x2="520" y2="190" stroke="#F5A623" stroke-width="0.8" stroke-dasharray="2 3" opacity="0.3"/>
       </svg>
     </div>
 
@@ -593,6 +630,12 @@ code {
         </div>
       </div>
     </div>
+  </div>
+
+  <div style="margin-top: 24px; padding: 16px 20px; background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 8px; font-size: 13px; line-height: 1.65;">
+    <strong style="color: var(--text);">Important — the nesting in the diagram is illustrative, not required.</strong>
+    <span style="color: var(--text-mute);">A Crew runs standalone via <code class="mono" style="color: var(--teal);">.kickoff()</code> — no Flow needed. A Flow can run with no Crew at all (state machine over plain Python), or with one or many Crews. Three valid shapes: (1) Crew alone · (2) Flow alone · (3) Flow + Crew(s) as shown.</span>
+    <span class="ko" style="display: block; font-family: var(--kor); font-size: 12px; color: var(--text-dim); font-style: italic; margin-top: 8px; line-height: 1.65;">중요 — 다이어그램의 중첩은 예시일 뿐 필수가 아닙니다. Crew 는 <code class="mono" style="color: var(--teal);">.kickoff()</code> 으로 단독 실행 — Flow 가 필요하지 않습니다. Flow 는 Crew 없이 (일반 Python 위 상태 머신), 또는 Crew 한 개나 여러 개와 함께 실행 가능. 유효한 세 가지 형태 — (1) Crew 단독 · (2) Flow 단독 · (3) Flow + Crew(s) (그림과 같이).</span>
   </div>
 
   <div class="screen-pagination">
@@ -971,12 +1014,13 @@ task = Task(
 
 <span class="kw">@before_tool_call</span>
 <span class="kw">def</span> rbac_check(ctx):  <span class="com"># ctx: ToolCallHookContext</span>
-    <span class="kw">if</span> ctx.tool_name <span class="kw">not in</span> allowed_for(ctx.persona):
+    persona = get_active_persona()  <span class="com"># sourced externally</span>
+    <span class="kw">if</span> ctx.tool_name <span class="kw">not in</span> allowed_for(persona):
         <span class="kw">return</span> <span class="kw">False</span>  <span class="com"># blocks the call</span>
 
 <span class="kw">@after_tool_call</span>
 <span class="kw">def</span> sanitize(ctx):
-    <span class="kw">return</span> redact(ctx.result)  <span class="com"># str|None</span></pre></dd>
+    <span class="kw">return</span> redact(ctx.tool_result)  <span class="com"># str|None</span></pre></dd>
         </div>
         <div>
           <dt>LLM-call guardrail <span class="ko">LLM 호출 가드레일</span></dt>
@@ -989,8 +1033,11 @@ task = Task(
     mask_in_place(ctx.messages)
 
 <span class="kw">@after_llm_call</span>
-<span class="kw">def</span> verify_grounded(ctx):
-    <span class="kw">return</span> cross_check(ctx.response, ctx.rag_citations)</pre></dd>
+<span class="kw">def</span> verify_grounded(ctx):  <span class="com"># ctx: LLMCallHookContext</span>
+    citations = ctx.agent.knowledge_sources_for(ctx.task)
+    <span class="kw">if</span> ground_score(ctx.response, citations) &gt; <span class="str">0.6</span>:
+        emit_review(ctx)
+    <span class="kw">return</span> <span class="kw">None</span>  <span class="com"># keep response, just mark</span></pre></dd>
         </div>
         <div>
           <dt>Block reasons logged <span class="ko">차단 사유 기록</span></dt>
@@ -1560,8 +1607,8 @@ showScreen((window.location.hash || '#overview').slice(1));
 const LAYER_DATA = {
   flow: {
     name: "Flow", ko: "오케스트레이션 / 상태 머신", color: "#F5A623",
-    intro_en: "State machine wrapping Crews and any non-Crew Python. Adds branching, persistence, and pre/post-crew steps that don't belong inside an agent.",
-    intro_ko: "크루와 일반 Python 코드를 감싸는 상태 머신입니다. 분기, 지속성, 그리고 에이전트 내부에 두기 어려운 전/후처리 단계를 추가합니다.",
+    intro_en: "Optional state-machine orchestration. Flow doesn't require a Crew — it can wrap zero, one, or many Crews alongside arbitrary Python. When used with a Crew it adds branching, persistence, and pre/post-crew steps; when used standalone it's a typed-state event-driven workflow over plain functions.",
+    intro_ko: "선택적 상태 머신 오케스트레이션. Flow 는 Crew 를 필수로 요구하지 않습니다 — Crew 0개, 1개, 또는 여러 개를 일반 Python 과 함께 감쌀 수 있습니다. Crew 와 함께 쓰면 분기, 지속성, 전/후처리 단계를 추가하고, 단독으로 쓰면 일반 함수 위의 타입 지정 상태 + 이벤트 기반 워크플로우입니다.",
     provides: [
       ["Stateful orchestration with typed state across stages", "단계 간 타입 지정된 상태를 유지하는 오케스트레이션"],
       ["Branching via @router (conditional logic without hand-rolling)", "@router 를 통한 분기 (제어 흐름을 직접 작성하지 않음)"],
@@ -1569,8 +1616,8 @@ const LAYER_DATA = {
       ["Pre/post-crew Python — SSO/JWT, OTel init, PII scan, eval-driven routing", "크루 전후 Python — SSO/JWT, OTel 초기화, PII 스캔, 평가 기반 라우팅"],
       ["Each @listen step gets its own OTel span automatically", "각 @listen 단계마다 자동으로 OTel span 생성"],
     ],
-    wraps_en: "Crew(s) + arbitrary Python",
-    wraps_ko: "크루 + 임의의 Python 코드",
+    wraps_en: "Optional — can wrap zero, one, or many Crews + arbitrary Python",
+    wraps_ko: "선택적 — Crew 0개, 1개, 또는 여러 개 + 일반 Python 감쌈 가능",
     code: `<span class="kw">from</span> crewai.flow <span class="kw">import</span> Flow, start, listen, router, or_
 
 <span class="kw">class</span> LoanTriageFlow(Flow):
@@ -1589,8 +1636,8 @@ const LAYER_DATA = {
   },
   crew: {
     name: "Crew", ko: "다중 에이전트 실행 단위", color: "#4FC3D9",
-    intro_en: "Multi-agent execution unit. Bundles agents + tasks + a process choice + shared memory. The unit that gets kicked off.",
-    intro_ko: "다중 에이전트 실행 단위. 에이전트 + 태스크 + 프로세스 선택 + 공유 메모리를 묶습니다. kickoff 대상이 되는 단위입니다.",
+    intro_en: "Standalone multi-agent execution unit. Bundles agents + tasks + a process choice + shared memory, and runs via .kickoff() on its own — no Flow required. A Flow can call a Crew, but a Crew is fully runnable without any Flow.",
+    intro_ko: "단독으로 실행 가능한 다중 에이전트 실행 단위. 에이전트 + 태스크 + 프로세스 선택 + 공유 메모리를 묶으며, .kickoff() 으로 자체 실행 — Flow 가 필요하지 않습니다. Flow 가 Crew 를 호출할 수도 있지만, Crew 는 Flow 없이도 완전히 실행 가능합니다.",
     provides: [
       ["Process choice: sequential (declared order) or hierarchical (manager delegates)", "프로세스 선택: 순차 (선언 순서) 또는 위계 (매니저가 위임)"],
       ["Shared memory across agents (short-term, long-term, entity)", "에이전트 간 공유 메모리 (단기 · 장기 · 엔티티)"],
@@ -1800,13 +1847,14 @@ const GUARDRAIL_DATA = {
     code: `<span class="kw">from</span> crewai.hooks <span class="kw">import</span> before_tool_call, after_tool_call
 
 <span class="kw">@before_tool_call</span>
-<span class="kw">def</span> rbac_check(ctx):
-    <span class="kw">if</span> ctx.tool_name <span class="kw">not in</span> allowed_for(ctx.persona):
+<span class="kw">def</span> rbac_check(ctx):  <span class="com"># ctx: ToolCallHookContext</span>
+    persona = get_active_persona()  <span class="com"># sourced externally</span>
+    <span class="kw">if</span> ctx.tool_name <span class="kw">not in</span> allowed_for(persona):
         <span class="kw">return</span> <span class="kw">False</span>   <span class="com"># blocks the tool call</span>
 
 <span class="kw">@after_tool_call</span>
 <span class="kw">def</span> sanitize(ctx):
-    <span class="kw">return</span> redact(ctx.result)  <span class="com"># str|None replaces result</span>`,
+    <span class="kw">return</span> redact(ctx.tool_result)  <span class="com"># str|None replaces result</span>`,
     otel: "guardrail.l2_tool_rbac.*",
     examples_en: ["Persona × tool allow-list (RBAC)", "Parameter sanitization (path traversal, SQL injection)", "Rate limit per tool per persona", "Output redaction"],
     examples_ko: ["페르소나 × 도구 화이트리스트 (RBAC)", "파라미터 sanitization (path traversal, SQL injection)", "페르소나별 도구별 rate limit", "출력 redaction"],
@@ -1820,13 +1868,14 @@ const GUARDRAIL_DATA = {
     code: `<span class="kw">from</span> crewai.hooks <span class="kw">import</span> after_llm_call
 
 <span class="kw">@after_llm_call</span>
-<span class="kw">def</span> verify_grounded(ctx):
-    <span class="com"># cross-check claims vs RAG citations</span>
-    score = ground_score(ctx.response, ctx.rag_citations)
+<span class="kw">def</span> verify_grounded(ctx):  <span class="com"># ctx: LLMCallHookContext</span>
+    <span class="com"># pull citations from agent's knowledge sources</span>
+    citations = ctx.agent.knowledge_sources_for(ctx.task)
+    score = ground_score(ctx.response, citations)
     <span class="kw">if</span> score &gt; HALLUCINATION_THRESHOLD:
         emit_review(ctx, score)
-        <span class="kw">return</span> ctx.response  <span class="com"># marked, not blocked</span>
-    <span class="kw">return</span> ctx.response`,
+        <span class="kw">return</span> <span class="kw">None</span>  <span class="com"># keep original response, marked</span>
+    <span class="kw">return</span> <span class="kw">None</span>  <span class="com"># after_llm_call returns str|None</span>`,
     otel: "guardrail.l3_hallucination.*",
     examples_en: ["RAG citation cross-check", "Claim-by-claim grounding score", "Confidence-weighted ⚠ REVIEW marking", "Optional HITL escalation on score breach"],
     examples_ko: ["RAG 인용 교차 검증", "주장별 grounding 점수", "신뢰도 가중 ⚠ REVIEW 마킹", "점수 초과 시 HITL escalation (선택)"],
