@@ -497,8 +497,8 @@ code {
 <div class="screen" id="abstractions">
   <div class="screen-head">
     <div class="step-tag">02 · Abstractions <span class="ko">추상화 계층</span></div>
-    <h2>Nested layers
-      <span class="ko">중첩된 계층 — 외층이 내층을 감싼다</span>
+    <h2>Composable primitives
+      <span class="ko">조합 가능한 기본 단위 — Agent · Task · Crew · Flow</span>
     </h2>
     <p class="intro">
       <span class="en">Agent → Task → Crew is the agent execution path; a Crew runs standalone via <code>.kickoff()</code>. Flow is a separate orchestration primitive — it can wrap a Crew, multiple Crews, or just plain Python. The diagram below shows one common composition (Flow wrapping a Crew), but the layers are independent — Crew or Flow can run on its own. Click any rectangle to inspect.</span>
@@ -535,12 +535,14 @@ code {
             <rect class="abs-chip" x="124" y="127" width="92" height="20" rx="3" />
             <text class="abs-chip-text" x="170" y="141" style="fill: #e6e9f0;">hierarchical</text>
             <text class="abs-field" x="36" y="161">MEMORY</text>
-            <rect class="abs-chip" x="36" y="167" width="68" height="14" rx="3" />
-            <text class="abs-chip-text" x="70" y="178" style="fill: #e6e9f0; font-size: 8.5px;">short-term</text>
-            <rect class="abs-chip" x="110" y="167" width="62" height="14" rx="3" />
-            <text class="abs-chip-text" x="141" y="178" style="fill: #e6e9f0; font-size: 8.5px;">long-term</text>
-            <rect class="abs-chip" x="178" y="167" width="48" height="14" rx="3" />
-            <text class="abs-chip-text" x="202" y="178" style="fill: #e6e9f0; font-size: 8.5px;">entity</text>
+            <rect class="abs-chip" x="36" y="167" width="62" height="14" rx="3" />
+            <text class="abs-chip-text" x="67" y="178" style="fill: #e6e9f0; font-size: 8.5px;">short-term</text>
+            <rect class="abs-chip" x="104" y="167" width="58" height="14" rx="3" />
+            <text class="abs-chip-text" x="133" y="178" style="fill: #e6e9f0; font-size: 8.5px;">long-term</text>
+            <rect class="abs-chip" x="168" y="167" width="44" height="14" rx="3" />
+            <text class="abs-chip-text" x="190" y="178" style="fill: #e6e9f0; font-size: 8.5px;">entity</text>
+            <rect class="abs-chip" x="218" y="167" width="64" height="14" rx="3" />
+            <text class="abs-chip-text" x="250" y="178" style="fill: #e6e9f0; font-size: 8.5px;">contextual</text>
           </g>
         </g>
 
@@ -633,9 +635,9 @@ code {
   </div>
 
   <div style="margin-top: 24px; padding: 16px 20px; background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 8px; font-size: 13px; line-height: 1.65;">
-    <strong style="color: var(--text);">Important — the nesting in the diagram is illustrative, not required.</strong>
-    <span style="color: var(--text-mute);">A Crew runs standalone via <code class="mono" style="color: var(--teal);">.kickoff()</code> — no Flow needed. A Flow can run with no Crew at all (state machine over plain Python), or with one or many Crews. Three valid shapes: (1) Crew alone · (2) Flow alone · (3) Flow + Crew(s) as shown.</span>
-    <span class="ko" style="display: block; font-family: var(--kor); font-size: 12px; color: var(--text-dim); font-style: italic; margin-top: 8px; line-height: 1.65;">중요 — 다이어그램의 중첩은 예시일 뿐 필수가 아닙니다. Crew 는 <code class="mono" style="color: var(--teal);">.kickoff()</code> 으로 단독 실행 — Flow 가 필요하지 않습니다. Flow 는 Crew 없이 (일반 Python 위 상태 머신), 또는 Crew 한 개나 여러 개와 함께 실행 가능. 유효한 세 가지 형태 — (1) Crew 단독 · (2) Flow 단독 · (3) Flow + Crew(s) (그림과 같이).</span>
+    <strong style="color: var(--text);">How to read this diagram.</strong>
+    <span style="color: var(--text-mute);">Crew and Flow sit side-by-side as <em>peers</em>, not as a hierarchy. Both consume Agent + Task as building blocks. The dashed arrow shows Flow's <em>optional</em> ability to call a Crew — but Flow can run without one. Three valid compositions: <strong>(1)</strong> Crew alone (run via <code class="mono" style="color: var(--teal);">.kickoff()</code>) · <strong>(2)</strong> Flow alone (state machine over plain Python) · <strong>(3)</strong> Flow + one or many Crews.</span>
+    <span class="ko" style="display: block; font-family: var(--kor); font-size: 12px; color: var(--text-dim); font-style: italic; margin-top: 8px; line-height: 1.65;">다이어그램 읽는 법 — Crew 와 Flow 는 위계가 아닌 <em>동등한 peer</em> 로 나란히 배치. 둘 다 Agent + Task 를 기본 단위로 사용. 점선 화살표는 Flow 가 Crew 를 호출할 수 있는 <em>선택적</em> 관계 — Flow 는 Crew 없이도 실행 가능. 유효한 세 가지 조합: <strong>(1)</strong> Crew 단독 (<code class="mono" style="color: var(--teal);">.kickoff()</code> 으로 실행) · <strong>(2)</strong> Flow 단독 (일반 Python 위 상태 머신) · <strong>(3)</strong> Flow + Crew 한 개 또는 여러 개.</span>
   </div>
 
   <div class="screen-pagination">
@@ -659,8 +661,8 @@ code {
       <span class="ko">세 가지 실행 형태</span>
     </h2>
     <p class="intro">
-      <span class="en">Same agents and tasks; different orchestration. Switch tabs to compare.</span>
-      <span class="ko">같은 에이전트와 태스크지만 오케스트레이션이 다릅니다. 탭을 전환해 비교해보세요.</span>
+      <span class="en">Same agents and tasks; different orchestration. <strong>Sequential</strong> and <strong>Hierarchical</strong> are the two <code>Process</code> types inside a Crew. <strong>Flow</strong> is a separate primitive — a state machine you can use instead of or alongside a Crew. Switch tabs to compare.</span>
+      <span class="ko"><strong>순차 (Sequential)</strong> 와 <strong>위계 (Hierarchical)</strong> 는 Crew 내부의 두 가지 <code>Process</code> 유형. <strong>Flow</strong> 는 별개의 기본 단위 — Crew 대신 또는 함께 쓸 수 있는 상태 머신입니다. 탭을 전환해 비교하세요.</span>
     </p>
   </div>
 
@@ -1451,7 +1453,7 @@ task = Task(
       <tr data-oss="1" data-ent="1"><td class="cap core"><span class="en">Flow · @start / @listen / @router</span><span class="ko">Flow · 상태 머신 데코레이터</span></td><td class="center"><span class="dot-yes">●</span></td><td class="center"><span class="dot-yes">●</span></td><td class="std">crewai-flow</td><td class="why"><span class="en">Stateful + branching</span><span class="ko">상태 보유 + 분기</span></td></tr>
       <tr data-oss="1" data-ent="1"><td class="cap core"><span class="en">Multi-LLM routing</span><span class="ko">멀티-LLM 라우팅</span></td><td class="center"><span class="dot-yes">●</span></td><td class="center"><span class="dot-yes">●</span></td><td class="std">LiteLLM gateway</td><td class="why"><span class="en">Model-agnostic, swap any time</span><span class="ko">모델 독립 · 언제든 교체 가능</span></td></tr>
       <tr data-oss="1" data-ent="1"><td class="cap core"><span class="en">Pydantic-typed output</span><span class="ko">Pydantic 타입 출력</span></td><td class="center"><span class="dot-yes">●</span></td><td class="center"><span class="dot-yes">●</span></td><td class="std">pydantic</td><td class="why"><span class="en">Compile-time contracts</span><span class="ko">컴파일 시점 계약</span></td></tr>
-      <tr data-oss="1" data-ent="1"><td class="cap core"><span class="en">Memory (short / long / entity)</span><span class="ko">메모리 (단기 / 장기 / 엔티티)</span></td><td class="center"><span class="dot-yes">●</span></td><td class="center"><span class="dot-yes">●</span></td><td class="std">crewai-memory</td><td class="why"><span class="en">Pluggable backends</span><span class="ko">백엔드 교체 가능</span></td></tr>
+      <tr data-oss="1" data-ent="1"><td class="cap core"><span class="en">Memory (short / long / entity / contextual)</span><span class="ko">메모리 (단기 / 장기 / 엔티티 / 컨텍스트)</span></td><td class="center"><span class="dot-yes">●</span></td><td class="center"><span class="dot-yes">●</span></td><td class="std">crewai-memory</td><td class="why"><span class="en">Pluggable backends</span><span class="ko">백엔드 교체 가능</span></td></tr>
       <tr data-oss="1" data-ent="1"><td class="cap core"><span class="en">MCP / A2A interop</span><span class="ko">MCP / A2A 상호운용</span></td><td class="center"><span class="dot-yes">●</span></td><td class="center"><span class="dot-yes">●</span></td><td class="std">open standard</td><td class="why"><span class="en">Co-exists with other agent systems</span><span class="ko">타 에이전트 시스템과 공존</span></td></tr>
       <tr data-oss="1" data-ent="1"><td class="cap core"><span class="en">OpenTelemetry traces</span><span class="ko">OpenTelemetry 트레이스</span></td><td class="center"><span class="dot-yes">●</span></td><td class="center"><span class="dot-yes">●</span></td><td class="std">OTel</td><td class="why"><span class="en">Your backend, your retention</span><span class="ko">자체 백엔드 · 자체 보관 정책</span></td></tr>
       <tr data-oss="1" data-ent="1"><td class="cap core"><span class="en">Tool decorator + custom tools</span><span class="ko">도구 데코레이터 + 커스텀 도구</span></td><td class="center"><span class="dot-yes">●</span></td><td class="center"><span class="dot-yes">●</span></td><td class="std">@tool</td><td class="why"><span class="en">Extend without forking</span><span class="ko">포크 없이 확장 가능</span></td></tr>
@@ -1640,7 +1642,7 @@ const LAYER_DATA = {
     intro_ko: "단독으로 실행 가능한 다중 에이전트 실행 단위. 에이전트 + 태스크 + 프로세스 선택 + 공유 메모리를 묶으며, .kickoff() 으로 자체 실행 — Flow 가 필요하지 않습니다. Flow 가 Crew 를 호출할 수도 있지만, Crew 는 Flow 없이도 완전히 실행 가능합니다.",
     provides: [
       ["Process choice: sequential (declared order) or hierarchical (manager delegates)", "프로세스 선택: 순차 (선언 순서) 또는 위계 (매니저가 위임)"],
-      ["Shared memory across agents (short-term, long-term, entity)", "에이전트 간 공유 메모리 (단기 · 장기 · 엔티티)"],
+      ["Shared memory across agents (short-term, long-term, entity, contextual)", "에이전트 간 공유 메모리 (단기 · 장기 · 엔티티 · 컨텍스트)"],
       ["Process-level retries and verbose tracing", "프로세스 단위 재시도 및 상세 추적"],
       ["Final crew output (typed if last task uses output_pydantic)", "크루의 최종 출력 (마지막 태스크가 output_pydantic 사용 시 타입 지정)"],
       ["Single-call .kickoff() or .kickoff_async() for the whole unit", "전체 단위를 단일 .kickoff() 또는 .kickoff_async() 호출로 실행"],
@@ -1764,7 +1766,7 @@ const SPOKE_DATA = {
   memory: {
     name: "MEMORY BACKENDS", ko: "메모리 백엔드", color: "#F5A623",
     via: "pluggable per tier",
-    items: ["Short-term (in-process, per-run)", "Long-term (persistent across runs)", "Entity (per-entity facts and history)", "Redis (default for long-term)", "Pinecone, Weaviate, Chroma (vector backends)", "Your own KV store (SQL, DynamoDB, etc.)"],
+    items: ["Short-term (in-process, per-run)", "Long-term (persistent across runs)", "Entity (per-entity facts and history)", "Contextual (composes the other three for coherent recall)", "Redis (default for long-term)", "Pinecone, Weaviate, Chroma (vector backends)", "Your own KV store (SQL, DynamoDB, etc.)"],
     note_en: "Three memory tiers, each independently configured. Switch backends per tier without touching agent definitions.",
     note_ko: "세 가지 메모리 계층이 각각 독립적으로 설정됩니다. 에이전트 정의를 건드리지 않고 계층별로 백엔드를 교체 가능합니다."
   },
