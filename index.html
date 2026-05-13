@@ -825,59 +825,74 @@ code {
 
   <div class="int-wrap">
     <div class="int-diagram">
-      <svg class="int-svg" viewBox="0 0 760 540" preserveAspectRatio="xMidYMid meet">
-        <ellipse class="int-hub" cx="380" cy="270" rx="85" ry="85"/>
-        <text class="int-hub-text" x="380" y="262" text-anchor="middle" font-size="18" fill="#F5A623">CrewAI</text>
-        <text class="int-hub-text" x="380" y="285" text-anchor="middle" font-size="13" fill="#e6e9f0" font-weight="400">Runtime</text>
-        <text x="380" y="305" text-anchor="middle" font-family="Noto Sans KR" font-size="11" fill="#8a92a6" font-style="italic">런타임 코어</text>
+      <svg class="int-svg" viewBox="0 0 760 640" preserveAspectRatio="xMidYMid meet">
+        <!-- INTEROP / STANDARDS — promoted to top-center banner (highest strategic visibility) -->
+        <line class="int-line" x1="380" y1="237" x2="380" y2="125"/>
+        <g class="int-spoke" data-spoke="interop">
+          <rect class="spoke-rect" x="160" y="30" width="440" height="95" rx="10" stroke="#F5A623" stroke-width="2.5"/>
+          <text class="label" x="180" y="60" fill="#F5A623" font-size="13" font-weight="700" letter-spacing="0.5">★  INTEROP / STANDARDS</text>
+          <text class="sub" x="180" y="80">상호운용 표준 · open protocols (FabriX-compatible)</text>
+          <text class="label" x="180" y="102" font-size="11" fill="#e6e9f0" font-weight="500">MCP · A2A · 7 transport types · bidirectional</text>
+          <text x="180" y="118" font-family="Noto Sans KR" font-size="9.5" fill="#8a92a6" font-style="italic">MCP · A2A · 양방향 — 다른 에이전트 플랫폼과 zero-shim 협업</text>
+        </g>
 
-        <line class="int-line" x1="318" y1="220" x2="200" y2="100"/>
+        <!-- HUB shifted down to make room for the interop banner -->
+        <ellipse class="int-hub" cx="380" cy="320" rx="85" ry="85"/>
+        <text class="int-hub-text" x="380" y="312" text-anchor="middle" font-size="18" fill="#F5A623">CrewAI</text>
+        <text class="int-hub-text" x="380" y="335" text-anchor="middle" font-size="13" fill="#e6e9f0" font-weight="400">Runtime</text>
+        <text x="380" y="355" text-anchor="middle" font-family="Noto Sans KR" font-size="11" fill="#8a92a6" font-style="italic">런타임 코어</text>
+
+        <line class="int-line" x1="318" y1="270" x2="200" y2="190"/>
         <g class="int-spoke" data-spoke="llm">
-          <rect class="spoke-rect" x="50" y="65" width="240" height="80" rx="8" stroke="#4FC3D9"/>
-          <text class="label" x="68" y="92" fill="#4FC3D9">LLM PROVIDERS</text>
-          <text class="sub" x="68" y="110">LLM 공급자 · via LiteLLM gateway</text>
-          <text class="label" x="68" y="132" font-size="10" fill="#e6e9f0" font-weight="400">OpenAI · Anthropic · Google · custom</text>
+          <rect class="spoke-rect" x="50" y="155" width="240" height="80" rx="8" stroke="#4FC3D9"/>
+          <text class="label" x="68" y="182" fill="#4FC3D9">LLM PROVIDERS</text>
+          <text class="sub" x="68" y="200">LLM 공급자 · via LiteLLM gateway</text>
+          <text class="label" x="68" y="222" font-size="10" fill="#e6e9f0" font-weight="400">OpenAI · Anthropic · Google · custom</text>
         </g>
 
-        <line class="int-line" x1="442" y1="220" x2="560" y2="100"/>
+        <line class="int-line" x1="442" y1="270" x2="560" y2="190"/>
         <g class="int-spoke" data-spoke="tools">
-          <rect class="spoke-rect" x="470" y="65" width="240" height="80" rx="8" stroke="#5b8def"/>
-          <text class="label" x="488" y="92" fill="#5b8def">TOOLS</text>
-          <text class="sub" x="488" y="110">도구 · built-in · custom · MCP</text>
-          <text class="label" x="488" y="132" font-size="10" fill="#e6e9f0" font-weight="400">@tool · MCP servers · A2A peers</text>
+          <rect class="spoke-rect" x="470" y="155" width="240" height="80" rx="8" stroke="#5b8def"/>
+          <text class="label" x="488" y="182" fill="#5b8def">TOOLS</text>
+          <text class="sub" x="488" y="200">도구 · @tool + built-in toolset</text>
+          <text class="label" x="488" y="222" font-size="10" fill="#e6e9f0" font-weight="400">@tool · PythonREPL · WebSearch · 70+ tools</text>
         </g>
 
-        <line class="int-line" x1="295" y1="270" x2="200" y2="270"/>
+        <line class="int-line" x1="295" y1="320" x2="200" y2="320"/>
         <g class="int-spoke" data-spoke="memory">
-          <rect class="spoke-rect" x="50" y="230" width="240" height="80" rx="8" stroke="#F5A623"/>
-          <text class="label" x="68" y="257" fill="#F5A623">MEMORY BACKENDS</text>
-          <text class="sub" x="68" y="275">메모리 백엔드 · pluggable</text>
-          <text class="label" x="68" y="297" font-size="10" fill="#e6e9f0" font-weight="400">Redis · Pinecone · Weaviate · KV</text>
+          <rect class="spoke-rect" x="50" y="280" width="240" height="80" rx="8" stroke="#F5A623"/>
+          <text class="label" x="68" y="307" fill="#F5A623">MEMORY BACKENDS</text>
+          <text class="sub" x="68" y="325">메모리 백엔드 · pluggable</text>
+          <text class="label" x="68" y="347" font-size="10" fill="#e6e9f0" font-weight="400">Redis · Pinecone · Weaviate · KV</text>
         </g>
 
-        <line class="int-line" x1="465" y1="270" x2="560" y2="270"/>
+        <line class="int-line" x1="465" y1="320" x2="560" y2="320"/>
         <g class="int-spoke" data-spoke="observability">
-          <rect class="spoke-rect" x="470" y="230" width="240" height="80" rx="8" stroke="#4FC3D9"/>
-          <text class="label" x="488" y="257" fill="#4FC3D9">OBSERVABILITY</text>
-          <text class="sub" x="488" y="275">옵저버빌리티 · OpenTelemetry export</text>
-          <text class="label" x="488" y="297" font-size="10" fill="#e6e9f0" font-weight="400">Datadog · Splunk · Grafana · Jaeger</text>
+          <rect class="spoke-rect" x="470" y="280" width="240" height="80" rx="8" stroke="#4FC3D9"/>
+          <text class="label" x="488" y="307" fill="#4FC3D9">OBSERVABILITY</text>
+          <text class="sub" x="488" y="325">옵저버빌리티 · OpenTelemetry export</text>
+          <text class="label" x="488" y="347" font-size="10" fill="#e6e9f0" font-weight="400">Datadog · Splunk · Grafana · Jaeger</text>
         </g>
 
-        <line class="int-line" x1="318" y1="320" x2="200" y2="440"/>
+        <line class="int-line" x1="318" y1="370" x2="200" y2="490"/>
         <g class="int-spoke" data-spoke="identity">
-          <rect class="spoke-rect" x="50" y="395" width="240" height="80" rx="8" stroke="#d9486f"/>
-          <text class="label" x="68" y="422" fill="#d9486f">IDENTITY</text>
-          <text class="sub" x="68" y="440">신원 / 인증 · Enterprise tier</text>
-          <text class="label" x="68" y="462" font-size="10" fill="#e6e9f0" font-weight="400">SAML 2.0 · OIDC · SCIM 2.0</text>
+          <rect class="spoke-rect" x="50" y="450" width="240" height="80" rx="8" stroke="#d9486f"/>
+          <text class="label" x="68" y="477" fill="#d9486f">IDENTITY</text>
+          <text class="sub" x="68" y="495">신원 / 인증 · Enterprise tier</text>
+          <text class="label" x="68" y="517" font-size="10" fill="#e6e9f0" font-weight="400">SAML 2.0 · OIDC · SCIM 2.0</text>
         </g>
 
-        <line class="int-line" x1="442" y1="320" x2="560" y2="440"/>
+        <line class="int-line" x1="442" y1="370" x2="560" y2="490"/>
         <g class="int-spoke" data-spoke="storage">
-          <rect class="spoke-rect" x="470" y="395" width="240" height="80" rx="8" stroke="#4ade80"/>
-          <text class="label" x="488" y="422" fill="#4ade80">STORAGE / RAG</text>
-          <text class="sub" x="488" y="440">스토리지 / RAG · embeddings agnostic</text>
-          <text class="label" x="488" y="462" font-size="10" fill="#e6e9f0" font-weight="400">S3 · GCS · data lake</text>
+          <rect class="spoke-rect" x="470" y="450" width="240" height="80" rx="8" stroke="#4ade80"/>
+          <text class="label" x="488" y="477" fill="#4ade80">STORAGE / RAG</text>
+          <text class="sub" x="488" y="495">스토리지 / RAG · embeddings agnostic</text>
+          <text class="label" x="488" y="517" font-size="10" fill="#e6e9f0" font-weight="400">S3 · GCS · data lake</text>
         </g>
+
+        <!-- Caption explaining the elevated banner -->
+        <text x="380" y="580" text-anchor="middle" font-family="Inter" font-size="10" fill="#8a92a6" font-style="italic">★ Interop / Standards is the surface that lets CrewAI compose with FabriX, Copilot, Bedrock Agents, Agentforce — zero adapter shims</text>
+        <text x="380" y="600" text-anchor="middle" font-family="Noto Sans KR" font-size="10" fill="#8a92a6" font-style="italic">★ 상호운용 표준 — CrewAI 가 FabriX, Copilot, Bedrock Agents, Agentforce 와 어댑터 없이 조합되는 표면</text>
       </svg>
     </div>
 
@@ -1588,6 +1603,20 @@ task = Task(
 </div>
 
 <script>
+// In sandboxed-iframe contexts (about:srcdoc, claudeusercontent.com artifact frames)
+// history.pushState with a hash throws SecurityError. We try pushState, fall back
+// to direct hash assignment, and if even that fails we just update internal state.
+function _safeSetHash(id) {
+  const desired = '#' + id;
+  if (window.location.hash === desired) return;
+  try {
+    history.pushState(null, '', desired);
+    return;
+  } catch (e) { /* sandboxed iframe — fall through */ }
+  try {
+    window.location.hash = id;
+  } catch (e) { /* swallow — UI state is already correct */ }
+}
 function showScreen(id) {
   const target = document.getElementById(id);
   if (!target) return;
@@ -1595,7 +1624,7 @@ function showScreen(id) {
   target.classList.add('active');
   document.querySelectorAll('.nav-links a').forEach(a => a.classList.toggle('active', a.dataset.screen === id));
   window.scrollTo({ top: 0, behavior: 'auto' });
-  if (window.location.hash !== '#' + id) history.pushState(null, '', '#' + id);
+  _safeSetHash(id);
 }
 document.querySelectorAll('[data-screen]').forEach(el => {
   el.addEventListener('click', (e) => { e.preventDefault(); showScreen(el.dataset.screen); });
@@ -1749,6 +1778,21 @@ document.querySelectorAll('.exec-tabs button').forEach(b => {
 });
 
 const SPOKE_DATA = {
+  interop: {
+    name: "★ INTEROP / STANDARDS", ko: "상호운용 표준 — open protocols", color: "#F5A623",
+    via: "open protocols — MCP + A2A · bidirectional · FabriX-compatible",
+    items: [
+      "MCP (Model Context Protocol) — Anthropic open standard",
+      "CrewAI agents can CALL MCP servers as tool sources (consumer)",
+      "CrewAI Crews can EXPOSE themselves as MCP servers (producer) — bidirectional",
+      "7 MCP transport types: stdio, SSE, streamable HTTP, multiple-servers, DSL config, plus security guidance",
+      "A2A (Agent-to-Agent) — Google-led open protocol for cross-platform peer collaboration",
+      "Lets agents on different runtimes (FabriX, Copilot, Bedrock, Agentforce) collaborate as peers — not as nested tools",
+      "Same protocols other agent platforms adopt — zero adapter shim, zero translation glue",
+    ],
+    note_en: "This is the surface that lets CrewAI co-exist with Samsung FabriX, Microsoft Copilot, Salesforce Agentforce, AWS Bedrock Agents — not as a competitor but as a peer. MCP/A2A are treated as first-class architecture, not as another tool, because they're open standards (governed outside any one vendor) and bidirectional (CrewAI is both consumer and producer).",
+    note_ko: "이 표면이 CrewAI 를 Samsung FabriX, Microsoft Copilot, Salesforce Agentforce, AWS Bedrock Agents 와 — 경쟁자가 아닌 동등한 peer 로 — 공존할 수 있게 합니다. MCP/A2A 는 일반 도구가 아닌 1차원 아키텍처로 분리해 다룹니다. 이유: (1) 특정 벤더가 아닌 외부 거버넌스의 공개 표준이며, (2) 양방향(CrewAI 가 consumer 이자 producer)이기 때문입니다."
+  },
   llm: {
     name: "LLM PROVIDERS", ko: "LLM 공급자", color: "#4FC3D9",
     via: "via LiteLLM gateway",
@@ -1757,18 +1801,25 @@ const SPOKE_DATA = {
     note_ko: "모든 공급자에 대해 OpenAI 호환 인터페이스 하나. 라우팅 계층을 통해 에이전트별, 태스크별, 실행별로 공급자를 교체 가능."
   },
   tools: {
-    name: "TOOLS", ko: "도구", color: "#5b8def",
-    via: "built-in · custom Python · MCP · A2A",
-    items: ["@tool decorator (Python functions become tools)", "Built-in toolset (PythonREPL, WebSearch, File I/O, ScrapeWebsite)", "Pydantic-typed tool args + return values", "MCP (Model Context Protocol) — call external MCP servers as tools", "A2A (Agent-to-Agent) — peer agents as tools", "Tool-scoped permissions per agent and per task"],
-    note_en: "MCP and A2A are open standards — CrewAI agents can call any MCP-exposed tool natively, and vice versa, with no adapter shim.",
-    note_ko: "MCP 와 A2A 는 공개 표준입니다. CrewAI 에이전트가 MCP 로 노출된 도구를 별도 어댑터 없이 직접 호출 가능하며, 그 반대도 마찬가지입니다."
+    name: "TOOLS", ko: "도구 — @tool + built-in toolset", color: "#5b8def",
+    via: "@tool decorator · 70+ built-in tools",
+    items: [
+      "@tool decorator (any Python function becomes a tool)",
+      "Built-in toolset: PythonREPL, WebSearch, ScrapeWebsite, File I/O, Code Interpreter",
+      "Pydantic-typed args + return values (auto-validated before/after the call)",
+      "Tool-scoped permissions: which agent can call which tool, on which task",
+      "Tool caching, retry policy, and rate-limit handling at the toolset level",
+      "For cross-system agent composition (MCP/A2A) see the INTEROP / STANDARDS surface above",
+    ],
+    note_en: "TOOLS is the in-process capability surface — code the platform team writes or imports for an agent to call. For protocol-level interop with other agent platforms (CrewAI ↔ FabriX, ↔ Copilot, ↔ Bedrock), see INTEROP / STANDARDS.",
+    note_ko: "TOOLS 는 in-process 능력 표면입니다 — 플랫폼 팀이 작성하거나 임포트한 코드를 에이전트가 호출하는 영역. 다른 에이전트 플랫폼과의 프로토콜 수준 상호운용(CrewAI ↔ FabriX, ↔ Copilot, ↔ Bedrock)은 위쪽의 INTEROP / STANDARDS 를 참조."
   },
   memory: {
     name: "MEMORY BACKENDS", ko: "메모리 백엔드", color: "#F5A623",
     via: "pluggable per tier",
     items: ["Short-term (in-process, per-run)", "Long-term (persistent across runs)", "Entity (per-entity facts and history)", "Contextual (composes the other three for coherent recall)", "Redis (default for long-term)", "Pinecone, Weaviate, Chroma (vector backends)", "Your own KV store (SQL, DynamoDB, etc.)"],
-    note_en: "Three memory tiers, each independently configured. Switch backends per tier without touching agent definitions.",
-    note_ko: "세 가지 메모리 계층이 각각 독립적으로 설정됩니다. 에이전트 정의를 건드리지 않고 계층별로 백엔드를 교체 가능합니다."
+    note_en: "Four memory tiers (short-term, long-term, entity, contextual), each independently configured. Switch backends per tier without touching agent definitions.",
+    note_ko: "네 가지 메모리 계층 (단기, 장기, 엔티티, 컨텍스추얼) 이 각각 독립적으로 설정됩니다. 에이전트 정의를 건드리지 않고 계층별로 백엔드를 교체 가능합니다."
   },
   observability: {
     name: "OBSERVABILITY", ko: "옵저버빌리티", color: "#4FC3D9",
